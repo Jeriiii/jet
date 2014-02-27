@@ -7,5 +7,13 @@
             <file>file:/D:/Documents/Dropbox/NetBeansProjects/PomValidator/web/WEB-INF/dispatcher-servlet.xml</file>
             <file>file:/D:/Documents/Dropbox/NetBeansProjects/PomValidator/web/WEB-INF/jsp/index.jsp</file>
         </group>
+        <group name="java">
+            <file>file:/C:/webhostJava/jet/PomValidator/web/WEB-INF/jsp/index.jsp</file>
+            <file>file:/C:/webhostJava/jet/PomValidator/web/WEB-INF/applicationContext.xml</file>
+            <file>file:/C:/webhostJava/jet/PomValidator/web/WEB-INF/dispatcher-servlet.xml</file>
+            <file>file:/C:/webhostJava/jet/PomValidator/web/WEB-INF/web.xml</file>
+            <file>file:/C:/webhostJava/jet/PomValidator/web/redirect.jsp</file>
+            <file>file:/C:/webhostJava/jet/PomValidator/web/META-INF/context.xml</file>
+        </group>
     </open-files>
 </project-private>
