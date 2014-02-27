@@ -3,5 +3,6 @@
 PomValidator/build/web/WEB-INF/glassfish-web.xml
 PomValidator/nbproject/private/private.properties
 PomValidator/nbproject/project.properties
-PomValidator/nbproject/
+PomValidator/nbproject/private/private.properties
+PomValidator/nbproject/project.properties
 /nbproject/
