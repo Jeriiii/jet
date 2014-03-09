@@ -35,7 +35,7 @@ public class MvnProcessBuilderTest {
 		List<String> params = new LinkedList<String>();
 		
 		params.add(programName);
-		params.add("exec: java");
+		//params.add("exec: java");
 		params.add(programPath);
 		//params.add("start");
 		params.add("-f");
