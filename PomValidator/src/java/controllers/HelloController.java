@@ -1,6 +1,10 @@
 package controllers;
 
-
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import models.MvnProcessBuilder;
+import models.MvnProcessBuilderError;
 import models.TestObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -16,46 +20,58 @@ import services.TestService;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author JK
  */
- 
 @Controller//anotace kontroleru
 public class HelloController {//nazev tridy musi byt stejny jako url!!!
-    
-    @Autowired 
-    private ApplicationContext context;
-    
-    /*
-	Priklad fungovani frameworku
-    podle tutorialu http://www.tutorialspoint.com/spring/spring_web_mvc_framework.htm
-    */
-    // url (value=...)se nemusi psat pokazde, lze jej napsat i primo pro celou tridu, viz. tutorial 
-   @RequestMapping(value = "/hello", method = RequestMethod.GET) 
-   public String printHello(ModelMap model) {//promenne do viewu
-      model.addAttribute("message", "Ahoj");//promenna message predana do jspcka
-      return "hello/hello";// jmeno jspcka, v tomhle pripade se bude hledat hello.jsp (sestavuje se ve view Resolveru - viz dispatcher-servlet.xml)
-   }
-   
-   @RequestMapping(value = "/hello/horse", method = RequestMethod.GET) 
-   public String printHorse(ModelMap model) {//promenne do viewu
-      model.addAttribute("message", "Žluťoučký kůň");//promenna message predana do jspcka
-      return "hello/hello";// jmeno jspcka, v tomhle pripade se bude hledat hello.jsp (sestavuje se ve view Resolveru - viz dispatcher-servlet.xml)
-   }
-   
-   @RequestMapping(value = "/hello/database", method = RequestMethod.GET) 
-   public String printDatabaseRow(ModelMap model) {//promenne do viewu
-            
-       
-      TestService service = 
-      (TestService)context.getBean("testService");
-       TestObject test = service.getTest(1);
-      model.addAttribute("message", test.getName());//promenna message predana do jspcka
-      return "hello/hello";// jmeno jspcka, v tomhle pripade se bude hledat hello.jsp (sestavuje se ve view Resolveru - viz dispatcher-servlet.xml)
-   }
-    
+
+	@Autowired
+	private ApplicationContext context;
+
+	/*
+	 Priklad fungovani frameworku
+	 podle tutorialu http://www.tutorialspoint.com/spring/spring_web_mvc_framework.htm
+	 */
+	// url (value=...)se nemusi psat pokazde, lze jej napsat i primo pro celou tridu, viz. tutorial 
+	@RequestMapping(value = "/hello", method = RequestMethod.GET)
+	public String printHello(ModelMap model) {//promenne do viewu
+		model.addAttribute("message", "Ahoj");//promenna message predana do jspcka
+		return "hello/hello";// jmeno jspcka, v tomhle pripade se bude hledat hello.jsp (sestavuje se ve view Resolveru - viz dispatcher-servlet.xml)
+	}
+
+	@RequestMapping(value = "/hello/horse", method = RequestMethod.GET)
+	public String printHorse(ModelMap model) {//promenne do viewu
+		model.addAttribute("message", "Žluťoučký kůň");//promenna message predana do jspcka
+		return "hello/hello";// jmeno jspcka, v tomhle pripade se bude hledat hello.jsp (sestavuje se ve view Resolveru - viz dispatcher-servlet.xml)
+	}
+
+	@RequestMapping(value = "/hello/mvn-checker", method = RequestMethod.GET)
+	public String printMvnChecker(ModelMap model) {//promenne do viewu
+		String path = "C:\\webhostJava\\kotyho_semestralka";
+		MvnProcessBuilder mpb = new MvnProcessBuilder("mvn cz.slezacek.ccp3:compatibility-checking-plugin:check  -f " + path + "\\pom.xml");
+		try {
+			mpb.start();
+		} catch (MvnProcessBuilderError ex) {
+			Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException ex) {
+			Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		model.addAttribute("message", "Hotovo" + mpb);//promenna message predana do jspcka
+		return "hello/hello";// jmeno jspcka, v tomhle pripade se bude hledat hello.jsp (sestavuje se ve view Resolveru - viz dispatcher-servlet.xml)
+	}
+
+	@RequestMapping(value = "/hello/database", method = RequestMethod.GET)
+	public String printDatabaseRow(ModelMap model) {//promenne do viewu
+
+		TestService service
+				= (TestService) context.getBean("testService");
+		TestObject test = service.getTest(1);
+		model.addAttribute("message", test.getName());//promenna message predana do jspcka
+		return "hello/hello";// jmeno jspcka, v tomhle pripade se bude hledat hello.jsp (sestavuje se ve view Resolveru - viz dispatcher-servlet.xml)
+	}
+
 }
 //@Controller
 //@RequestMapping("/hello")
