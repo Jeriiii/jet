@@ -17,6 +17,8 @@
     for the index controller we are using ParameterizableViewController, so we must
     define an explicit mapping for it.
     -->
+    <context:component-scan base-package="cz.jet.controllers" />
+    
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 	<property name="mappings">
 	    <props>
@@ -25,7 +27,7 @@
 	</property>
     </bean>
     
-    <context:component-scan base-package="controllers" />
+    
     
 
     <bean id="viewResolver"
