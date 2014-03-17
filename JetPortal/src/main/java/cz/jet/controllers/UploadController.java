@@ -22,13 +22,23 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
     private ApplicationContext context;
     //////////////////////////////
 	
+	// spustí se ještě před metodou loadFormPage
+	// přidá se k modelu pro kontajner na selectbox Frequency
+	// alternativně by to šlo přepsat rovnou do metody loadFormPage takto: m.addAttribute("frequencies", Frequency.values())
 	@ModelAttribute("frequencies")
 	public Frequency[] frequencies() {
 		return Frequency.values();
 	}
 
+	// render pro jsp s formulářem
 	@RequestMapping(value="form", method=RequestMethod.GET)
 	public String loadFormPage(Model m) {
+		// objekt, do kterého se vloží data z formuláře
+		Subscriber subscriber = new Subscriber();
+		// defaultní nastavení
+		subscriber.setReceiveNewsletter(true);
+		subscriber.setNewsletterFrequency(Frequency.HOURLY);
+		
 		m.addAttribute("subscriber", new Subscriber());
 		return "upload/form";
 	}
