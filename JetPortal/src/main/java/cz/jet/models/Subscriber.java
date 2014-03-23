@@ -6,6 +6,8 @@
 
 package cz.jet.models;
 
+import org.springframework.web.multipart.MultipartFile; 
+
 /**
  *
  * @author Petr Kukrál <p.kukral@kukral.eu>
@@ -18,7 +20,9 @@ public class Subscriber {
 	private Gender gender;
 	private Frequency newsletterFrequency;
 	private Boolean receiveNewsletter;
-
+	//private byte[] file;
+	private MultipartFile file; 
+	
 	public enum Frequency {
 		HOURLY, DAILY, WEEKLY, MONTHLY, ANNUALLY
 	}
@@ -50,6 +54,22 @@ public class Subscriber {
 	public void setAge(Integer age) {
 		this.age = age;
 	}
+	
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+//    public void setFile(byte[] file) {
+//        this.file = file;
+//    }
+//
+//    public byte[] getFile() {
+//        return file;
+//    }
 
 	public Gender getGender() {
 		return gender;

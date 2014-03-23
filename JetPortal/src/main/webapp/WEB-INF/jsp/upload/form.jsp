@@ -20,7 +20,7 @@
 
 			<h2>Subscribe to The Newsletter!</h2>
 			<c:if test="${not empty message}"><div class="message green">${message}</div></c:if>
-
+			
 			<form:form modelAttribute="subscriber">
 				<label for="nameInput">Name: </label>
 				<form:input path="name" id="nameInput" />
@@ -40,6 +40,10 @@
 					<form:option value="MALE">Male</form:option>
 					<form:option value="FEMALE">Female</form:option>
 				</form:select>
+				<br/>
+				
+				<label for="file">Upload a File</label>
+				<form:input type="file"  path="file" />
 				<br/>
 
 				<label for="newsletterCheckbox">Newsletter? </label>
