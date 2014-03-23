@@ -4,15 +4,26 @@
     Author     : JK
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+
+<t:layout>
+    <jsp:attribute name="head">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/forms.css" type="text/css" />      
+    </jsp:attribute>
+    
+    <jsp:attribute name="foot">
+      
+    </jsp:attribute>
+    
+        <jsp:attribute name="menu">
+      
+    </jsp:attribute>
+    
+    <jsp:body>
+	<h1>Hello World!</h1>
 	<h2>${message}</h2>
-    </body>
-</html>
+    </jsp:body>
+</t:layout>
