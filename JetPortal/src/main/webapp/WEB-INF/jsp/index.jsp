@@ -15,7 +15,13 @@
     </jsp:attribute>
     
     <jsp:attribute name="foot">
-      
+	<div class="jumbotron">
+	    <div class="container">
+	      <h1>Vítejte</h1>
+	      <p>Vítejte v systému pro validaci souborů pom.xml.</p>
+	      <p><a href="${contextPath}/form-upload-file" class="btn btn-primary btn-lg" role="button">Validovat soubor</a></p>
+	    </div>
+	</div>
     </jsp:attribute>
     
         <jsp:attribute name="menu">
@@ -23,6 +29,7 @@
     </jsp:attribute>
     
     <jsp:body>
-	<p>Vítejte v systému pro validaci souborů pom.xml. Pokračujte na <a href="${pageContext.request.contextPath}/hello">nahrání souboru</a>.</p>
+	  
+	
     </jsp:body>
 </t:layout>

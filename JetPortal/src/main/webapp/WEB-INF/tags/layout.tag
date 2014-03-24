@@ -24,24 +24,27 @@
 
     <body>
 	<header>
-	    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	    <nav class="navbar navbar-default" role="navigation">
 		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<a class="navbar-brand" href="${pageContext.request.contextPath}">POM Validator</a>
+		<div class="container">
+		    <div class="navbar-header">
+			    <a class="navbar-brand" href="${pageContext.request.contextPath}">POM Validator</a>
+		    </div>
+		    <ul class="nav navbar-nav">
+			<li>
+			  <a href="${contextPath}/form-upload-file">Testovat POM</a>
+			</li>
+			<li>
+			  <a href="${contextPath}/form-upload-file">Výsledky</a>
+			</li>
+		    </ul>
 		</div>
-		<ul class="nav navbar-nav">
-		    <li>
-		      <a href="${contextPath}/">Testovat POM</a>
-		    </li>
-		</ul>
 	    </nav>
 	    <jsp:invoke fragment="header"/>
 	    <div class="clear"></div>
 	</header>
-	<div id="page">
-	    <section>
+	<div id="page" class="container">
 		<jsp:doBody/>
-	    </section>
 	    <div class="clear"></div>
 	</div>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery-2.1.0.min.js"></script>

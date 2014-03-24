@@ -23,7 +23,9 @@
     </jsp:attribute>
     
     <jsp:body>
-	<h1>Hello World!</h1>
-	<h2>${message}</h2>
+	<section class="well">
+	    <h1>Hello World!</h1>
+	    <h2>${message}</h2>
+	</section>
     </jsp:body>
 </t:layout>
