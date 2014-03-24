@@ -5,24 +5,5 @@ body{ font-family: Tahoma, Arial, sans-serif; background: #fdfdfd;}
 .red{ background: #b22; color: white; text-shadow: -1px -2px #900; }
 .green{ background: #2b2; color: white; text-shadow: -1px -2px #090; }
 .blue{ background: #22b; color: white; text-shadow: -1px -2px #009; }
-.clear{ clear: both; }
-.box.red, form.red input { box-shadow: -1px -2px 0px #900; -webkit-box-shadow: -1px -2px 0px #900; -moz-box-shadow: -1px -2px 0px #900; }
-.box.blue, form.blue input { box-shadow: -1px -2px 0px #009; -webkit-box-shadow: -1px -2px 0px #009; -moz-box-shadow: -1px -2px 0px #009; }
-.box.green, form.green input { box-shadow: -1px -2px 0px #090; -webkit-box-shadow: -1px -2px 0px #090; -moz-box-shadow: -1px -2px 0px #090; }
-#page{ width: 960px; margin: 0 auto; padding: 20px 0;}
-header { padding: 4px 100px; background: #ddd; border-bottom: 1px solid #eee;}
-header h1{ float: left; font-size: 28px; letter-spacing: 1px; font-weight: bold; }
-header h1 a {  color: #666; text-decoration: none; }
-header .right{float: right; display: block; margin-right: 15px; margin-top: 5px;}
-header span.right{ line-height: 30px; }
-.button{ border-radius:12px; -moz-border-radius:12px; -webkit-border-radius:12px; text-decoration: none; padding: 5px 15px; }
-.button.red:hover{ background: #c33; }
-.button.blue:hover{ background: #33c; }
-.button:active{ position: relative; top: -1px; left: -1px; }
-#page nav{ float: left; width: 120px; padding: 0 10px; }
-#page section { float: right; width: 800px; padding: 0 10px; text-align: justify;}
-#page nav a { display: block; position:relative;  width: 110px; text-align: center; padding: 20px 5px; margin-bottom: 10px; line-height: 80px;
-	      font-size: 18px; min-height: 80px; text-decoration: none;}
-#page nav a:hover { top: -5px; left: -5px; width: 120px; min-height: 90px; line-height: 90px; margin-bottom: 0; }
 .alert{ margin: 5px; padding: 5px 10px; border-radius: 12px; -webkit-border-radius: 12px; -moz-border-radius: 12px; text-align: center;}
 .alert.red{ background: #d00;box-shadow: -1px -2px 0px #900; -webkit-box-shadow: -1px -2px 0px #900; -moz-box-shadow: -1px -2px 0px #900; }
