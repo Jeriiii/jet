@@ -47,8 +47,6 @@ public class HelloController {//nazev tridy musi byt stejny jako url!!!
    
    @RequestMapping(value = "/hello/database", method = RequestMethod.GET) 
    public String printDatabaseRow(ModelMap model) {//promenne do viewu
-            
-       
       TestService service = 
       (TestService)context.getBean("testService");
        TestObject test = service.getTest(1);

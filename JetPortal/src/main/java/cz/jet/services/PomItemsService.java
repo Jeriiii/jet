@@ -7,14 +7,16 @@
 package cz.jet.services;
 
 
-import javax.sql.DataSource;
-import cz.jet.models.TestObject;
+import cz.jet.models.PomItemEntite;
 
 /**
  *
- * @author Honza
+ * @author Petr Kukrál
  */
-public interface TestService extends BaseService {
+public interface PomItemsService extends BaseService {
     
-    public TestObject getTest(int id);
+    public PomItemEntite getPomItem(int id);
+	
+	public long insertNewPomItem(String email);
+	
 }

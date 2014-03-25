@@ -28,11 +28,11 @@
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="container">
 		    <div class="navbar-header">
-			    <a class="navbar-brand" href="${pageContext.request.contextPath}">POM Validator</a>
+			    <a class="navbar-brand" href="/">POM Validator</a>
 		    </div>
 		    <ul class="nav navbar-nav">
 			<li>
-			  <a href="${contextPath}/form-upload-file">Testovat POM</a>
+			  <a href="${contextPath}/upload/form-upload-file">Testovat POM</a>
 			</li>
 			<li>
 			  <a href="${contextPath}/form-upload-file">Výsledky</a>
@@ -44,6 +44,7 @@
 	    <div class="clear"></div>
 	</header>
 	<div id="page" class="container">
+		<c:if test="${not empty message}"><div class="alert alert-info">${message}</div></c:if>
 		<jsp:doBody/>
 	    <div class="clear"></div>
 	</div>

@@ -6,15 +6,14 @@
 
 package cz.jet.services;
 
-
 import javax.sql.DataSource;
-import cz.jet.models.TestObject;
 
 /**
  *
- * @author Honza
+ * @author Petr Kukrál
  */
-public interface TestService extends BaseService {
-    
-    public TestObject getTest(int id);
+public interface BaseService {
+	
+    public void setDataSource(DataSource ds);
+	
 }

@@ -16,43 +16,48 @@
           p:location="/WEB-INF/jdbc.properties" />
 
 <bean id="dataSource"
-    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-    p:driverClassName="${jdbc.driverClassName}"
-    p:url="${jdbc.url}"
-    p:username="${jdbc.username}"
-    p:password="${jdbc.password}" /-->
+	class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+	p:driverClassName="${jdbc.driverClassName}"
+	p:url="${jdbc.url}"
+	p:username="${jdbc.username}"
+	p:password="${jdbc.password}" /-->
 
-    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
+	<!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
     
-    <bean id="dataSource"
-    class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-       <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-       <property name="url" value="jdbc:mysql://localhost:3306/pomvalidator"/>
-       <property name="username" value="root"/>
-       <property name="password" value="root"/>
-    </bean>
+	<bean id="dataSource"
+		  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/pomvalidator"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</bean>
     
     
-    <mvc:resources mapping="/resources/**" location="/resources/" />
-    <mvc:annotation-driven />
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:annotation-driven />
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
     
-    <bean id="testService" 
-      class="cz.jet.daos.TestDao">
-      <property name="dataSource"  ref="dataSource" />    
-   </bean>
+	<bean id="testService" 
+		  class="cz.jet.daos.TestDao">
+		<property name="dataSource"  ref="dataSource" />    
+	</bean>
+	
+	<bean id="pomItemsService" 
+		  class="cz.jet.daos.PomItemsDao">
+		<property name="dataSource"  ref="dataSource" />    
+	</bean>
    
-   <bean id="mailSender" 
-   class="org.springframework.mail.javamail.JavaMailSenderImpl">
-	<property name="host" value="smtp.gmail.com"/>
-	<property name="port" value="587"/>
-	<property name="username" value="hula.josef@gmail.com"/>
-	<property name="password" value="NQKyEo6Nfi"/>
-	<property name="javaMailProperties">
-	   <props>
-       	      <prop key="mail.smtp.auth">true</prop>
-       	      <prop key="mail.smtp.starttls.enable">true</prop>
-       	   </props>
-	</property>
-    </bean>
+	<bean id="mailSender" 
+		 class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com"/>
+		<property name="port" value="587"/>
+		<property name="username" value="hula.josef@gmail.com"/>
+		<property name="password" value="NQKyEo6Nfi"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
 </beans>
