@@ -3,6 +3,7 @@ package cz.jet.controllers;
 import cz.jet.models.Subscriber;
 import cz.jet.models.Subscriber.Frequency;
 import cz.jet.models.UploadedFile;
+import cz.jet.services.PomItemsService;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 	}
 
 	@RequestMapping(value="form-upload-file", method=RequestMethod.POST)
-	public ModelAndView fileUploaded(
+	public String fileUploaded(Model m,
 			UploadedFile uploadedFile, BindingResult result) {
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
@@ -56,12 +57,19 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 		MultipartFile file = uploadedFile.getFile();
 //		fileValidator.validate(uploadedFile, result);
 
-		String fileName = file.getOriginalFilename();
+		//String fileName = file.getOriginalFilename();
 
 		if (result.hasErrors()) {
-			return new ModelAndView("uploadForm");
+			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo");
+			return "upload/formUploadFile";
 		}
-
+		
+		// vložení prvku do databáze
+		PomItemsService pomItemsService = (PomItemsService) context.getBean("pomItemsService");
+		long id = pomItemsService.insertNewPomItem("test@test.cz");
+		String fileName = Long.toString(id) + ".xml";
+		
+		// uložení souboru na disk
 		try {
 			inputStream = file.getInputStream();
 
@@ -83,8 +91,47 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("upload/formUploadFile", "message", fileName);
+		return "upload/formUploadFile";
 	}
+	
+//	@RequestMapping(value="form-upload-file", method=RequestMethod.POST)
+//	public ModelAndView fileUploaded(
+//			UploadedFile uploadedFile, BindingResult result) {
+//		InputStream inputStream = null;
+//		OutputStream outputStream = null;
+//
+//		MultipartFile file = uploadedFile.getFile();
+////		fileValidator.validate(uploadedFile, result);
+//
+//		String fileName = file.getOriginalFilename();
+//
+//		if (result.hasErrors()) {
+//			return new ModelAndView("uploadForm");
+//		}
+//
+//		try {
+//			inputStream = file.getInputStream();
+//
+//			// cesta kam se ma soubor ulozit
+//			String path = "C:/webhostJava/files/";
+//			File newFile = new File(path + fileName);
+//			if (!newFile.exists()) {
+//				newFile.createNewFile();
+//			}
+//			outputStream = new FileOutputStream(newFile);
+//			int read = 0;
+//			byte[] bytes = new byte[1024];
+//
+//			while ((read = inputStream.read(bytes)) != -1) {
+//				outputStream.write(bytes, 0, read);
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block  
+//			e.printStackTrace();
+//		}
+//
+//		return new ModelAndView("upload/formUploadFile", "message", fileName);
+//	}
 	
 //	// spustí se ještě před metodou loadFormPage
 //	// přidá se k modelu pro kontajner na selectbox Frequency
