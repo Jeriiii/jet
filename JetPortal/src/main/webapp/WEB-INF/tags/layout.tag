@@ -9,17 +9,17 @@
 	<title>POM Validator</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-	<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 	<!--[if lt IE 9]>
 	    <script src="html5shiv.js"></script>
 	<![endif]-->
-	<link rel="stylesheet" href="${contextPath}/resources/css/layout.css" type="text/css" />
-	<link rel="stylesheet" href="${contextPath}/resources/css/print.css" type="text/css"  media="print"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/layout.css" type="text/css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/print.css" type="text/css"  media="print"/>
 	<link href='http://fonts.googleapis.com/css?family=Jockey+One' rel='stylesheet' type='text/css'>
-	<link rel="shortcut icon" href="${contextPath}/resources/img/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap.min.css">
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/img/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
 	<jsp:invoke fragment="head"/>
+	
     </head>
 
     <body>
@@ -32,10 +32,10 @@
 		    </div>
 		    <ul class="nav navbar-nav">
 			<li>
-			  <a href="${contextPath}/form-upload-file">Testovat POM</a>
+			  <a href="${pageContext.request.contextPath}/form-upload-file">Testovat POM</a>
 			</li>
 			<li>
-			  <a href="${contextPath}/form-upload-file">Výsledky</a>
+			  <a href="${pageContext.request.contextPath}/form-upload-file">Výsledky</a>
 			</li>
 		    </ul>
 		</div>
