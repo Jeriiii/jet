@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -49,7 +50,7 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 	}
 
 	@RequestMapping(value="form-upload-file", method=RequestMethod.POST)
-	public String fileUploaded(Model m,
+	public String fileUploaded(@RequestParam("email") String email,Model m,
 			UploadedFile uploadedFile, BindingResult result) {
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
@@ -66,7 +67,8 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 		
 		// vložení prvku do databáze
 		PomItemsService pomItemsService = (PomItemsService) context.getBean("pomItemsService");
-		long id = pomItemsService.insertNewPomItem("test@test.cz");
+		
+		long id = pomItemsService.insertNewPomItem(email);
 		String fileName = Long.toString(id) + ".xml";
 		
 		// uložení souboru na disk
@@ -90,7 +92,7 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 			// TODO Auto-generated catch block  
 			e.printStackTrace();
 		}
-
+		m.addAttribute("successFormMessage", "Nahrání souboru bylo úspěšné");
 		return "upload/formUploadFile";
 	}
 	

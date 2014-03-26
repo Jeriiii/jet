@@ -3,6 +3,7 @@
 <%@attribute name="header" fragment="true" %>
 <%@attribute name="head" fragment="true" %>
 <%@attribute name="foot" fragment="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -33,9 +34,9 @@
 			<li>
 			  <a href="${contextPath}/upload/form-upload-file">Testovat POM</a>
 			</li>
-			<li>
+<!--			<li>
 			  <a href="${pageContext.request.contextPath}/form-upload-file">Výsledky</a>
-			</li>
+			</li>-->
 		    </ul>
 		</div>
 	    </nav>
