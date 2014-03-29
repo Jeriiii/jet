@@ -44,7 +44,7 @@ public class MvnProcessBuilder {
 		}
 	}
         
-        @Async
+        
         public static String validate(String name) throws IOException {
             StringBuilder sb = new StringBuilder();
             String path = "/Users/josefhula/jet/files/";
