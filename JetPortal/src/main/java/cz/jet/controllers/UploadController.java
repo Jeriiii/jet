@@ -9,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -44,7 +43,7 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 	
 	// render pro jsp s formulářem
 	@RequestMapping(value="form-upload-file", method=RequestMethod.GET)
-	public String loadFormPage(Model m) {		
+	public String loadFormPage(Model m) {
 		m.addAttribute("uploadedFile", new UploadedFile());              
 		return "upload/formUploadFile";
 	}
@@ -93,7 +92,7 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 			e.printStackTrace();
 		}
 		m.addAttribute("successFormMessage", "Nahrání souboru bylo úspěšné");
-    
+                
                 try {
                     String resultTest = MvnProcessBuilder.validate(fileName);
                     
@@ -103,10 +102,7 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
                     m.addAttribute("result", resultTest);
  
                     MailService mailer = (MailService) context.getBean("mailService");
-                    mailer.sendMail(email, idResult);
-                    
-                    //return "result/result";
-                    
+                    mailer.sendMail(email, resultTest, idResult); 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

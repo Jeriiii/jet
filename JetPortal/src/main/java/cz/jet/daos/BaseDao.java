@@ -5,8 +5,6 @@
  */
 package cz.jet.daos;
 
-import cz.jet.models.database.Item;
-import cz.jet.models.database.Items;
 import javax.sql.DataSource;
 import cz.jet.services.BaseService;
 import java.util.HashMap;

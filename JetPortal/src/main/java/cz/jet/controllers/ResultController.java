@@ -6,7 +6,15 @@
 
 package cz.jet.controllers;
 
+import cz.jet.models.UploadedFile;
+import cz.jet.services.PomItemsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -15,4 +23,15 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ResultController {
     
+    @Autowired 
+    private ApplicationContext context;
+    
+    @RequestMapping(value="result", method=RequestMethod.GET)
+    public String showResult(@RequestParam("id") int id, Model m) {		
+         m.addAttribute("resultNumber", id);
+        //PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
+        //String result = pomResultService.insertNewPomItem(email);        
+	//m.addAttribute("uploadedFile", new UploadedFile());              
+	return "result/result";
+    }
 }

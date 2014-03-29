@@ -14,11 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-
-import cz.jet.services.PomItemsService;
 
 /**
  *
@@ -26,7 +23,7 @@ import cz.jet.services.PomItemsService;
  */
 public class MvnProcessBuilder {
 
-	@Autowired 
+    @Autowired 
     private ApplicationContext context;
 	
 	ProcessBuilder pb;
@@ -47,6 +44,7 @@ public class MvnProcessBuilder {
 		}
 	}
         
+        @Async
         public static String validate(String name) throws IOException {
             StringBuilder sb = new StringBuilder();
             String path = "/Users/josefhula/jet/files/";
@@ -59,21 +57,20 @@ public class MvnProcessBuilder {
             MvnProcessBuilder mpb = new MvnProcessBuilder(params);
             
             try {
-				Process process = mpb.start();
-				InputStream is = process.getInputStream();
-				InputStreamReader isr = new InputStreamReader(is);
-				BufferedReader br = new BufferedReader(isr);
-				String line;
-				while ((line = br.readLine()) != null) {
-				  //System.out.println(line);
-				  sb.append(line);
-                                  sb.append(System.getProperty("line.separator"));
-				}
-				
-				System.out.println("Program terminated!");
-		    } catch (Error e) {
-				Logger.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
-		    }
-		    return sb.toString();
+		Process process = mpb.start();
+		InputStream is = process.getInputStream();
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isr);
+		String line;
+		while ((line = br.readLine()) != null) {
+                    //System.out.println(line);
+                    sb.append(line);
+                    sb.append(System.getProperty("line.separator"));
+		}		
+		System.out.println("Program terminated!");
+            } catch (Error e) {
+		Logger.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
+            }
+            return sb.toString();
         }
 }
