@@ -37,14 +37,19 @@
 	<mvc:annotation-driven />
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
     
-	<bean id="testService" 
-		  class="cz.jet.daos.TestDao">
-		<property name="dataSource"  ref="dataSource" />    
-	</bean>
-	
 	<bean id="pomItemsService" 
 		  class="cz.jet.daos.PomItemsDao">
 		<property name="dataSource"  ref="dataSource" />    
+	</bean>
+        
+        <bean id="pomResultsService" 
+		  class="cz.jet.daos.PomResultsDao">
+		<property name="dataSource"  ref="dataSource" />    
+	</bean>
+        
+        <bean id="mailService" 
+		  class="cz.jet.services.MailService">
+		<property name="mailSender"  ref="mailSender" />    
 	</bean>
    
 	<bean id="mailSender" 

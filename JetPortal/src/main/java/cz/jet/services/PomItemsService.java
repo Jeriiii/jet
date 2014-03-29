@@ -17,6 +17,6 @@ public interface PomItemsService extends BaseService {
     
     public PomItemEntite getPomItem(int id);
 	
-	public long insertNewPomItem(String email);
+    public long insertNewPomItem(String email);
 	
 }

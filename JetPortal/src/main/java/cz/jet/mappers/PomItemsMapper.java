@@ -9,7 +9,6 @@ package cz.jet.mappers;
 import cz.jet.models.PomItemEntite;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import cz.jet.models.TestObject;
 import org.springframework.jdbc.core.RowMapper;
 
 /**

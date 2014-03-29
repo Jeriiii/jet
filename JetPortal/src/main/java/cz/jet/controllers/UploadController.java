@@ -1,9 +1,9 @@
 package cz.jet.controllers;
 
-import cz.jet.models.Subscriber;
-import cz.jet.models.Subscriber.Frequency;
+import cz.jet.models.MvnProcessBuilder;
 import cz.jet.models.UploadedFile;
 import cz.jet.services.PomItemsService;
+import cz.jet.services.MailService;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,10 +45,10 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 	// render pro jsp s formulářem
 	@RequestMapping(value="form-upload-file", method=RequestMethod.GET)
 	public String loadFormPage(Model m) {		
-		m.addAttribute("uploadedFile", new UploadedFile());
+		m.addAttribute("uploadedFile", new UploadedFile());              
 		return "upload/formUploadFile";
 	}
-
+        
 	@RequestMapping(value="form-upload-file", method=RequestMethod.POST)
 	public String fileUploaded(@RequestParam("email") String email,Model m,
 			UploadedFile uploadedFile, BindingResult result) {
@@ -76,7 +76,7 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 			inputStream = file.getInputStream();
 
 			// cesta kam se ma soubor ulozit
-			String path = "C:/webhostJava/files/";
+			String path = "/Users/josefhula/jet/files/";
 			File newFile = new File(path + fileName);
 			if (!newFile.exists()) {
 				newFile.createNewFile();
@@ -93,9 +93,26 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 			e.printStackTrace();
 		}
 		m.addAttribute("successFormMessage", "Nahrání souboru bylo úspěšné");
+    
+                try {
+                    String resultTest = MvnProcessBuilder.validate(fileName);
+                    
+                    PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
+    				
+                    long idResult = pomResultService.insertNewPomItem(resultTest);
+                    m.addAttribute("result", resultTest);
+ 
+                    MailService mailer = (MailService) context.getBean("mailService");
+                    mailer.sendMail(email, idResult);
+                    
+                    //return "result/result";
+                    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 		return "upload/formUploadFile";
 	}
-	
+    
 //	@RequestMapping(value="form-upload-file", method=RequestMethod.POST)
 //	public ModelAndView fileUploaded(
 //			UploadedFile uploadedFile, BindingResult result) {

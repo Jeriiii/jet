@@ -4,17 +4,15 @@
  * and open the template in the editor.
  */
 
-package cz.jet.services;
+package cz.jet.controllers;
 
-
-import javax.sql.DataSource;
-import cz.jet.models.TestObject;
+import org.springframework.stereotype.Controller;
 
 /**
  *
- * @author Honza
+ * @author Josef Hula
  */
-public interface TestService extends BaseService {
+@Controller
+public class ResultController {
     
-    public TestObject getTest(int id);
 }

@@ -34,6 +34,7 @@ public class BaseDao implements BaseService {
 	protected HashMap<String, String> items; 
 	
 	public static final String POM_ITEMS_TABLE = "pom_items";
+        public static final String POM_RESULTS_TABLE = "pom_results";
 
 	@Override
 	public void setDataSource(DataSource dataSource) {
