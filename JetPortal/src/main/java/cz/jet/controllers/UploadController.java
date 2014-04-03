@@ -1,14 +1,17 @@
 package cz.jet.controllers;
 
-import cz.jet.models.MvnProcessBuilder;
+import cz.jet.utils.MvnProcessBuilder;
 import cz.jet.models.UploadedFile;
 import cz.jet.services.PomItemsService;
 import cz.jet.services.MailService;
+import cz.jet.services.ValidatorService;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -32,6 +35,10 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
     
     @Autowired 
     private ApplicationContext context;
+    
+    @Autowired
+    private ValidatorService validator;
+     
     //////////////////////////////
 	
 //	@RequestMapping("/fileUploadForm")
@@ -50,7 +57,7 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
         
 	@RequestMapping(value="form-upload-file", method=RequestMethod.POST)
 	public String fileUploaded(@RequestParam("email") String email,Model m,
-			UploadedFile uploadedFile, BindingResult result) {
+			UploadedFile uploadedFile, BindingResult result) throws InterruptedException {
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 
@@ -69,11 +76,9 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 		
 		long id = pomItemsService.insertNewPomItem(email);
 		String fileName = Long.toString(id) + ".xml";
-		
 		// uložení souboru na disk
 		try {
 			inputStream = file.getInputStream();
-
 			// cesta kam se ma soubor ulozit
 			String path = "/Users/josefhula/jet/files/";
 			File newFile = new File(path + fileName);
@@ -94,18 +99,10 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 		m.addAttribute("successFormMessage", "Nahrání souboru bylo úspěšné");
                 
                 try {
-                    String resultTest = MvnProcessBuilder.validate(fileName);
-                    
-                    PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
-    				
-                    long idResult = pomResultService.insertNewPomItem(resultTest);
-                    m.addAttribute("result", resultTest);
- 
-                    MailService mailer = (MailService) context.getBean("mailService");
-                    mailer.sendMail(email, resultTest, idResult); 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    validator.validatePom(fileName, email);
+                } catch (IOException ex) {
+                    Logger.getLogger(UploadController.class.getName()).log(Level.SEVERE, null, ex);
+                } 
 		return "upload/formUploadFile";
 	}
     

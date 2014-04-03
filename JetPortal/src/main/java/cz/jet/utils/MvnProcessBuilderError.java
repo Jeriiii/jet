@@ -4,12 +4,15 @@
  * and open the template in the editor.
  */
 
-package cz.jet.models;
+package cz.jet.utils;
+
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Petr Kukrál <p.kukral@kukral.eu>
  */
+@Component
 public class MvnProcessBuilderError extends Error {
 
 	String errorMessage;
