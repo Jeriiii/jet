@@ -23,21 +23,25 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import cz.jet.services.UploadPOMFileService;
 
 /**
  *
  * @author Petr Kukrál
  */
  
-// podle příkladu http://www.javacodegeeks.com/2013/04/spring-mvc-form-tutorial.html
-@Controller//anotace kontroleru
-public class UploadController {//nazev tridy musi byt stejny jako url!!!
+// example http://www.javacodegeeks.com/2013/04/spring-mvc-form-tutorial.html
+@Controller
+public class UploadController {
     
     @Autowired 
     private ApplicationContext context;
     
     @Autowired
     private ValidatorService validator;
+	
+	@Autowired
+    private UploadPOMFileService uploadPOMFile;
      
     //////////////////////////////
 	
@@ -58,10 +62,6 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 	@RequestMapping(value="form-upload-file", method=RequestMethod.POST)
 	public String fileUploaded(@RequestParam("email") String email,Model m,
 			UploadedFile uploadedFile, BindingResult result) throws InterruptedException {
-		InputStream inputStream = null;
-		OutputStream outputStream = null;
-
-		MultipartFile file = uploadedFile.getFile();
 //		fileValidator.validate(uploadedFile, result);
 
 		//String fileName = file.getOriginalFilename();
@@ -71,38 +71,27 @@ public class UploadController {//nazev tridy musi byt stejny jako url!!!
 			return "upload/formUploadFile";
 		}
 		
-		// vložení prvku do databáze
+		// include item to database
 		PomItemsService pomItemsService = (PomItemsService) context.getBean("pomItemsService");
 		
 		long id = pomItemsService.insertNewPomItem(email);
 		String fileName = Long.toString(id) + ".xml";
-		// uložení souboru na disk
+		
+		// upload file
 		try {
-			inputStream = file.getInputStream();
-			// cesta kam se ma soubor ulozit
-			String path = "/Users/josefhula/jet/files/";
-			File newFile = new File(path + fileName);
-			if (!newFile.exists()) {
-				newFile.createNewFile();
-			}
-			outputStream = new FileOutputStream(newFile);
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block  
-			e.printStackTrace();
+			uploadPOMFile.upload(uploadedFile, fileName);
+			m.addAttribute("successFormMessage", "Nahrání souboru bylo úspěšné");
+		} catch (IOException ex) {
+			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo");
+			return "upload/formUploadFile";
 		}
-		m.addAttribute("successFormMessage", "Nahrání souboru bylo úspěšné");
-                
-                try {
-                    validator.validatePom(fileName, email);
-                } catch (IOException ex) {
-                    Logger.getLogger(UploadController.class.getName()).log(Level.SEVERE, null, ex);
-                } 
+		
+		// validation
+		try {
+			validator.validatePom(fileName, email);
+		} catch (IOException ex) {
+			Logger.getLogger(UploadController.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		return "upload/formUploadFile";
 	}
     

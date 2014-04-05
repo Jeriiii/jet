@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Petr Kukrál <p.kukral@kukral.eu>
  */
-@Component
+//@Component
 public class MvnProcessBuilderError extends Error {
 
 	String errorMessage;
