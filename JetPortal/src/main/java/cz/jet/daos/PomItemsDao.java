@@ -8,8 +8,6 @@ package cz.jet.daos;
 import cz.jet.mappers.PomItemsMapper;
 import cz.jet.models.PomItemEntite;
 import cz.jet.services.PomItemsService;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -31,5 +29,16 @@ public class PomItemsDao extends BaseDao implements PomItemsService {
 		items.put("email", email);
 		return insert(POM_ITEMS_TABLE, items);
 	}
+	
+	@Override
+	public long updateResult(String result, Long itemID) {
+		items = getNewHashMap();
+		items.put("result", result);
+		
+		wheres = getNewHashMap();
+		wheres.put("id", itemID.toString());
+		
+		return update(POM_ITEMS_TABLE, items, wheres);
+	}	
 
 }

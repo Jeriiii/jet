@@ -19,4 +19,6 @@ public interface PomItemsService  {
 	
     public long insertNewPomItem(String email);
 	
+	public long updateResult(String result, Long itemID);
+	
 }

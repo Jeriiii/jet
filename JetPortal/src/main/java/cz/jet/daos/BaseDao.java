@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -27,6 +28,7 @@ import org.springframework.jdbc.support.KeyHolder;
 public class BaseDao {
 
 	protected HashMap<String, String> items;
+	protected HashMap<String, String> wheres;
 	@Autowired 
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplateObject = null;
@@ -72,7 +74,34 @@ public class BaseDao {
 		return keyHolder.getKey().longValue();
 	}
 	
-	// vytvoří PreparedStatement
+	protected long update(String table, HashMap<String, String> items) {
+		return update(table, items, null);
+	}
+	
+	protected long update(String table, HashMap<String, String> items, HashMap<String, String> whereMap) {		
+		// name = 'value'
+		List assignments = new LinkedList<String>();
+
+		for (String key : items.keySet()) {
+			assignments.add(key + "=?" );
+		}
+		
+		String assignmentsStr = Joiner.on(",").join(assignments);	
+		String where = this.getWhereSQLFromMap(whereMap);
+		
+		String SQL = "UPDATE " + table + " SET " + assignmentsStr  + " " + where + ";";
+		
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		
+		this.getJdbcTemplateObject().update(
+			psc(SQL, items), 
+			keyHolder
+		);
+		
+		return keyHolder.getKey().longValue();
+	}
+	
+	// creating PreparedStatement
 	public PreparedStatementCreator psc (final String SQL, final HashMap<String, String> items) {
 		return new PreparedStatementCreator() {
 			@Override
@@ -86,6 +115,29 @@ public class BaseDao {
 				return ps;
 			}
 		};
+	}
+	
+	/**
+	 * create where sql string from HashMap
+	 * @param where HashMap of wheres
+	 * @return where sql String
+	 */
+	
+	public String getWhereSQLFromMap (HashMap<String, String> where) {
+		if(where == null) {
+			return "";
+		}
+		
+		List whereList = new LinkedList<String>(); 
+		
+		for (Map.Entry<String, String> entry : where.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			
+			whereList.add(key + " = '" + value + "'");
+		}
+		
+		return " WHERE " + Joiner.on(",").join(whereList);
 	}
 	
 	
