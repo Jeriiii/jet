@@ -1,15 +1,9 @@
 package cz.jet.controllers;
 
-import cz.jet.utils.MvnProcessBuilder;
 import cz.jet.models.UploadedFile;
 import cz.jet.services.PomItemsService;
-import cz.jet.services.MailService;
 import cz.jet.services.ValidatorService;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import cz.jet.services.UploadPOMFileService;
 
 /**
@@ -83,11 +74,10 @@ public class UploadController {
 		
 		// validation
 		try {
-			validator.validatePom(fileName, email);
+			validator.validatePom(fileName, email, id);
 		} catch (IOException ex) {
 			Logger.getLogger(UploadController.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return "upload/formUploadFile";
 	}
-    
 }

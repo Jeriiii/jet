@@ -36,16 +36,16 @@ public class ValidatorService {
     private MvnProcessBuilder mvnProcess;
     
     @Value("${filePath}")
-    private String path;
+    private String path; // path where is the file stored, set in config.properties
     
     @Value("${mavenPath}")
-    private String mavenPath;
+    private String mavenPath; // path to maven, set in config.properties
     
     @Value("${pluginParam}")
-    private String pluginParam;
+    private String pluginParam; // path to validator plugin, set in config.properties
     
     @Async
-    public void validatePom(String fileName, String email) throws IOException{
+    public void validatePom(String fileName, String email, long id) throws IOException{
         StringBuilder sb = new StringBuilder();
         List<String> params = new ArrayList<String>();
         params.add(mavenPath);
@@ -66,12 +66,12 @@ public class ValidatorService {
                 
             String resultTest = sb.toString();
             
-            PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
+            PomItemsService pomItemsService = (PomItemsService) context.getBean("pomItemsService");
     				
-            long idResult = pomResultService.insertNewPomItem(resultTest);
+            pomItemsService.updateResult(resultTest, id);
           
             MailService mailer = (MailService) context.getBean("mailService");
-            mailer.sendMail(email, resultTest, idResult); 
+            mailer.sendMail(email, resultTest, id); 
             
         } catch (Error e) {
             Logger.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);

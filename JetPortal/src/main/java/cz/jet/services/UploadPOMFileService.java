@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 public class UploadPOMFileService {
+    
+        @Value("${filePath}")
+        private String path; // path where to store file, set in config.properties
 	
 	public void upload(UploadedFile uploadedFile, String fileName) throws IOException {
 		InputStream inputStream = null;
@@ -32,9 +36,6 @@ public class UploadPOMFileService {
 		MultipartFile file = uploadedFile.getFile();
 		// uložení souboru na disk
 		inputStream = file.getInputStream();
-		// cesta kam se ma soubor ulozit
-		String path = "C:\\webhostJava\\files\\";
-		//String path = "/Users/josefhula/jet/files/";
 		File newFile = new File(path + fileName);
 		if (!newFile.exists()) {
 			newFile.createNewFile();

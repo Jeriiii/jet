@@ -6,8 +6,6 @@
 
 package cz.jet.utils;
 
-import org.springframework.stereotype.Component;
-
 /**
  *
  * @author Petr Kukrál <p.kukral@kukral.eu>

@@ -6,7 +6,6 @@
 
 package cz.jet.controllers;
 
-import cz.jet.models.UploadedFile;
 import cz.jet.services.PomItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -29,8 +28,8 @@ public class ResultController {
     @RequestMapping(value="result", method=RequestMethod.GET)
     public String showResult(@RequestParam("id") int id, Model m) {		
          m.addAttribute("resultNumber", id);
-        //PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
-        //String result = pomResultService.insertNewPomItem(email);        
+         //PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
+         //String result = pomResultService.getPomItem(id)
 	//m.addAttribute("uploadedFile", new UploadedFile());              
 	return "result/result";
     }

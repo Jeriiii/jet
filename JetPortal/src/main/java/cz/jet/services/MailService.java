@@ -27,7 +27,12 @@ public class MailService {
     public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
     }
- 
+    /**
+     * Send mail with result
+     * @param email recipient adress
+     * @param result result of validation
+     * @param id identification number of result
+     */
     public void sendMail(final String email, final String result, final long id) {
         
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
@@ -37,8 +42,8 @@ public class MailService {
                      new InternetAddress(email));
                  mimeMessage.setSubject("Výsledek validace POM souboru");
                  mimeMessage.setFrom(new InternetAddress("hula.josef@gmail.com"));
-                 //mimeMessage.setText("http://localhost:8080/result/result?id="+id);
-                 mimeMessage.setText(result);
+                 mimeMessage.setText("http://localhost:8080/result/result?id="+id);
+                 //mimeMessage.setText(result);
             }
        };
        try {
