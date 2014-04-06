@@ -29,14 +29,18 @@ public class BaseDao {
 
 	protected HashMap<String, String> items;
 	protected HashMap<String, String> wheres;
-	@Autowired 
 	private DataSource dataSource;
+
 	private JdbcTemplate jdbcTemplateObject = null;
 	
 	//TABLES
 	public static final String POM_ITEMS_TABLE = "pom_items";
     public static final String POM_RESULTS_TABLE = "pom_results";
 		
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+	
 	protected JdbcTemplate getJdbcTemplateObject() {
 		
 		if(this.jdbcTemplateObject == null) {
@@ -74,11 +78,11 @@ public class BaseDao {
 		return keyHolder.getKey().longValue();
 	}
 	
-	protected long update(String table, HashMap<String, String> items) {
-		return update(table, items, null);
+	protected void update(String table, HashMap<String, String> items) {
+		update(table, items, null);
 	}
 	
-	protected long update(String table, HashMap<String, String> items, HashMap<String, String> whereMap) {		
+	protected void update(String table, HashMap<String, String> items, HashMap<String, String> whereMap) {		
 		// name = 'value'
 		List assignments = new LinkedList<String>();
 
@@ -97,8 +101,6 @@ public class BaseDao {
 			psc(SQL, items), 
 			keyHolder
 		);
-		
-		return keyHolder.getKey().longValue();
 	}
 	
 	// creating PreparedStatement

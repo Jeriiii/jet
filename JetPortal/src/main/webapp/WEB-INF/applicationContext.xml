@@ -49,13 +49,8 @@
 		  class="cz.jet.daos.PomItemsDao">
 		<property name="dataSource"  ref="dataSource" />    
 	</bean>
-        
-        <bean id="pomResultsService" 
-		  class="cz.jet.daos.PomResultsDao">
-		<property name="dataSource"  ref="dataSource" />    
-	</bean>
        
-        <bean id="mailService" 
+    <bean id="mailService" 
 		  class="cz.jet.services.MailService">
 		<property name="mailSender"  ref="mailSender" />    
 	</bean>

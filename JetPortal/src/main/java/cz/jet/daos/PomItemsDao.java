@@ -31,14 +31,14 @@ public class PomItemsDao extends BaseDao implements PomItemsService {
 	}
 	
 	@Override
-	public long updateResult(String result, Long itemID) {
+	public void updateResult(String result, Long itemID) {
 		items = getNewHashMap();
 		items.put("result", result);
 		
 		wheres = getNewHashMap();
 		wheres.put("id", itemID.toString());
 		
-		return update(POM_ITEMS_TABLE, items, wheres);
+		update(POM_ITEMS_TABLE, items, wheres);
 	}	
 
 }
