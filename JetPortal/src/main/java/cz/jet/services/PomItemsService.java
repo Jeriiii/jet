@@ -13,7 +13,7 @@ import cz.jet.models.PomItemEntite;
  *
  * @author Petr Kukrál
  */
-public interface PomItemsService extends BaseService {
+public interface PomItemsService  {
     
     public PomItemEntite getPomItem(int id);
 	

@@ -42,6 +42,9 @@ public class UploadController {
 	
 	@Autowired
     private UploadPOMFileService uploadPOMFile;
+	
+	@Autowired
+    private PomItemsService pomItemsService;
      
     //////////////////////////////
 	
@@ -72,7 +75,7 @@ public class UploadController {
 		}
 		
 		// include item to database
-		PomItemsService pomItemsService = (PomItemsService) context.getBean("pomItemsService");
+		//PomItemsService pomItemsService = (PomItemsService) context.getBean("pomItemsService");
 		
 		long id = pomItemsService.insertNewPomItem(email);
 		String fileName = Long.toString(id) + ".xml";

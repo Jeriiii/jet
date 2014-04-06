@@ -6,7 +6,6 @@
 package cz.jet.daos;
 
 import javax.sql.DataSource;
-import cz.jet.services.BaseService;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -25,19 +24,24 @@ import org.springframework.jdbc.support.KeyHolder;
  *
  * @author Petr Kukrál
  */
-public class BaseDao implements BaseService {
+public class BaseDao {
 
-	protected DataSource dataSource;
-	protected JdbcTemplate jdbcTemplateObject;
-	protected HashMap<String, String> items; 
+	protected HashMap<String, String> items;
+	@Autowired 
+	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplateObject = null;
 	
+	//TABLES
 	public static final String POM_ITEMS_TABLE = "pom_items";
-        public static final String POM_RESULTS_TABLE = "pom_results";
-
-	@Override
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+    public static final String POM_RESULTS_TABLE = "pom_results";
+		
+	protected JdbcTemplate getJdbcTemplateObject() {
+		
+		if(this.jdbcTemplateObject == null) {
+			this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+		}
+		
+		return this.jdbcTemplateObject;
 	}
 	
 	protected HashMap<String, String> getNewHashMap() {
@@ -60,7 +64,7 @@ public class BaseDao implements BaseService {
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
-		jdbcTemplateObject.update(
+		this.getJdbcTemplateObject().update(
 			psc(SQL, items), 
 			keyHolder
 		);

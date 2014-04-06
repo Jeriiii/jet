@@ -20,7 +20,7 @@ public class PomItemsDao extends BaseDao implements PomItemsService {
 	@Override
 	public PomItemEntite getPomItem(int id) {
 		String SQL = "SELECT * FROM " + POM_ITEMS_TABLE + " WHERE id = ?";
-		PomItemEntite pitem = (PomItemEntite) jdbcTemplateObject.queryForObject(SQL,
+		PomItemEntite pitem = (PomItemEntite) this.getJdbcTemplateObject().queryForObject(SQL,
 				new Object[]{id}, new PomItemsMapper());
 		return pitem;
 	}
