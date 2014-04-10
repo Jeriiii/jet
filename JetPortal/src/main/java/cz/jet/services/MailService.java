@@ -10,6 +10,7 @@ import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -23,6 +24,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
     
+    @Value("${resultAddress}")
+    private String resultAddress; // result address, set in config.properties
+    
     @Autowired
     private JavaMailSender mailSender;
 
@@ -35,7 +39,7 @@ public class MailService {
      * @param result result of validation
      * @param id identification number of result
      */
-    public void sendMail(final String email, final String result, final long id) {
+    public void sendMail(final String email, final long id) {
         
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
@@ -44,8 +48,7 @@ public class MailService {
                      new InternetAddress(email));
                  mimeMessage.setSubject("Výsledek validace POM souboru");
                  mimeMessage.setFrom(new InternetAddress("hula.josef@gmail.com"));
-                 mimeMessage.setText("http://localhost:8080/result/result?id="+id);
-                 //mimeMessage.setText(result);
+                 mimeMessage.setText(resultAddress + id);
             }
        };
        try {

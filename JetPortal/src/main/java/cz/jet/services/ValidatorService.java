@@ -73,7 +73,7 @@ public class ValidatorService {
             
             pomItemsService.updateResult(resultTest, id);
           
-            mailer.sendMail(email, resultTest, id); 
+            mailer.sendMail(email, id); 
             
         } catch (Error e) {
             Logger.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
