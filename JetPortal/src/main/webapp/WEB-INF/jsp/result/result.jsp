@@ -19,17 +19,43 @@
     </jsp:attribute>
     
     <jsp:attribute name="foot">
-      
+	<c:if test="true">
+	    <script type="text/javascript">
+		$(function(){
+		    var results = $('#results');//element do ktereho se bude zapisovat
+		    var file = '${pageContext.request.contextPath}/results/test2.txt';//url zdrojoveho souboru
+		    
+		    function refreshResults(){
+			results.load(file);
+		    }
+		    refreshResults();
+		    setInterval(function() {
+			refreshResults();
+		    }, 2000);
+		});
+	    </script>
+	</c:if>
     </jsp:attribute>
     
-        <jsp:attribute name="menu">
+    <jsp:attribute name="menu">
       
     </jsp:attribute>
     
     <jsp:body>
-		<section class="jumbotron">
-			<c:if test="${not empty resultNumber}"><div>${resultNumber}</div></c:if>
-			<c:if test="${not empty result}"><div>${result}</div></c:if>
+	<h1>Výsledky</h1>
+	<c:choose>
+	    <c:when test="false">
+		<c:if test="${not empty item.email}">
+		    <h4>Tyto výsledky byly odesálny na email: ${item.email}</h4>
+		</c:if>
+		<section id="results" class="well">
+			${item.result}
 		</section>
+	    </c:when>
+	    <c:otherwise>
+		<section id="results" class="well">
+		</section>
+	    </c:otherwise>
+	</c:choose>
     </jsp:body>
 </t:layout>

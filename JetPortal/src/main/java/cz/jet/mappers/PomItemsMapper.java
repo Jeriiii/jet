@@ -21,10 +21,9 @@ public class PomItemsMapper implements RowMapper<PomItemEntite>{
    public PomItemEntite mapRow(ResultSet rs, int rowNum) throws SQLException {
       PomItemEntite pitem = new PomItemEntite();
       pitem.setId(rs.getInt("id"));
+      pitem.setEmail(rs.getString("email"));
+      pitem.setResult(rs.getString("result"));
       return pitem;
    }
-
-    
-
     
 }
