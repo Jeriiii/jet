@@ -54,12 +54,15 @@ public class ValidatorService {
         params.add(pluginParam);
         params.add("-f");
         params.add(path+fileName);
+        InputStream is = null;
+        InputStreamReader isr = null;
+        BufferedReader br = null;
         
         try {
             Process process = mvnProcess.start(params);
-            InputStream is = process.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
+            is = process.getInputStream();
+            isr = new InputStreamReader(is);
+            br = new BufferedReader(isr);
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
@@ -74,6 +77,8 @@ public class ValidatorService {
             
         } catch (Error e) {
             Logger.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            br.close();
         }
     }
 }
