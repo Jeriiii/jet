@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +28,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidatorService {
     
-    @Autowired 
-    private ApplicationContext context;
+    @Autowired
+    private MailService mailer;
+    
+    @Autowired
+    private PomItemsService pomItemsService;
     
     @Autowired
     private MvnProcessBuilder mvnProcess;
@@ -66,11 +68,8 @@ public class ValidatorService {
                 
             String resultTest = sb.toString();
             
-            PomItemsService pomItemsService = (PomItemsService) context.getBean("pomItemsService");
-    				
             pomItemsService.updateResult(resultTest, id);
           
-            MailService mailer = (MailService) context.getBean("mailService");
             mailer.sendMail(email, resultTest, id); 
             
         } catch (Error e) {
