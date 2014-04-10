@@ -42,6 +42,7 @@
     
     
 	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:resources mapping="/results/**" location="/results/" />
 	<mvc:annotation-driven />
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
  
