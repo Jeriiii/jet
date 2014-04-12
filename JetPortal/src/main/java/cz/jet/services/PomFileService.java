@@ -34,7 +34,7 @@ public class PomFileService {
 		String fileName;
 		for(int i = 0;; i++) {
 			fileName = "pom" + uuid + i;
-			File f = new File(path + prefixWorking + fileName + suffix);
+			File f = new File(path + fileName + suffix);
 			if(! f.exists()) {
 				break;
 			}

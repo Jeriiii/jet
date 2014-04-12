@@ -39,6 +39,15 @@ public class ValidatorService {
     @Autowired
     private MvnProcessBuilder mvnProcess;
     
+	@Value("${resultPath}")
+    private String resultPath;
+	
+	@Value("${prefixWorking}")
+    private String prefixWorking;
+	
+	@Value("${prefixFinish}")
+    private String prefixFinish;
+	
     @Value("${filePath}")
     private String path; // path where is the file stored, set in config.properties
     
@@ -51,7 +60,7 @@ public class ValidatorService {
     @Async
     public void validatePom(String fileName, String email) throws IOException{
         //StringBuilder sb = new StringBuilder();
-		PrintWriter resultFile = new PrintWriter(path + "working-" + fileName + ".txt", "UTF-8");
+		PrintWriter resultFile = new PrintWriter(resultPath + prefixWorking + fileName + ".txt", "UTF-8");
 		
         List<String> params = new ArrayList<String>();
         params.add(mavenPath);
