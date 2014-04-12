@@ -46,8 +46,8 @@
 	<mvc:annotation-driven />
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
  
-	<bean id="pomItemsService" 
-		  class="cz.jet.daos.PomItemsDao">
+	<bean id="pomItemsDao" 
+		  class="cz.jet.daos.impl.PomItemsDao">
 		<property name="dataSource"  ref="dataSource" />    
 	</bean>
        

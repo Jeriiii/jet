@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.jet.daos;
+package cz.jet.daos.impl;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -27,8 +27,6 @@ import org.springframework.jdbc.support.KeyHolder;
  */
 public class BaseDao {
 
-	protected HashMap<String, String> items;
-	protected HashMap<String, String> wheres;
 	private DataSource dataSource;
 
 	private JdbcTemplate jdbcTemplateObject = null;
