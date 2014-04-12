@@ -45,11 +45,6 @@
 	<mvc:resources mapping="/results/**" location="/results/" />
 	<mvc:annotation-driven />
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
- 
-	<bean id="pomItemsService" 
-		  class="cz.jet.daos.PomItemsDao">
-		<property name="dataSource"  ref="dataSource" />    
-	</bean>
        
     <bean id="mailService" 
 		  class="cz.jet.services.MailService">

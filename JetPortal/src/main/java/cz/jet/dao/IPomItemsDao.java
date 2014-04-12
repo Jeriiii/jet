@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
-package cz.jet.services;
+package cz.jet.dao;
 
 
+import cz.jet.models.POMFile;
 import cz.jet.models.PomItemEntite;
 import javax.sql.DataSource;
 import org.springframework.stereotype.Component;
@@ -17,14 +18,16 @@ import org.springframework.stereotype.Service;
  * @author Petr Kukrál
  */
 
-public interface PomItemsService  {
+public interface IPomItemsDao  {
     
-	public void setDataSource(DataSource dataSource);
+	public String getUniqueFileName();
 	
-    public PomItemEntite getPomItem(int id);
-	
-    public long insertNewPomItem(String email);
-	
-	public void updateResult(String result, Long itemID);
+//	public void setDataSource(DataSource dataSource);
+//	
+//    public PomItemEntite getPomItem(int id);
+//	
+//    public long insertNewPomItem(String email);
+//	
+//	public void updateResult(String result, Long itemID);
 	
 }

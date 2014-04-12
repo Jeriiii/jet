@@ -39,7 +39,7 @@ public class MailService {
      * @param result result of validation
      * @param id identification number of result
      */
-    public void sendMail(final String email, final long id) {
+    public void sendMail(final String email, final String fileName) {
         
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
@@ -48,7 +48,7 @@ public class MailService {
                      new InternetAddress(email));
                  mimeMessage.setSubject("Výsledek validace POM souboru");
                  mimeMessage.setFrom(new InternetAddress("hula.josef@gmail.com"));
-                 mimeMessage.setText(resultAddress + id);
+                 mimeMessage.setText(resultAddress + fileName);
             }
        };
        try {

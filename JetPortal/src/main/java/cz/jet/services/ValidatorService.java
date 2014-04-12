@@ -6,11 +6,13 @@
 
 package cz.jet.services;
 
+import cz.jet.dao.IPomItemsDao;
 import cz.jet.utils.MvnProcessBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,11 +34,20 @@ public class ValidatorService {
     private MailService mailer;
     
     @Autowired
-    private PomItemsService pomItemsService;
+    private IPomItemsDao pomItemsService;
     
     @Autowired
     private MvnProcessBuilder mvnProcess;
     
+	@Value("${resultPath}")
+    private String resultPath;
+	
+	@Value("${prefixWorking}")
+    private String prefixWorking;
+	
+	@Value("${prefixFinish}")
+    private String prefixFinish;
+	
     @Value("${filePath}")
     private String path; // path where is the file stored, set in config.properties
     
@@ -47,8 +58,10 @@ public class ValidatorService {
     private String pluginParam; // path to validator plugin, set in config.properties
     
     @Async
-    public void validatePom(String fileName, String email, long id) throws IOException{
-        StringBuilder sb = new StringBuilder();
+    public void validatePom(String fileName, String email) throws IOException{
+        //StringBuilder sb = new StringBuilder();
+		PrintWriter resultFile = new PrintWriter(resultPath + prefixWorking + fileName + ".txt", "UTF-8");
+		
         List<String> params = new ArrayList<String>();
         params.add(mavenPath);
         params.add(pluginParam);
@@ -65,19 +78,21 @@ public class ValidatorService {
             br = new BufferedReader(isr);
             String line;
             while ((line = br.readLine()) != null) {
-                sb.append(line);
-                sb.append(System.getProperty("line.separator"));
+				resultFile.println(line);
+//                sb.append(line);
+//                sb.append(System.getProperty("line.separator"));
             }
                 
-            String resultTest = sb.toString();
+            //String resultTest = sb.toString();
             
-            pomItemsService.updateResult(resultTest, id);
+            //pomItemsService.updateResult(resultTest, id);
           
-            mailer.sendMail(email, id); 
+            mailer.sendMail(email, fileName); 
             
         } catch (Error e) {
             Logger.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
         } finally {
+			resultFile.close();
             br.close();
         }
     }

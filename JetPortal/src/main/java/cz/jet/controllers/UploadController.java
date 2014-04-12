@@ -1,7 +1,9 @@
 package cz.jet.controllers;
 
 import cz.jet.models.UploadedFile;
-import cz.jet.services.PomItemsService;
+import cz.jet.dao.IPomItemsDao;
+import cz.jet.models.POMFile;
+import cz.jet.services.PomFileService;
 import cz.jet.services.ValidatorService;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestParam;
 import cz.jet.services.UploadPOMFileService;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  *
@@ -25,9 +28,6 @@ import cz.jet.services.UploadPOMFileService;
 @Controller
 public class UploadController {
     
-    @Autowired 
-    private ApplicationContext context;
-    
     @Autowired
     private ValidatorService validator;
 	
@@ -35,7 +35,7 @@ public class UploadController {
     private UploadPOMFileService uploadPOMFile;
 	
 	@Autowired
-    private PomItemsService pomItemsService;
+    private PomFileService pomFileService;
 	
 	/**
 	 * render for jsp with formulářem
@@ -60,8 +60,8 @@ public class UploadController {
 		}
 		
 		// include item to database
-		long id = pomItemsService.insertNewPomItem(email);
-		String fileName = Long.toString(id) + ".xml";
+		String fileName = pomFileService.getUniqueFileName();
+		//String fileName = Long.toString(id) + ".xml";
 		
 		// upload file
 		try {
@@ -74,7 +74,7 @@ public class UploadController {
 		
 		// validation
 		try {
-			validator.validatePom(fileName, email, id);
+			validator.validatePom(fileName, email);
 		} catch (IOException ex) {
 			Logger.getLogger(UploadController.class.getName()).log(Level.SEVERE, null, ex);
 		}

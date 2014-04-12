@@ -7,7 +7,7 @@
 package cz.jet.controllers;
 
 import cz.jet.models.PomItemEntite;
-import cz.jet.services.PomItemsService;
+import cz.jet.dao.IPomItemsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ public class ResultController {
     private ApplicationContext context;
     
     @Autowired
-    private PomItemsService pomItems;
+    private IPomItemsDao pomItems;
     
     @RequestMapping(value="result", method=RequestMethod.GET)
     public String showResult(@RequestParam("id") int id, Model m) {		
