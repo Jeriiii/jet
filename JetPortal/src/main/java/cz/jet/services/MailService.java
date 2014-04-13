@@ -46,7 +46,7 @@ public class MailService {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                  mimeMessage.setRecipient(Message.RecipientType.TO, 
                      new InternetAddress(email));
-                 mimeMessage.setSubject("Výsledek validace POM souboru");
+                 mimeMessage.setSubject("Result of POM file validation");
                  mimeMessage.setFrom(new InternetAddress("hula.josef@gmail.com"));
                  mimeMessage.setText(resultAddress + fileName);
             }

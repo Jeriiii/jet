@@ -64,7 +64,7 @@ public class ValidatorService {
     @Async
     public void validatePom(String fileName, String email) throws IOException{
         //StringBuilder sb = new StringBuilder();
-		PrintWriter resultFile = new PrintWriter(resultPath + prefixWorking + fileName + ".txt", "UTF-8");
+	PrintWriter resultFile = new PrintWriter(resultPath + prefixWorking + fileName + ".txt", "UTF-8");
 		
         List<String> params = new ArrayList<String>();
         File file = new File(resultPath + prefixWorking + fileName + ".txt");
@@ -91,8 +91,9 @@ public class ValidatorService {
             //String resultTest = sb.toString();
             
             //pomItemsService.updateResult(resultTest, id);
-            
-            mailer.sendMail(email, fileName); 
+            if(!email.equals("")){
+                mailer.sendMail(email, fileName); 
+            }
             
         } catch (Error e) {
             Logger.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
