@@ -9,6 +9,7 @@ package cz.jet.services;
 import cz.jet.dao.IPomItemsDao;
 import cz.jet.utils.MvnProcessBuilder;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -47,6 +48,9 @@ public class ValidatorService {
 	
 	@Value("${prefixFinish}")
     private String prefixFinish;
+        
+    @Value("${suffix}")
+    private String suffix;
 	
     @Value("${filePath}")
     private String path; // path where is the file stored, set in config.properties
@@ -63,10 +67,11 @@ public class ValidatorService {
 		PrintWriter resultFile = new PrintWriter(resultPath + prefixWorking + fileName + ".txt", "UTF-8");
 		
         List<String> params = new ArrayList<String>();
+        File file = new File(resultPath + prefixWorking + fileName + ".txt");
         params.add(mavenPath);
         params.add(pluginParam);
         params.add("-f");
-        params.add(path+fileName);
+        params.add(path+fileName+suffix);
         InputStream is = null;
         InputStreamReader isr = null;
         BufferedReader br = null;
@@ -78,15 +83,15 @@ public class ValidatorService {
             br = new BufferedReader(isr);
             String line;
             while ((line = br.readLine()) != null) {
-				resultFile.println(line);
+                resultFile.println(line);
 //                sb.append(line);
 //                sb.append(System.getProperty("line.separator"));
             }
-                
+            file.renameTo(new File(resultPath + prefixFinish + fileName + ".txt"));    
             //String resultTest = sb.toString();
             
             //pomItemsService.updateResult(resultTest, id);
-          
+            
             mailer.sendMail(email, fileName); 
             
         } catch (Error e) {
