@@ -9,6 +9,7 @@ package cz.jet.controllers;
 import cz.jet.models.PomItemEntite;
 import cz.jet.dao.IPomItemsDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,29 +30,28 @@ public class ResultController {
     @Autowired
     private IPomItemsDao pomItems;
     
+    @Value("${resultPath}")
+    private String resultPath;
+	
+    @Value("${prefixWorking}")
+    private String prefixWorking;
+	
+    @Value("${prefixFinish}")
+    private String prefixFinish;
+    
     @RequestMapping(value="result", method=RequestMethod.GET)
-    public String showResult(@RequestParam("id") int id, Model m) {		
+    public String showResult(@RequestParam("id") String id, Model m) {		
          //m.addAttribute("resultNumber", id);
          //PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
          //String result = pomResultService.getPomItem(id)
 	//m.addAttribute("uploadedFile", new UploadedFile()); 
 	
-	PomItemEntite item = pomItems.getPomItem(id);
-	m.addAttribute("item", item);
+	
+	m.addAttribute("workingPath", resultPath + prefixWorking + id + ".txt");
+	m.addAttribute("finishPath", resultPath + prefixFinish + id + ".txt");
 	
 	return "result/result";
     }
     
-//    @RequestMapping(value="result/refresh", method=RequestMethod.GET)
-//    public String updateResult(@RequestParam("id") int id, Model m) {		
-//         //m.addAttribute("resultNumber", id);
-//         //PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
-//         //String result = pomResultService.getPomItem(id)
-//	//m.addAttribute("uploadedFile", new UploadedFile()); 
-//	
-//	PomItemEntite item = pomItems.getPomItem(id);
-//	m.addAttribute("item", item);
-//	
-//	return "result/refresh";
-//    }
+
 }

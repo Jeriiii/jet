@@ -14,24 +14,50 @@
     <jsp:attribute name="head">
 	<style>
 	    #uploadform{ width: 400px;}
-	    
+	    .runinfo{ height: 40px; }
+	    #done{ display: none; }
 	</style>
     </jsp:attribute>
     
     <jsp:attribute name="foot">
 	<c:if test="true">
 	    <script type="text/javascript">
+		var refreshTime = 4000; //ms
+		var finishPath = "${pageContext.request.contextPath}${finishPath}";
+		var workingPath = "${pageContext.request.contextPath}${workingPath}";
 		$(function(){
 		    var results = $('#results');//element do ktereho se bude zapisovat
-		    var file = '${pageContext.request.contextPath}/results/test2.txt';//url zdrojoveho souboru
 		    
+		    function updateGraphics(){
+			$('#loading').css('display', 'none');
+			$('#done').css('display', 'block');
+		    }
+	
+		    function loadFinish(){
+			results.load(finishPath, function( response, status, xhr ) {
+			    if(status == 'error'){//file not found
+				setTimeout(function (){
+				    refreshResults();
+				}, refreshTime);
+			    }else{//nacteny kompletni vysledky
+				updateGraphics();//zobrazeni se aktualizuje
+			    }
+			});
+		    }
+	
 		    function refreshResults(){
-			results.load(file);
+			results.load(workingPath, function( response, status, xhr ) {
+			    if(status == 'error'){//file not found
+				loadFinish();
+			    }else{
+				setTimeout(function (){
+				    refreshResults();
+				}, refreshTime);
+			    }
+			});
 		    }
 		    refreshResults();
-		    setInterval(function() {
-			refreshResults();
-		    }, 2000);
+		    
 		});
 	    </script>
 	</c:if>
@@ -43,6 +69,11 @@
     
     <jsp:body>
 	<h1>Výsledky</h1>
+	<div class="runinfo">
+	    <img id="loading" src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif"/>
+	    <h4 id="done">Validace dokončena</h4>
+	</div>
+	
 	<c:choose>
 	    <c:when test="false">
 		<c:if test="${not empty item.email}">
