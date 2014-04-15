@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestParam;
 import cz.jet.services.UploadPOMFileService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.ObjectError;
 
 /**
  *
@@ -55,7 +56,11 @@ public class UploadController {
 		//String fileName = file.getOriginalFilename();
 
 		if (result.hasErrors()) {
-			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo");
+			String errmsg = "";
+			for(ObjectError err : result.getAllErrors()){
+			    errmsg = errmsg + err.toString() + "<br />";
+			}
+			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo: <br />");
 			return "upload/formUploadFile";
 		}
 		
@@ -68,7 +73,7 @@ public class UploadController {
 			uploadPOMFile.upload(uploadedFile, fileName);
 			m.addAttribute("successFormMessage", "Nahrání souboru bylo úspěšné");
 		} catch (IOException ex) {
-			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo");
+			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo: " + ex.getMessage());
 			return "upload/formUploadFile";
 		}
 		
@@ -78,14 +83,6 @@ public class UploadController {
 		} catch (IOException ex) {
 			Logger.getLogger(UploadController.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		
-		// redirect to validation site
-		if(email == null || email.isEmpty()) {
-			m.addAttribute("successFormMessage", null);
-			m.addAttribute("id", fileName);
-			return "redirect:/result/result";
-		}
-		
 		return "upload/formUploadFile";
 	}
 }
