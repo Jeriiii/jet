@@ -60,7 +60,7 @@ public class UploadController {
 			for(ObjectError err : result.getAllErrors()){
 			    errmsg = errmsg + err.toString() + "<br />";
 			}
-			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo: <br />");
+			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo: <br />" + errmsg);
 			return "upload/formUploadFile";
 		}
 		
