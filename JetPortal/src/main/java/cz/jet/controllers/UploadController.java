@@ -78,6 +78,14 @@ public class UploadController {
 		} catch (IOException ex) {
 			Logger.getLogger(UploadController.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		
+		// redirect to validation site
+		if(email == null || email.isEmpty()) {
+			m.addAttribute("successFormMessage", null);
+			m.addAttribute("id", fileName);
+			return "redirect:/result/result";
+		}
+		
 		return "upload/formUploadFile";
 	}
 }
