@@ -27,7 +27,6 @@
 		var workingPath = "${pageContext.request.contextPath}${workingPath}";
 		$(function(){
 		    var results = $('#results');//element do ktereho se bude zapisovat
-		    
 		    function updateGraphics(){
 			$('#loading').css('display', 'none');
 			$('#done').css('display', 'block');
