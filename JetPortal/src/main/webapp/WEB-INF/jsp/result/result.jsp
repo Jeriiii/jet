@@ -22,9 +22,11 @@
     <jsp:attribute name="foot">
 	<c:if test="true">
 	    <script type="text/javascript">
-		var refreshTime = 4000; //ms
-		var finishPath = "${pageContext.request.contextPath}${finishPath}";
-		var workingPath = "${pageContext.request.contextPath}${workingPath}";
+		var refreshTime = 1000; //ms
+		//var finishPath = "${pageContext.request.contextPath}${finishPath}";
+		//var workingPath = "${pageContext.request.contextPath}${workingPath}";
+		var finishPath = "/results/finish-${filename}";
+		var workingPath = "/results/working-${filename}";
 		$(function(){
 		    var results = $('#results');//element do ktereho se bude zapisovat
 		    function updateGraphics(){

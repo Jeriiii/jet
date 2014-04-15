@@ -45,7 +45,7 @@ public class ResultController {
          //PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
          //String result = pomResultService.getPomItem(id)
 	//m.addAttribute("uploadedFile", new UploadedFile()); 
-	
+	m.addAttribute("filename", id + ".txt");
 	
 	m.addAttribute("workingPath", resultPath + prefixWorking + id + ".txt");
 	m.addAttribute("finishPath", resultPath + prefixFinish + id + ".txt");
