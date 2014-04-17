@@ -72,13 +72,13 @@
 	<h1>Výsledky</h1>
 	<div class="runinfo">
 	    <img id="loading" src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif"/>
-	    <h4 id="done">Validace dokončena</h4>
+	    <h4 id="done">Validation completed</h4>
 	</div>
 	
 	<c:choose>
 	    <c:when test="false">
 		<c:if test="${not empty item.email}">
-		    <h4>Tyto výsledky byly odesálny na email: ${item.email}</h4>
+		    <h4>These results were sent to the following email address: ${item.email}</h4>
 		</c:if>
 		<section id="results" class="well">
 			${item.result}

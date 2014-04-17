@@ -17,9 +17,9 @@
     <jsp:attribute name="foot">
 	<div class="jumbotron">
 	    <div class="container">
-	      <h1>Vítejte</h1>
-              <p>Vítejte v systému pro validaci souborů pom.xml.</p>
-	      <p><a href="${contextPath}/upload/form-upload-file" class="btn btn-primary btn-lg" role="button">Validovat soubor</a></p>
+	      <h1>Welcome</h1>
+              <p>Welcome on portal for POM.xml files validation.</p>
+	      <p><a href="${contextPath}/upload/form-upload-file" class="btn btn-primary btn-lg" role="button">Validate file</a></p>
 	    </div>
 	</div>
     </jsp:attribute>

@@ -60,7 +60,7 @@ public class UploadController {
 			for(ObjectError err : result.getAllErrors()){
 			    errmsg = errmsg + err.toString() + "<br />";
 			}
-			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo: <br />" + errmsg);
+			m.addAttribute("errorFormMessage", "File upload failed: <br />" + errmsg);
 			return "upload/formUploadFile";
 		}
 		
@@ -71,9 +71,9 @@ public class UploadController {
 		// upload file
 		try {
 			uploadPOMFile.upload(uploadedFile, fileName);
-			m.addAttribute("successFormMessage", "Nahrání souboru bylo úspěšné");
+			m.addAttribute("successFormMessage", "File upload was successful. After the validation you will receive email with link, where you can see the result of validation.");
 		} catch (IOException ex) {
-			m.addAttribute("errorFormMessage", "Nahrávání souboru se nezdařilo: " + ex.getMessage());
+			m.addAttribute("errorFormMessage", "File upload failed: " + ex.getMessage());
 			return "upload/formUploadFile";
 		}
 		

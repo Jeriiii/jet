@@ -29,18 +29,18 @@
     
     <jsp:body>
 		<section class="jumbotron">
-			<h2>Nahrajte POM soubor</h2>
+			<h2>Upload POM file</h2>
 			<c:if test="${not empty errorFormMessage}"><div class="alert alert-danger">${errorFormMessage}</div></c:if>
 			<c:if test="${not empty successFormMessage}"><div class="alert alert-success">${successFormMessage}</div></c:if>
 
 			<form:form method="post" id="uploadform" enctype="multipart/form-data" modelAttribute="uploadedFile" role="form">  
 				<form:errors path="file" /> 
 				<div class="form-group">
-						<label>Vyberte POM soubor: </label>  
+						<label>Choose POM file: </label>  
 						<input type="file" name="file" required/>   
 				</div> 
 				<div class="form-group">
-						<label>Zaslat výsledky na tento email (nepovinné): </label>  
+						<label>Sent results to this email address(optional): </label>  
 						<input type="email" name="email" class="form-control" size="30" maxlength="50"/>   
 				</div> 
 				<input type="submit" value="Upload" class="btn btn-primary btn-lg" />  
