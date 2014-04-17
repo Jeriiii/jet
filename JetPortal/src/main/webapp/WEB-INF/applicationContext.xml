@@ -45,11 +45,6 @@
 	<mvc:resources mapping="/results/**" location="/results/" />
 	<mvc:annotation-driven />
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
-       
-    <bean id="mailService" 
-		  class="cz.jet.services.MailService">
-		<property name="mailSender"  ref="mailSender" />    
-	</bean>
    
 	<bean id="mailSender" 
 		 class="org.springframework.mail.javamail.JavaMailSenderImpl">

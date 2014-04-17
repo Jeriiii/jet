@@ -29,10 +29,7 @@ public class MailService {
     
     @Autowired
     private JavaMailSender mailSender;
-
-    public void setMailSender(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
-    }
+    
     /**
      * Send mail with result
      * @param email recipient adress
