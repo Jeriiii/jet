@@ -69,7 +69,7 @@
     </jsp:attribute>
     
     <jsp:body>
-	<h1>Výsledky</h1>
+	<h1>Results</h1>
 	<div class="runinfo">
 	    <img id="loading" src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif"/>
 	    <h4 id="done">Validation completed</h4>

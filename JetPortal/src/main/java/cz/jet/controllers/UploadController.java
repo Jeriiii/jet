@@ -71,7 +71,7 @@ public class UploadController {
 		// upload file
 		try {
 			uploadPOMFile.upload(uploadedFile, fileName);
-			m.addAttribute("successFormMessage", "File upload was successful. After the validation you will receive email with link, where you can see the result of validation.");
+			m.addAttribute("successFormMessage", "File was successfully uploaded. After the validation you will receive email with link, where you can see the result of validation.");
 		} catch (IOException ex) {
 			m.addAttribute("errorFormMessage", "File upload failed: " + ex.getMessage());
 			return "upload/formUploadFile";
