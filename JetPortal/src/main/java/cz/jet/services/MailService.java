@@ -45,7 +45,7 @@ public class MailService {
                      new InternetAddress(email));
                  mimeMessage.setSubject("Result of POM file validation");
                  mimeMessage.setFrom(new InternetAddress("hula.josef@gmail.com"));
-                 mimeMessage.setText(resultAddress + fileName);
+                 mimeMessage.setText(resultAddress + "/result/result?id="+ fileName);
             }
        };
        try {

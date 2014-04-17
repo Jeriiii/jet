@@ -40,7 +40,7 @@
 						<input type="file" name="file" required/>   
 				</div> 
 				<div class="form-group">
-						<label>Sent results to this email address(optional): </label>  
+						<label>Send results to this email address (optional): </label>  
 						<input type="email" name="email" class="form-control" size="30" maxlength="50"/>   
 				</div> 
 				<input type="submit" value="Upload" class="btn btn-primary btn-lg" />  
