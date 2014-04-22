@@ -31,31 +31,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidatorService {
     
-	private Logger log;
+    private Logger log;
 	
     @Autowired
     private MailService mailer;
     
     @Autowired
-    private IPomItemsDao pomItemsService;
-    
-    @Autowired
     private MvnProcessBuilder mvnProcess;
     
-	@Value("${path}")
+    @Value("${filesPath}")
     private String path;
-    
-    @Value("${mavenPath}")
-    private String mavenPath; // path to maven, set in config.properties
     
     @Value("${pluginParam}")
     private String pluginParam; // path to validator plugin, set in config.properties
     
     @Async
     public void validatePom(String fileName, String email) throws IOException{
-        //StringBuilder sb = new StringBuilder();
 	PrintWriter resultFile = new PrintWriter(path + "results/" + "working-" + fileName + ".txt", "UTF-8");
-		
+	String mavenPath = "/Users/josefhula/apache-maven-3.2.1/bin/mvn";
+        
         List<String> params = new ArrayList<String>();
         File file = new File(path + "results/" + "working-" + fileName + ".txt");
         params.add(mavenPath);
@@ -74,13 +68,10 @@ public class ValidatorService {
             String line;
             while ((line = br.readLine()) != null) {
                 resultFile.println(line);
-//                sb.append(line);
-//                sb.append(System.getProperty("line.separator"));
+                resultFile.flush();
             }
             file.renameTo(new File(path + "results/" + "finish-" + fileName + ".txt"));    
-            //String resultTest = sb.toString();
-            
-            //pomItemsService.updateResult(resultTest, id);
+       
             if(!email.equals("")){
                 mailer.sendMail(email, fileName); 
             }

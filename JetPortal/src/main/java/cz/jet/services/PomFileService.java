@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PomFileService {
 	
-	@Value("${path}")
+	@Value("${filesPath}")
     public String path;
 	
 	public String getUniqueFileName() {

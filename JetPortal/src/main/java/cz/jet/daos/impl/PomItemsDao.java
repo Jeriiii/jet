@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PomItemsDao extends BaseDao implements IPomItemsDao {
 	
-	@Value("${path}")
+	@Value("${filesPath}")
     public String path;
 	
 	@Override

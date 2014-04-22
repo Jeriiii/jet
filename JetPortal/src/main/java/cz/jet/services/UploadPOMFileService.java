@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class UploadPOMFileService {
     
-	@Value("${path}")
+	@Value("${filesPath}")
 	private String path; // path where to store file, set in config.properties
 	
 	public void upload(UploadedFile uploadedFile, String fileName) throws IOException {

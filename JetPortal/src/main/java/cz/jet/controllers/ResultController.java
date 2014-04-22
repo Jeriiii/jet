@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ResultController {
     
-    @Value("${path}")
+    @Value("${filesPath}")
     private String path;
     
     @RequestMapping(value="result", method=RequestMethod.GET)
