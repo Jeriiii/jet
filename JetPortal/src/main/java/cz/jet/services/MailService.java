@@ -6,6 +6,8 @@
 
 package cz.jet.services;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
     
+	private Logger log;
+	
     @Value("${resultAddress}")
     private String resultAddress; // result address, set in config.properties
     
@@ -38,21 +42,20 @@ public class MailService {
      */
     public void sendMail(final String email, final String fileName) {
         
-        MimeMessagePreparator preparator = new MimeMessagePreparator() {
+		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
-            public void prepare(MimeMessage mimeMessage) throws Exception {
-                 mimeMessage.setRecipient(Message.RecipientType.TO, 
-                     new InternetAddress(email));
-                 mimeMessage.setSubject("Result of POM file validation");
-                 mimeMessage.setFrom(new InternetAddress("hula.josef@gmail.com"));
-                 mimeMessage.setText(resultAddress + "/result/result?id="+ fileName);
-            }
-       };
-       try {
-            mailSender.send(preparator);
-       }
-        catch(MailException ex) {
-            System.err.println(ex.getMessage());            
-        }
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+				mimeMessage.setRecipient(Message.RecipientType.TO,
+						new InternetAddress(email));
+				mimeMessage.setSubject("Result of POM file validation");
+				mimeMessage.setFrom(new InternetAddress("hula.josef@gmail.com"));
+				mimeMessage.setText(resultAddress + "/result/result?id=" + fileName);
+			}
+		};
+		try {
+			mailSender.send(preparator);
+		} catch (MailException ex) {
+			log.getLogger(MailService.class.getName()).log(Level.SEVERE, null, ex);
+		}
     }
 }

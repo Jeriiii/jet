@@ -21,11 +21,7 @@ public class MvnProcessBuilder {
     public MvnProcessBuilder(){}
 
     public Process start(List<String> list) throws MvnProcessBuilderError, IOException {
-        ProcessBuilder pb = new ProcessBuilder(list);
-        try {
-            return pb.start();
-	} catch (IOException ex) {
-            throw ex;
-	}
+		ProcessBuilder pb = new ProcessBuilder(list);
+		return pb.start();
     }
 }

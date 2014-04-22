@@ -17,24 +17,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class PomFileService {
 	
-	@Value("${filePath}")
+	@Value("${path}")
     public String path;
-	
-	@Value("${suffix}")
-	public String suffix;
-	
-	@Value("${prefixWorking}")
-	public String prefixWorking;
-	
-	@Value("${prefixFinish}")
-	public String prefixFinish;
 	
 	public String getUniqueFileName() {
 		String uuid = UUID.randomUUID().toString();
 		String fileName;
 		for(int i = 0;; i++) {
 			fileName = "pom" + uuid + i;
-			File f = new File(path + fileName + suffix);
+			File f = new File(path + "poms/" + fileName + ".xml");
 			if(! f.exists()) {
 				break;
 			}

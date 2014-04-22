@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidatorService {
     
+	private Logger log;
+	
     @Autowired
     private MailService mailer;
     
@@ -40,20 +42,8 @@ public class ValidatorService {
     @Autowired
     private MvnProcessBuilder mvnProcess;
     
-	@Value("${resultPath}")
-    private String resultPath;
-	
-	@Value("${prefixWorking}")
-    private String prefixWorking;
-	
-	@Value("${prefixFinish}")
-    private String prefixFinish;
-        
-    @Value("${suffix}")
-    private String suffix;
-	
-    @Value("${filePath}")
-    private String path; // path where is the file stored, set in config.properties
+	@Value("${path}")
+    private String path;
     
     @Value("${mavenPath}")
     private String mavenPath; // path to maven, set in config.properties
@@ -64,14 +54,14 @@ public class ValidatorService {
     @Async
     public void validatePom(String fileName, String email) throws IOException{
         //StringBuilder sb = new StringBuilder();
-	PrintWriter resultFile = new PrintWriter(resultPath + prefixWorking + fileName + ".txt", "UTF-8");
+	PrintWriter resultFile = new PrintWriter(path + "results/" + "working-" + fileName + ".txt", "UTF-8");
 		
         List<String> params = new ArrayList<String>();
-        File file = new File(resultPath + prefixWorking + fileName + ".txt");
+        File file = new File(path + "results/" + "working-" + fileName + ".txt");
         params.add(mavenPath);
         params.add(pluginParam);
         params.add("-f");
-        params.add(path+fileName+suffix);
+        params.add(path + "poms/" + fileName + ".xml");
         InputStream is = null;
         InputStreamReader isr = null;
         BufferedReader br = null;
@@ -87,7 +77,7 @@ public class ValidatorService {
 //                sb.append(line);
 //                sb.append(System.getProperty("line.separator"));
             }
-            file.renameTo(new File(resultPath + prefixFinish + fileName + ".txt"));    
+            file.renameTo(new File(path + "results/" + "finish-" + fileName + ".txt"));    
             //String resultTest = sb.toString();
             
             //pomItemsService.updateResult(resultTest, id);
@@ -96,7 +86,7 @@ public class ValidatorService {
             }
             
         } catch (Error e) {
-            Logger.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
+            log.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
         } finally {
 			resultFile.close();
             br.close();
