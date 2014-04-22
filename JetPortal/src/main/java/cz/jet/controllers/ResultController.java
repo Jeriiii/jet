@@ -6,7 +6,6 @@
 
 package cz.jet.controllers;
 
-import cz.jet.models.PomItemEntite;
 import cz.jet.dao.IPomItemsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,12 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ResultController {
     
-    @Autowired 
-    private ApplicationContext context;
-    
-    @Autowired
-    private IPomItemsDao pomItems;
-    
     @Value("${resultPath}")
     private String resultPath;
 	
@@ -44,11 +37,11 @@ public class ResultController {
          //m.addAttribute("resultNumber", id);
          //PomItemsService pomResultService = (PomItemsService) context.getBean("pomResultsService");
          //String result = pomResultService.getPomItem(id)
-	//m.addAttribute("uploadedFile", new UploadedFile()); 
-	m.addAttribute("filename", id + ".txt");
-	
-	m.addAttribute("workingPath", resultPath + prefixWorking + id + ".txt");
-	m.addAttribute("finishPath", resultPath + prefixFinish + id + ".txt");
+		//m.addAttribute("uploadedFile", new UploadedFile()); 
+		m.addAttribute("filename", id + ".txt");
+
+		m.addAttribute("workingPath", resultPath + prefixWorking + id + ".txt");
+		m.addAttribute("finishPath", resultPath + prefixFinish + id + ".txt");
 	
 	return "result/result";
     }

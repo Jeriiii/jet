@@ -23,11 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class UploadPOMFileService {
     
-        @Value("${filePath}")
-        private String path; // path where to store file, set in config.properties
-		
-		@Value("${suffix}")
-        private String suffix;
+	@Value("${filePath}")
+	private String path; // path where to store file, set in config.properties
+
+	@Value("${suffix}")
+	private String suffix;
 	
 	public void upload(UploadedFile uploadedFile, String fileName) throws IOException {
 		InputStream inputStream = null;
@@ -48,8 +48,6 @@ public class UploadPOMFileService {
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
 			}
-		} catch(IOException e) {
-			throw e;
 		} finally {
 			if(inputStream != null)
 				inputStream.close();

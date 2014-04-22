@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidatorService {
     
+	private Logger log;
+	
     @Autowired
     private MailService mailer;
     
@@ -96,7 +98,7 @@ public class ValidatorService {
             }
             
         } catch (Error e) {
-            Logger.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
+            log.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
         } finally {
 			resultFile.close();
             br.close();

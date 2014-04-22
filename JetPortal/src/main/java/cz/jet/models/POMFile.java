@@ -20,13 +20,14 @@ public class POMFile {
 	
 	public File uniquePOMFile;
 	public File uniqueResultFile;
+	private Logger log;
 	
 	public POMFile(String path) {
 		try {
 			uniquePOMFile = File.createTempFile("pom", ".xml", new File(path));
 			uniqueResultFile = new File(path + "working-" + uniquePOMFile.getName());
 		} catch (IOException ex) {
-			Logger.getLogger(POMFile.class.getName()).log(Level.SEVERE, null, ex);
+			log.getLogger(POMFile.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 	
