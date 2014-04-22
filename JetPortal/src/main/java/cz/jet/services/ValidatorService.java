@@ -42,11 +42,8 @@ public class ValidatorService {
     @Autowired
     private MvnProcessBuilder mvnProcess;
     
-	@Value("${resultPath}")
-    private String resultPath;
-	
-    @Value("${filePath}")
-    private String path; // path where is the file stored, set in config.properties
+	@Value("${path}")
+    private String path;
     
     @Value("${mavenPath}")
     private String mavenPath; // path to maven, set in config.properties
@@ -57,14 +54,14 @@ public class ValidatorService {
     @Async
     public void validatePom(String fileName, String email) throws IOException{
         //StringBuilder sb = new StringBuilder();
-	PrintWriter resultFile = new PrintWriter(resultPath + "working-" + fileName + ".txt", "UTF-8");
+	PrintWriter resultFile = new PrintWriter(path + "results/" + "working-" + fileName + ".txt", "UTF-8");
 		
         List<String> params = new ArrayList<String>();
-        File file = new File(resultPath + "working-" + fileName + ".txt");
+        File file = new File(path + "results/" + "working-" + fileName + ".txt");
         params.add(mavenPath);
         params.add(pluginParam);
         params.add("-f");
-        params.add(path + fileName + ".xml");
+        params.add(path + "poms/" + fileName + ".xml");
         InputStream is = null;
         InputStreamReader isr = null;
         BufferedReader br = null;
@@ -80,7 +77,7 @@ public class ValidatorService {
 //                sb.append(line);
 //                sb.append(System.getProperty("line.separator"));
             }
-            file.renameTo(new File(resultPath + "finish-" + fileName + ".txt"));    
+            file.renameTo(new File(path + "results/" + "finish-" + fileName + ".txt"));    
             //String resultTest = sb.toString();
             
             //pomItemsService.updateResult(resultTest, id);

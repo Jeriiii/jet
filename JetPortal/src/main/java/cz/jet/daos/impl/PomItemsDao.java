@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PomItemsDao extends BaseDao implements IPomItemsDao {
 	
-	@Value("${filePath}")
+	@Value("${path}")
     public String path;
 	
 	@Override
@@ -27,7 +27,7 @@ public class PomItemsDao extends BaseDao implements IPomItemsDao {
 		String fileName;
 		for(int i = 0;; i++) {
 			fileName = "pom" + uuid + i;
-			File f = new File(path + "working-" + fileName + ".xml");
+			File f = new File(path + "poms" + "working-" + fileName + ".xml");
 			if(! f.exists()) {
 				break;
 			}

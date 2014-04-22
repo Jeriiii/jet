@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class UploadPOMFileService {
     
-	@Value("${filePath}")
+	@Value("${path}")
 	private String path; // path where to store file, set in config.properties
 	
 	public void upload(UploadedFile uploadedFile, String fileName) throws IOException {
@@ -34,7 +34,7 @@ public class UploadPOMFileService {
 			MultipartFile file = uploadedFile.getFile();
 			// save file on disk
 			inputStream = file.getInputStream();
-			File newFile = new File(path + fileName + ".xml");
+			File newFile = new File(path + "poms/" + fileName + ".xml");
 			if (!newFile.exists()) {
 				newFile.createNewFile();
 			}

@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ResultController {
     
-    @Value("${resultPath}")
-    private String resultPath;
+    @Value("${path}")
+    private String path;
     
     @RequestMapping(value="result", method=RequestMethod.GET)
     public String showResult(@RequestParam("id") String id, Model m) {		
@@ -34,8 +34,8 @@ public class ResultController {
 		//m.addAttribute("uploadedFile", new UploadedFile()); 
 		m.addAttribute("filename", id + ".txt");
 
-		m.addAttribute("workingPath", resultPath + "working-" + id + ".txt");
-		m.addAttribute("finishPath", resultPath + "finish-" + id + ".txt");
+		m.addAttribute("workingPath", path + "results/" + "working-" + id + ".txt");
+		m.addAttribute("finishPath", path + "results/" + "finish-" + id + ".txt");
 	
 	return "result/result";
     }

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PomFileService {
 	
-	@Value("${filePath}")
+	@Value("${path}")
     public String path;
 	
 	public String getUniqueFileName() {
@@ -25,7 +25,7 @@ public class PomFileService {
 		String fileName;
 		for(int i = 0;; i++) {
 			fileName = "pom" + uuid + i;
-			File f = new File(path + fileName + ".xml");
+			File f = new File(path + "poms/" + fileName + ".xml");
 			if(! f.exists()) {
 				break;
 			}
