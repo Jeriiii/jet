@@ -25,12 +25,6 @@ public class ResultController {
     
     @Value("${resultPath}")
     private String resultPath;
-	
-    @Value("${prefixWorking}")
-    private String prefixWorking;
-	
-    @Value("${prefixFinish}")
-    private String prefixFinish;
     
     @RequestMapping(value="result", method=RequestMethod.GET)
     public String showResult(@RequestParam("id") String id, Model m) {		
@@ -40,8 +34,8 @@ public class ResultController {
 		//m.addAttribute("uploadedFile", new UploadedFile()); 
 		m.addAttribute("filename", id + ".txt");
 
-		m.addAttribute("workingPath", resultPath + prefixWorking + id + ".txt");
-		m.addAttribute("finishPath", resultPath + prefixFinish + id + ".txt");
+		m.addAttribute("workingPath", resultPath + "working-" + id + ".txt");
+		m.addAttribute("finishPath", resultPath + "finish-" + id + ".txt");
 	
 	return "result/result";
     }

@@ -5,18 +5,10 @@
  */
 package cz.jet.daos.impl;
 
-import cz.jet.mappers.PomItemsMapper;
-import cz.jet.models.PomItemEntite;
 import cz.jet.dao.IPomItemsDao;
-import cz.jet.models.POMFile;
 import java.io.File;
-import java.util.HashMap;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,22 +21,13 @@ public class PomItemsDao extends BaseDao implements IPomItemsDao {
 	@Value("${filePath}")
     public String path;
 	
-	@Value("${suffix}")
-	public String suffix;
-	
-	@Value("${prefixWorking}")
-	public String prefixWorking;
-	
-	@Value("${prefixFinish}")
-	public String prefixFinish;
-	
 	@Override
 	public String getUniqueFileName() {
 		String uuid = UUID.randomUUID().toString();
 		String fileName;
 		for(int i = 0;; i++) {
 			fileName = "pom" + uuid + i;
-			File f = new File(path + prefixWorking + fileName + suffix);
+			File f = new File(path + "working-" + fileName + ".xml");
 			if(! f.exists()) {
 				break;
 			}

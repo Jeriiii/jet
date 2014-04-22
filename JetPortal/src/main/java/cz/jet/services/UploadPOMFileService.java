@@ -25,9 +25,6 @@ public class UploadPOMFileService {
     
 	@Value("${filePath}")
 	private String path; // path where to store file, set in config.properties
-
-	@Value("${suffix}")
-	private String suffix;
 	
 	public void upload(UploadedFile uploadedFile, String fileName) throws IOException {
 		InputStream inputStream = null;
@@ -37,7 +34,7 @@ public class UploadPOMFileService {
 			MultipartFile file = uploadedFile.getFile();
 			// save file on disk
 			inputStream = file.getInputStream();
-			File newFile = new File(path + fileName + suffix);
+			File newFile = new File(path + fileName + ".xml");
 			if (!newFile.exists()) {
 				newFile.createNewFile();
 			}
