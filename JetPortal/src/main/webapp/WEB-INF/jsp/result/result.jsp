@@ -7,7 +7,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="newline" value="<%= \"\n\" %>" />
 
 
 <t:layout>
@@ -120,7 +122,7 @@
 	<c:choose>
 	    <c:when test="${not empty fincontent}">
 		<section id="results" class="well">
-			${fincontent}
+		    ${fn:replace(fincontent, newline, "<br />")}
 		</section>
 	    </c:when>
 	    <c:otherwise>
