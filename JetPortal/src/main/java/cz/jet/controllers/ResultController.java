@@ -123,7 +123,7 @@ public class ResultController {
 		}else{
 		    return null;
 		}
-		content = modifyFinishedContent(content);
+		content = modifyContent(content);
 		return content;
     }
     
@@ -137,7 +137,7 @@ public class ResultController {
 	return "result/result";
     }
 
-    private synchronized String modifyFinishedContent(String content) {
+    private synchronized String modifyContent(String content) {
 	//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	return content;
     }
