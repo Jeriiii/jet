@@ -20,8 +20,49 @@
     </jsp:attribute>
     
     <jsp:attribute name="foot">
-	<c:if test="true">
-	    <script type="text/javascript">
+	<script type="text/javascript">
+	    var refreshTime = 1000; //ms
+	    var results = $('#results');//element do ktereho se bude zapisovat
+	    
+	    //called when job is done
+	    function isFinished(){
+		$('#loading').css('display', 'none');
+		$('#done').css('display', 'block');
+	    }
+	    //called when results arrives and job is still not finished
+	    function isWorking(){
+		setTimeout(function (){
+		    refreshResults();
+		}, refreshTime);
+	    }
+	    
+	    function refreshResults(){
+		results.load("${pageContext.request.contextPath}/result/update?id=${fileid}", function( response, status, xhr ) {
+		    
+		});
+	    }
+	    //when ajax response arrives
+	    function updateContent(){
+		
+	    }
+	    
+	    function test(){
+		alert('It works!');
+	    }
+	</script>
+	
+	<c:if test="${not empty fincontent}">
+	    <script>
+		isFinished();
+	    </script>
+	    
+	</c:if>
+	<c:if test="${empty fincontent}">
+	    <script>
+		isWorking();
+	    </script>
+	</c:if>
+<!--	    <script type="text/javascript">
 		var refreshTime = 1000; //ms
 		//var finishPath = "${pageContext.request.contextPath}${finishPath}";
 		//var workingPath = "${pageContext.request.contextPath}${workingPath}";
@@ -60,8 +101,7 @@
 		    refreshResults();
 		    
 		});
-	    </script>
-	</c:if>
+	    </script>-->
     </jsp:attribute>
     
     <jsp:attribute name="menu">
@@ -74,14 +114,13 @@
 	    <img id="loading" src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif"/>
 	    <h4 id="done">Validation completed</h4>
 	</div>
-	
+	<c:if test="${not empty email}">
+	    <h4>These results were sent to the following email address: ${email}</h4>
+	</c:if>
 	<c:choose>
-	    <c:when test="false">
-		<c:if test="${not empty item.email}">
-		    <h4>These results were sent to the following email address: ${item.email}</h4>
-		</c:if>
+	    <c:when test="${not empty fincontent}">
 		<section id="results" class="well">
-			${item.result}
+			${fincontent}
 		</section>
 	    </c:when>
 	    <c:otherwise>
