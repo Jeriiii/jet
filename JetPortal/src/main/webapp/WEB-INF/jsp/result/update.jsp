@@ -6,17 +6,25 @@
 
 <p id="update">
     <c:if test="${not empty fincontent}">
-	${fn:replace(fincontent, newline, "<br />")}
-	<script>
-	    isFinished();
-	</script>
-
-    </c:if>
-    <c:if test="${empty fincontent}">
-	${fn:replace(content, newline, "<br />")}
+	<p id="newcontent">
+	    ${fn:replace(fincontent, newline, "<br />")}
+	</p>
 	<script>
 	    updateContent();
+	    isFinished();
+	</script>
+    </c:if>
+    <c:if test="${empty fincontent}">
+	<p id="newcontent">
+	    ${fn:replace(content, newline, "<br />")}
+	</p>
+	<script>
+	    if(lastmod != ${lastmod}){
+		lastmod = ${lastmod};
+		updateContent();
+	    }
 	    isWorking();
+	    
 	</script>
     </c:if>
 </p>

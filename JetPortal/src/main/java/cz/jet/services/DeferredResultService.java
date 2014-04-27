@@ -1,8 +1,11 @@
 package cz.jet.services;
 
 
+import cz.jet.controllers.ResultController;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -12,19 +15,19 @@ public class DeferredResultService implements Runnable {
 
   
 
-  private final BlockingQueue<DeferredResult<Message>> resultQueue = new LinkedBlockingQueue();
+  private final BlockingQueue<DeferredResult<String>> resultQueue = new LinkedBlockingQueue();
 
   private Thread thread;
 
   private volatile boolean start = true;
 
   
-  private LinkedBlockingQueue<Message> queue = new LinkedBlockingQueue();
+  private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue();
 
 
 
   public void subscribe() {
-    
+    System.out.println("Long polling thread started.");
     startThread();
   }
 
@@ -47,10 +50,10 @@ public class DeferredResultService implements Runnable {
     while (true) {
       try {
 
-        DeferredResult<Message> result = resultQueue.take();
-        Message message = queue.take();
+        DeferredResult<String> result = resultQueue.take();
+        String string = queue.take();
 
-        result.setResult(message);
+        result.setResult(string);
 
       } catch (InterruptedException e) {
         System.err.println("Cannot get latest update. " + e.getMessage());
@@ -58,7 +61,7 @@ public class DeferredResultService implements Runnable {
     }
   }
 
-  public void getUpdate(DeferredResult<Message> result) {
+  public void getUpdate(DeferredResult<String> result) {
     resultQueue.add(result);
   }
 
