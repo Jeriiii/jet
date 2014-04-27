@@ -18,13 +18,18 @@
 	    #uploadform{ width: 400px;}
 	    .runinfo{ height: 40px; }
 	    #done{ display: none; }
+	    #temp{ display: none; }
 	</style>
     </jsp:attribute>
     
     <jsp:attribute name="foot">
 	<script type="text/javascript">
 	    var refreshTime = 1000; //ms
-	    var results = $('#results');//element do ktereho se bude zapisovat
+	    var errorRefreshTime = 10000;
+	    var temp = $('#temp');//temp element
+	    var results = $('#results'); //element for data writing
+	    
+	    var lastmod = 0;
 	    
 	    //called when job is done
 	    function isFinished(){
@@ -39,18 +44,19 @@
 	    }
 	    
 	    function refreshResults(){
-		results.load("${pageContext.request.contextPath}/result/update?id=${fileid}", function( response, status, xhr ) {
-		    
+		temp.load("${pageContext.request.contextPath}/result/update?id=${fileid}&lastmod=" + lastmod , function( response, status, xhr ) {
+		    if(status == 'error'){
+			setTimeout(function (){
+			    refreshResults();
+			}, errorRefreshTime);
+		    }
 		});
 	    }
 	    //when ajax response arrives
 	    function updateContent(){
-		
+		results.html($('#newcontent').html());
 	    }
 	    
-	    function test(){
-		alert('It works!');
-	    }
 	</script>
 	
 	<c:if test="${not empty fincontent}">
@@ -119,6 +125,7 @@
 	<c:if test="${not empty email}">
 	    <h4>These results were sent to the following email address: ${email}</h4>
 	</c:if>
+	    <div id="temp"></div>
 	<c:choose>
 	    <c:when test="${not empty fincontent}">
 		<section id="results" class="well">
