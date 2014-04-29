@@ -48,8 +48,8 @@ public class ValidatorService {
     @Async
     public void validatePom(String fileName, String email) throws IOException{
 	PrintWriter resultFile = new PrintWriter(path + "results/" + "working-" + fileName + ".txt", "UTF-8");
-	String mavenPath = "/Users/josefhula/apache-maven-3.2.1/bin/mvn";
-        
+	//String mavenPath = "/Users/josefhula/apache-maven-3.2.1/bin/mvn";
+    String mavenPath = "mvn.bat";
         List<String> params = new ArrayList<String>();
         File file = new File(path + "results/" + "working-" + fileName + ".txt");
         params.add(mavenPath);
@@ -77,7 +77,7 @@ public class ValidatorService {
             }
             
         } catch (Error e) {
-            log.getLogger(MvnProcessBuilder.class.getName()).log(Level.SEVERE, null, e);
+            log.getLogger(ValidatorService.class.getName()).log(Level.SEVERE, null, e);
         } finally {
 			resultFile.close();
             br.close();
