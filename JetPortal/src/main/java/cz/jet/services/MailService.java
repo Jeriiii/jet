@@ -26,14 +26,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
     
-	private Logger log;
+	private Logger log = Logger.getLogger(MailService.class.getName());
 	
     @Value("${resultAddress}")
     private String resultAddress; // result address, set in config.properties
     
     @Autowired
     private JavaMailSender mailSender;
-    
+	
     /**
      * Send mail with result
      * @param email recipient adress
@@ -55,7 +55,7 @@ public class MailService {
 		try {
 			mailSender.send(preparator);
 		} catch (MailException ex) {
-			log.getLogger(MailService.class.getName()).log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, null, ex);
 		}
     }
 }

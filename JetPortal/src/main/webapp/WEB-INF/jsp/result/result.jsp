@@ -7,7 +7,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="newline" value="<%= \"\n\" %>" />
 
 
 <t:layout>
@@ -16,12 +18,59 @@
 	    #uploadform{ width: 400px;}
 	    .runinfo{ height: 40px; }
 	    #done{ display: none; }
+	    #temp{ display: none; }
 	</style>
     </jsp:attribute>
     
     <jsp:attribute name="foot">
-	<c:if test="true">
-	    <script type="text/javascript">
+	<script type="text/javascript">
+	    var refreshTime = 1000; //ms
+	    var errorRefreshTime = 10000;
+	    var temp = $('#temp');//temp element
+	    var results = $('#results'); //element for data writing
+	    
+	    var lastmod = 0;
+	    
+	    //called when job is done
+	    function isFinished(){
+		$('#loading').css('display', 'none');
+		$('#done').css('display', 'block');
+	    }
+	    //called when results arrives and job is still not finished
+	    function isWorking(){
+		setTimeout(function (){
+		    refreshResults();
+		}, refreshTime);
+	    }
+	    
+	    function refreshResults(){
+		temp.load("${pageContext.request.contextPath}/result/update?id=${fileid}&lastmod=" + lastmod , function( response, status, xhr ) {
+		    if(status == 'error'){
+			setTimeout(function (){
+			    refreshResults();
+			}, errorRefreshTime);
+		    }
+		});
+	    }
+	    //when ajax response arrives
+	    function updateContent(){
+		results.html($('#newcontent').html());
+	    }
+	    
+	</script>
+	
+	<c:if test="${not empty fincontent}">
+	    <script>
+		isFinished();
+	    </script>
+	    
+	</c:if>
+	<c:if test="${empty fincontent}">
+	    <script>
+		isWorking();
+	    </script>
+	</c:if>
+<!--	    <script type="text/javascript">
 		var refreshTime = 1000; //ms
 		//var finishPath = "${pageContext.request.contextPath}${finishPath}";
 		//var workingPath = "${pageContext.request.contextPath}${workingPath}";
@@ -60,8 +109,7 @@
 		    refreshResults();
 		    
 		});
-	    </script>
-	</c:if>
+	    </script>-->
     </jsp:attribute>
     
     <jsp:attribute name="menu">
@@ -74,14 +122,14 @@
 	    <img id="loading" src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif"/>
 	    <h4 id="done">Validation completed</h4>
 	</div>
-	
+	<c:if test="${not empty email}">
+	    <h4>These results were sent to the following email address: ${email}</h4>
+	</c:if>
+	    <div id="temp"></div>
 	<c:choose>
-	    <c:when test="false">
-		<c:if test="${not empty item.email}">
-		    <h4>These results were sent to the following email address: ${item.email}</h4>
-		</c:if>
+	    <c:when test="${not empty fincontent}">
 		<section id="results" class="well">
-			${item.result}
+		    ${fn:replace(fincontent, newline, "<br />")}
 		</section>
 	    </c:when>
 	    <c:otherwise>
