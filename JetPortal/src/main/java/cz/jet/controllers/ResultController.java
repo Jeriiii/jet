@@ -27,7 +27,8 @@ public class ResultController {
     
     private static final String FINISH_PREFIX = "finish";
     private static final String WORKING_PREFIX = "working";
-    
+    private static final Logger log = Logger.getLogger(ResultController.class.getName());
+	
     // time to wait if result is not avalible
     private static final long LONG_POLLING_TIMEOUT = 2500;//ms
     // maximum count of waitings for result (max number of try again)
@@ -91,7 +92,7 @@ public class ResultController {
 				break;
 			    }
 			} catch (FileNotFoundException ex) {
-			    Logger.getLogger(ResultController.class.getName()).log(Level.SEVERE, null, ex);
+			    log.log(Level.SEVERE, null, ex);
 			    m.addAttribute("error", "Could not scan.");
 			}finally{
 			    if(scan != null){
@@ -111,7 +112,7 @@ public class ResultController {
 		try {
 		    Thread.sleep(LONG_POLLING_TIMEOUT);
 		} catch (InterruptedException ex) {
-		    Logger.getLogger(ResultController.class.getName()).log(Level.SEVERE, null, ex);
+		    log.log(Level.SEVERE, null, ex);
 		}
 	    }
 	    content = modifyContent(content);
@@ -138,7 +139,7 @@ public class ResultController {
 			    content = scan.next();
 			}
 		    } catch (FileNotFoundException ex) {
-			Logger.getLogger(ResultController.class.getName()).log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, null, ex);
 			return null;
 		    }finally{
 			if(scan != null){
