@@ -29,7 +29,7 @@ import org.springframework.validation.ObjectError;
 @Controller
 public class UploadController {
     
-	private Logger log;
+	private static final Logger log = Logger.getLogger(UploadController.class.getName());
 	
     @Autowired
     private ValidatorService validator;
@@ -75,7 +75,7 @@ public class UploadController {
 			uploadPOMFile.upload(uploadedFile, fileName);
 			m.addAttribute("successFormMessage", "File was successfully uploaded. After the validation you will receive email with link, where you can see the result of validation.");
 		} catch (IOException ex) {
-			log.getLogger(UploadController.class.getName()).log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, null, ex);
 			m.addAttribute("errorFormMessage", "File upload failed: " + ex.getMessage());
 			return "upload/formUploadFile";
 		}
@@ -84,7 +84,7 @@ public class UploadController {
 		try {
 			validator.validatePom(fileName, email);
 		} catch (IOException ex) {
-			log.getLogger(UploadController.class.getName()).log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, null, ex);
 		}
 		
 		// redirect to validation site
