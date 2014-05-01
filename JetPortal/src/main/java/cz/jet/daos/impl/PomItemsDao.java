@@ -12,11 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author Petr Kukrál
  */
 @Service
-public class PomItemsDao extends BaseDao implements IPomItemsDao {
+public class PomItemsDao implements IPomItemsDao {
 	
 	@Value("${filesPath}")
     public String path;
@@ -35,31 +34,5 @@ public class PomItemsDao extends BaseDao implements IPomItemsDao {
 		
 		return fileName;
 	}
-	
-//	@Override
-//	public PomItemEntite getPomItem(int id) {
-//		String SQL = "SELECT * FROM " + POM_ITEMS_TABLE + " WHERE id = ?";
-//		PomItemEntite pitem = (PomItemEntite) this.getJdbcTemplateObject().queryForObject(SQL,
-//				new Object[]{id}, new PomItemsMapper());
-//		return pitem;
-//	}
-//
-//	@Override
-//	public long insertNewPomItem(String email) {
-//		HashMap<String, String> items = getNewHashMap();
-//		items.put("email", email);
-//		return insert(POM_ITEMS_TABLE, items);
-//	}
-//	
-//	@Override
-//	public void updateResult(String result, Long itemID) {
-//		HashMap<String, String> items = getNewHashMap();
-//		items.put("result", result);
-//		
-//		HashMap<String, String> wheres = getNewHashMap();
-//		wheres.put("id", itemID.toString());
-//		
-//		update(POM_ITEMS_TABLE, items, wheres);
-//	}	
 
 }
