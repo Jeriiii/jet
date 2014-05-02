@@ -19,17 +19,23 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
 /**
- *
+ * Service responsible for sending the result to email.
  * @author Josef Hula
  */
 
 @Service
 public class MailService {
     
-	private Logger log = Logger.getLogger(MailService.class.getName());
+    private Logger log = Logger.getLogger(MailService.class.getName());
 	
     @Value("${resultAddress}")
     private String resultAddress; // result address, set in config.properties
+    
+    @Value("${emailSubject}")
+    private String emailSubject; // email subject, set in config.properties
+    
+    @Value("${emailFrom}")
+    private String emailFrom; // email address of sender, set in config.properties
     
     @Autowired
     private JavaMailSender mailSender;
@@ -47,9 +53,12 @@ public class MailService {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				mimeMessage.setRecipient(Message.RecipientType.TO,
 						new InternetAddress(email));
-				mimeMessage.setSubject("Result of POM file validation");
-				mimeMessage.setFrom(new InternetAddress("hula.josef@gmail.com"));
-				mimeMessage.setText(resultAddress + "/result/result?id=" + fileName);
+				mimeMessage.setSubject(emailSubject);
+				mimeMessage.setFrom(new InternetAddress(emailFrom));
+				mimeMessage.setText("Hi, \n"
+                                                    + "on this link you can check result of pom file validation "
+                                                    + resultAddress + "/result/result?id=" + fileName
+                                                    + " \nCheers.");
 			}
 		};
 		try {
