@@ -6,8 +6,6 @@
 
 package cz.jet.services;
 
-import cz.jet.dao.IPomItemsDao;
-import cz.jet.utils.MvnProcessBuilder;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -24,8 +22,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
- *
- * @author josefhula
+ * Service responsible for validating the POM file
+ * @author Josef Hula
  */
 
 @Service
@@ -36,11 +34,8 @@ public class ValidatorService {
     @Autowired
     private MailService mailer;
     
-    @Autowired
-    private MvnProcessBuilder mvnProcess;
-    
     @Value("${filesPath}")
-    private String path;
+    private String path; 
     
     @Value("${pluginParam}")
     private String pluginParam; // path to validator plugin, set in config.properties
@@ -48,8 +43,8 @@ public class ValidatorService {
     @Async
     public void validatePom(String fileName, String email) throws IOException{
 	PrintWriter resultFile = new PrintWriter(path + "results/" + "working-" + fileName + ".txt", "UTF-8");
-	//String mavenPath = "/Users/josefhula/apache-maven-3.2.1/bin/mvn";
-    String mavenPath = "mvn.bat";
+	String mavenPath = "/Users/josefhula/apache-maven-3.2.1/bin/mvn";
+        //String mavenPath = "mvn.bat";
 	//String mavenPath = "C:\\apache-maven-3.2.1\\bin\\mvn.bat";
         List<String> params = new ArrayList<String>();
         File file = new File(path + "results/" + "working-" + fileName + ".txt");
@@ -62,7 +57,8 @@ public class ValidatorService {
         BufferedReader br = null;
         
         try {
-            Process process = mvnProcess.start(params);
+            ProcessBuilder pb = new ProcessBuilder(params);
+            Process process = pb.start();
             is = process.getInputStream();
             isr = new InputStreamReader(is);
             br = new BufferedReader(isr);
@@ -70,8 +66,7 @@ public class ValidatorService {
             while ((line = br.readLine()) != null) {
                 resultFile.println(line);
                 resultFile.flush();
-            }
-            file.renameTo(new File(path + "results/" + "finish-" + fileName + ".txt"));    
+            }    
        
             if(!email.equals("")){
                 mailer.sendMail(email, fileName); 
@@ -80,7 +75,8 @@ public class ValidatorService {
         } catch (Error e) {
             log.getLogger(ValidatorService.class.getName()).log(Level.SEVERE, null, e);
         } finally {
-			resultFile.close();
+            file.renameTo(new File(path + "results/" + "finish-" + fileName + ".txt")); 
+            resultFile.close();
             br.close();
         }
     }

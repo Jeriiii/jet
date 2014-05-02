@@ -56,7 +56,7 @@ public class MailService {
 				mimeMessage.setSubject(emailSubject);
 				mimeMessage.setFrom(new InternetAddress(emailFrom));
 				mimeMessage.setText("Hi, \n"
-                                                    + "on this link you can check result of pom file validation "
+                                                    + "on this link you can check result of POM file validation "
                                                     + resultAddress + "/result/result?id=" + fileName
                                                     + " \nCheers.");
 			}
