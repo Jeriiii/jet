@@ -3,19 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.jet.models;
 
 /**
+ * POM file entite for form
  *
  * @author Petr Kukrál <p.kukral@kukral.eu>
  */
-  
-import org.springframework.web.multipart.MultipartFile;  
+import org.springframework.web.multipart.MultipartFile;
 
-public class UploadedFile {  
- 
+public class UploadedFile {
+
+	/**
+	 * POM file for form
+	 */
 	private MultipartFile file;
+	/**
+	 * user e-mail
+	 */
 	private String email;
 
 	public String getEmail() {
@@ -33,4 +38,4 @@ public class UploadedFile {
 	public void setFile(MultipartFile file) {
 		this.file = file;
 	}
-}  
+}

@@ -6,6 +6,7 @@
 package cz.jet.services.exceptions;
 
 /**
+ * Exception for not created directory
  *
  * @author Petr Kukrál <p.kukral@kukral.eu>
  */
