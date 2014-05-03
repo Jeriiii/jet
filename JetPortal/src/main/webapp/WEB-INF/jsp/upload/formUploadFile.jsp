@@ -43,7 +43,7 @@
 						<label>Send results to this email address (optional): </label>  
 						<input type="email" name="email" class="form-control" size="30" maxlength="50"/>   
 				</div> 
-				<input type="submit" value="Upload" class="btn btn-primary btn-lg" />  
+				<input type="submit" value="UPLOAD" class="btn btn-primary btn-lg" /> <a class="btn btn-warning btn-lg" href="/example-file-upload">TRY IT ON EXAMPLE POM</a>
 			</form:form> 
 		</section>
     </jsp:body>
