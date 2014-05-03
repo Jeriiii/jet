@@ -14,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +36,7 @@ public class ResultController {
 	private static final Logger log = Logger.getLogger(ResultController.class.getName());
 
 	// time to wait if result is not avalible
-	private static final long LONG_POLLING_TIMEOUT = 5000;//ms
+	private static final long LONG_POLLING_TIMEOUT = 20000;//ms
 
 	/**
 	 * Functional example for using blocking queue for long polling part 1 / 3
@@ -61,6 +63,18 @@ public class ResultController {
 		final DeferredResult<String> result = new DeferredResult<String>(LONG_POLLING_TIMEOUT);
 		updateService.getUpdate(ticket, result);
 		return result;
+	}
+
+	@RequestMapping("/result/finished")
+	@ResponseBody
+	public ResponseEntity<String> getFinishedContent(@RequestParam("ticket") int ticket, @RequestParam("id") String id) {
+		String content = tryGetFinishedResult(id);
+		if (content != null) {//file exists
+			updateService.closeScan(ticket);
+			return new ResponseEntity<String>(content, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	/**
