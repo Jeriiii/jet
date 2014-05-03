@@ -43,8 +43,8 @@ public class ValidatorService {
     @Async
     public void validatePom(String fileName, String email) throws IOException{
 	PrintWriter resultFile = new PrintWriter(path + "results/" + "working-" + fileName + ".txt", "UTF-8");
-	String mavenPath = "/Users/josefhula/apache-maven-3.2.1/bin/mvn";
-        //String mavenPath = "mvn.bat";
+	//String mavenPath = "/Users/josefhula/apache-maven-3.2.1/bin/mvn";
+        String mavenPath = "mvn.bat";
 	//String mavenPath = "C:\\apache-maven-3.2.1\\bin\\mvn.bat";
         List<String> params = new ArrayList<String>();
         File file = new File(path + "results/" + "working-" + fileName + ".txt");
