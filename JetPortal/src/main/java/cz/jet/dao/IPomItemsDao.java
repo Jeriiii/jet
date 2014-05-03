@@ -3,31 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.jet.dao;
 
-
-import cz.jet.models.POMFile;
-import cz.jet.models.PomItemEntite;
-import javax.sql.DataSource;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import cz.jet.models.UploadedFile;
+import cz.jet.services.exceptions.NotCreatedDirException;
+import java.io.IOException;
 
 /**
  *
  * @author Petr Kukrál
  */
+public interface IPomItemsDao {
 
-public interface IPomItemsDao  {
-    
-	public String getUniqueFileName();
-	
-//	public void setDataSource(DataSource dataSource);
-//	
-//    public PomItemEntite getPomItem(int id);
-//	
-//    public long insertNewPomItem(String email);
-//	
-//	public void updateResult(String result, Long itemID);
-	
+	/**
+	 * Save POM file
+	 *
+	 * @param uploadedFile POM file
+	 * @return New generated file name
+	 * @throws IOException
+	 * @throws NotCreatedDirException Directory wasn't created
+	 */
+	public String save(UploadedFile uploadedFile) throws IOException, NotCreatedDirException;
+
 }
