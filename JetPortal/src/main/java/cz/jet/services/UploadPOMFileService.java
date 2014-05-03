@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.jet.services;
 
+import cz.jet.services.exceptions.NotCreatedDirException;
 import cz.jet.models.UploadedFile;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,20 +17,44 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
+ * Upload POM file on server
  *
  * @author Petr Kukrál <p.kukral@kukral.eu>
  */
 @Service
 public class UploadPOMFileService {
-    
+
+	/**
+	 * path where to store file, set in config.properties
+	 */
 	@Value("${filesPath}")
-	private String path; // path where to store file, set in config.properties
-	
-	public void upload(UploadedFile uploadedFile, String fileName) throws IOException {
+	private String path;
+
+	/**
+	 * check if dirs POMS and RESULTS exist
+	 */
+	private boolean checkedDirs = false;
+
+	/**
+	 * Upload POM file
+	 *
+	 * @param uploadedFile POM file
+	 * @param fileName New pom file name
+	 * @throws IOException
+	 * @throws NotCreatedDirException Directory wasn't created
+	 */
+	public void upload(UploadedFile uploadedFile, String fileName) throws IOException, NotCreatedDirException {
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 
 		try {
+			// check if POMS and RESULTS exist
+			if (this.checkedDirs == false) {
+				this.createDirIfNotExist(path, "poms/");
+				this.createDirIfNotExist(path, "results/");
+				this.checkedDirs = true;
+			}
+
 			MultipartFile file = uploadedFile.getFile();
 			// save file on disk
 			inputStream = file.getInputStream();
@@ -46,12 +70,32 @@ public class UploadPOMFileService {
 				outputStream.write(bytes, 0, read);
 			}
 		} finally {
-			if(inputStream != null)
+
+			if (inputStream != null) {
 				inputStream.close();
-			if(outputStream != null)
+			}
+			if (outputStream != null) {
 				outputStream.close();
+			}
 		}
-		
-		
+	}
+
+	/**
+	 * If the directory does not exist, create it
+	 *
+	 * @param path Path to directory
+	 * @param dirName Name of folder
+	 * @throws NotCreatedDirException Directory wasn't created
+	 */
+	private void createDirIfNotExist(String path, String dirName) throws NotCreatedDirException {
+		File dir = new File(path + dirName);
+
+		if (!dir.exists()) {
+			boolean result = dir.mkdir();
+
+			if (!result) {
+				throw new NotCreatedDirException(dirName);
+			}
+		}
 	}
 }

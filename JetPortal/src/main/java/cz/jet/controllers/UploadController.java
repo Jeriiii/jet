@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestParam;
 import cz.jet.services.UploadPOMFileService;
+import cz.jet.services.exceptions.NotCreatedDirException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.ObjectError;
 
@@ -24,52 +25,48 @@ import org.springframework.validation.ObjectError;
  *
  * @author Petr Kukrál
  */
- 
 // example http://www.javacodegeeks.com/2013/04/spring-mvc-form-tutorial.html
 @Controller
 public class UploadController {
-    
+
 	private static final Logger log = Logger.getLogger(UploadController.class.getName());
-	
-    @Autowired
-    private ValidatorService validator;
-	
+
 	@Autowired
-    private UploadPOMFileService uploadPOMFile;
-	
+	private ValidatorService validator;
+
 	@Autowired
-    private PomFileService pomFileService;
-	
+	private UploadPOMFileService uploadPOMFile;
+
+	@Autowired
+	private PomFileService pomFileService;
+
 	/**
 	 * render for jsp with formulářem
 	 */
-	
-	@RequestMapping(value="form-upload-file", method=RequestMethod.GET)
+	@RequestMapping(value = "form-upload-file", method = RequestMethod.GET)
 	public String loadFormPage(Model m) {
-		m.addAttribute("uploadedFile", new UploadedFile());              
+		m.addAttribute("uploadedFile", new UploadedFile());
 		return "upload/formUploadFile";
 	}
-    
-	@RequestMapping(value="form-upload-file", method=RequestMethod.POST)
-	public String fileUploaded(@RequestParam("email") String email,Model m,
+
+	@RequestMapping(value = "form-upload-file", method = RequestMethod.POST)
+	public String fileUploaded(@RequestParam("email") String email, Model m,
 			UploadedFile uploadedFile, BindingResult result) {
 //		fileValidator.validate(uploadedFile, result);
 
 		//String fileName = file.getOriginalFilename();
-
 		if (result.hasErrors()) {
 			String errmsg = "";
-			for(ObjectError err : result.getAllErrors()){
-			    errmsg = errmsg + err.toString() + "<br />";
+			for (ObjectError err : result.getAllErrors()) {
+				errmsg = errmsg + err.toString() + "<br />";
 			}
 			m.addAttribute("errorFormMessage", "File upload failed: <br />" + errmsg);
 			return "upload/formUploadFile";
 		}
-		
-		// include item to database
+
+		// generate file name
 		String fileName = pomFileService.getUniqueFileName();
-		//String fileName = Long.toString(id) + ".xml";
-		
+
 		// upload file
 		try {
 			uploadPOMFile.upload(uploadedFile, fileName);
@@ -78,17 +75,21 @@ public class UploadController {
 			log.log(Level.SEVERE, null, ex);
 			m.addAttribute("errorFormMessage", "File upload failed: " + ex.getMessage());
 			return "upload/formUploadFile";
+		} catch (NotCreatedDirException ex) {
+			log.log(Level.SEVERE, null, ex);
+			m.addAttribute("errorFormMessage", "Server Error. File not be uploaded.");
+			return "upload/formUploadFile";
 		}
-		
+
 		// validation
 		try {
 			validator.validatePom(fileName, email);
 		} catch (IOException ex) {
 			log.log(Level.SEVERE, null, ex);
 		}
-		
+
 		// redirect to validation site
-		if(email == null || email.isEmpty()) {
+		if (email == null || email.isEmpty()) {
 			m.addAttribute("successFormMessage", null);
 			m.addAttribute("id", fileName);
 			return "redirect:/result";
