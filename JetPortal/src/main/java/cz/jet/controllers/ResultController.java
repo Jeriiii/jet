@@ -34,7 +34,7 @@ public class ResultController {
 	private static final Logger log = Logger.getLogger(ResultController.class.getName());
 
 	// time to wait if result is not avalible
-	private static final long LONG_POLLING_TIMEOUT = 2500;//ms
+	private static final long LONG_POLLING_TIMEOUT = 5000;//ms
 
 	/**
 	 * Functional example for using blocking queue for long polling part 1 / 3
@@ -55,7 +55,7 @@ public class ResultController {
 	 * http://java.dzone.com/articles/long-polling-spring-32s
 	 *
 	 */
-	@RequestMapping("/deferred")
+	@RequestMapping("/result/update")
 	@ResponseBody
 	public DeferredResult<String> getUpdate(@RequestParam("ticket") int ticket) {
 		final DeferredResult<String> result = new DeferredResult<String>(LONG_POLLING_TIMEOUT);
@@ -70,8 +70,8 @@ public class ResultController {
 	 * @param m
 	 * @return
 	 */
-	@RequestMapping(value = "result/update", method = RequestMethod.GET)
-	public String updateResult(@RequestParam("id") String id, @RequestParam("lastmod") long lastmod, Model m) {
+//	@RequestMapping(value = "result/update", method = RequestMethod.GET)
+//	public String updateResult(@RequestParam("id") String id, @RequestParam("lastmod") long lastmod, Model m) {
 //	int waitings = 0;
 //	String content = "";
 //	content = tryGetFinishedResult(id);
@@ -118,16 +118,15 @@ public class ResultController {
 //	    m.addAttribute("content", content);
 //	    m.addAttribute("lastmod", lastmod);
 //	}
-		return "result/update";
-	}
-
+//		return "result/update";
+//	}
 	/**
 	 * Tries to get content of file with finished results
 	 *
 	 * @param id file id
 	 * @return content of file or null if file not exists
 	 */
-	private synchronized String tryGetFinishedResult(String id) {
+	private String tryGetFinishedResult(String id) {
 		File finish = new File(getFilePath(FINISH_PREFIX, id));
 		String content = "";
 		if (finish.exists()) {
@@ -158,54 +157,16 @@ public class ResultController {
 		String content = tryGetFinishedResult(id);
 		if (content != null) {
 			m.addAttribute("fincontent", content);
-
-		} /**
-		 * Functional example for using blocking queue for long polling part 3 /
-		 * 3 http://java.dzone.com/articles/long-polling-spring-32s
-		 */
-		else {
+		} else {
 			int ticket = updateService.subscribe(new File(getFilePath(WORKING_PREFIX, id)));
 			m.addAttribute("ticket", ticket);
 		}
-
 		return "result/result";
 	}
 
-	private synchronized String modifyContent(String content) {
-		//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	private String modifyContent(String content) {
+
 		return content;
-	}
-
-	/**
-	 * Add HTML tag to string
-	 *
-	 * @param line Line of result
-	 * @return Line of result with html tags
-	 */
-	private String addHtmlTags(String line) {
-		//types
-		String info = "[INFO]";
-		String error = "[ERROR]";
-		String warning = "[WARNING]";
-
-		if (line.toLowerCase().contains(info)) {
-			line.replace(info, "<span class='info'>" + info + "</span>");
-			line = "<tr class=\"info\"><td>" + line + "</td></tr>";
-		} else if (line.toLowerCase().contains(error)) {
-			line.replace(info, "<span class='error'>" + error + "</span>");
-			line = "<tr class=\"danger\"><td>" + line + "</td></tr>";
-		} else if (line.toLowerCase().contains(warning)) {
-			line.replace(info, "<span class='warning'>" + warning + "</span>");
-			line = "<tr class=\"warning\"><td>" + line + "</td></tr>";
-		}
-
-		//line
-		String strLine = "----*";//Str.matches
-		if (line.matches(strLine)) {
-			line.replaceAll(strLine, "<hr />");
-		}
-
-		return line;
 	}
 
 }

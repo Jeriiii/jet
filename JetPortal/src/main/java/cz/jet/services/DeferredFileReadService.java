@@ -50,6 +50,9 @@ public class DeferredFileReadService {
 			while (!result.isSetOrExpired()) {
 				String line = scan.readLine();
 				if (line != null) {
+					System.out.println(line);
+					line = addHtmlTags(line);
+					System.out.println(line);
 					result.setResult(line);
 				} else {
 					Thread.sleep(TRY_READ_AGAIN_IN);
@@ -70,6 +73,38 @@ public class DeferredFileReadService {
 			Logger.getLogger(DeferredFileReadService.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		scanners.remove((Integer) ticket);
+	}
+
+	/**
+	 * Add HTML tag to string
+	 *
+	 * @param line Line of result
+	 * @return Line of result with html tags
+	 */
+	private String addHtmlTags(String line) {
+		//types
+		String info = "[INFO]";
+		String error = "[ERROR]";
+		String warning = "[WARNING]";
+
+		if (line.contains(info)) {
+			line = line.replace(info, "<td><span class='info'>" + info + "</span></td><td>");
+			line = "<tr class=\"info\">" + line + "</td></tr>";
+		} else if (line.contains(error)) {
+			line = line.replace(error, "<td><span class='error'>" + error + "</span></td><td>");
+			line = "<tr class=\"danger\">" + line + "</td></tr>";
+		} else if (line.contains(warning)) {
+			line = line.replace(warning, "<td><span class='warning'>" + warning + "</span></td><td>");
+			line = "<tr class=\"warning\">" + line + "</td></tr>";
+		}
+
+		//line
+		String strLine = "----*";//Str.matches
+		if (line.matches(strLine)) {
+			line.replaceAll(strLine, "<hr />");
+		}
+		System.out.println(line);
+		return line;
 	}
 
 }
