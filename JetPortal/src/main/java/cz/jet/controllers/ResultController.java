@@ -35,8 +35,6 @@ public class ResultController {
 
 	// time to wait if result is not avalible
 	private static final long LONG_POLLING_TIMEOUT = 2500;//ms
-//    // maximum count of waitings for result (max number of try again)
-//    private static final int MAX_WAITINGS = 4;
 
 	/**
 	 * Functional example for using blocking queue for long polling part 1 / 3
@@ -160,6 +158,7 @@ public class ResultController {
 		String content = tryGetFinishedResult(id);
 		if (content != null) {
 			m.addAttribute("fincontent", content);
+
 		} /**
 		 * Functional example for using blocking queue for long polling part 3 /
 		 * 3 http://java.dzone.com/articles/long-polling-spring-32s
@@ -175,6 +174,38 @@ public class ResultController {
 	private synchronized String modifyContent(String content) {
 		//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 		return content;
+	}
+
+	/**
+	 * Add HTML tag to string
+	 *
+	 * @param line Line of result
+	 * @return Line of result with html tags
+	 */
+	private String addHtmlTags(String line) {
+		//types
+		String info = "[INFO]";
+		String error = "[ERROR]";
+		String warning = "[WARNING]";
+
+		if (line.toLowerCase().contains(info)) {
+			line.replace(info, "<span class='info'>" + info + "</span>");
+			line = "<tr class=\"info\"><td>" + line + "</td></tr>";
+		} else if (line.toLowerCase().contains(error)) {
+			line.replace(info, "<span class='error'>" + error + "</span>");
+			line = "<tr class=\"danger\"><td>" + line + "</td></tr>";
+		} else if (line.toLowerCase().contains(warning)) {
+			line.replace(info, "<span class='warning'>" + warning + "</span>");
+			line = "<tr class=\"warning\"><td>" + line + "</td></tr>";
+		}
+
+		//line
+		String strLine = "----*";//Str.matches
+		if (line.matches(strLine)) {
+			line.replaceAll(strLine, "<hr />");
+		}
+
+		return line;
 	}
 
 }
