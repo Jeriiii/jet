@@ -5,17 +5,22 @@
  */
 package cz.jet.controllers;
 
+import cz.jet.services.DeferredFileReadService;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.async.DeferredResult;
 
 /**
  *
@@ -30,15 +35,14 @@ public class ResultController {
 
 	// time to wait if result is not avalible
 	private static final long LONG_POLLING_TIMEOUT = 2500;//ms
-	// maximum count of waitings for result (max number of try again)
-	private static final int MAX_WAITINGS = 4;
 
 	/**
 	 * Functional example for using blocking queue for long polling part 1 / 3
 	 * http://java.dzone.com/articles/long-polling-spring-32s
 	 */
-//    @Autowired
-//    private DeferredResultService updateService;
+	@Autowired
+	private DeferredFileReadService updateService;
+
 	@Value("${filesPath}")
 	private String path;
 
@@ -51,16 +55,14 @@ public class ResultController {
 	 * http://java.dzone.com/articles/long-polling-spring-32s
 	 *
 	 */
-//    @RequestMapping("/deferred")
-//    @ResponseBody
-//    public DeferredResult<String> getUpdate() {
-//
-//	final DeferredResult<String> result = new DeferredResult<String>(5000);
-////
-////	result.setResult("<strong>test</strong>");
-//	updateService.getUpdate(result);
-//	return result;
-//    }
+	@RequestMapping("/deferred")
+	@ResponseBody
+	public DeferredResult<String> getUpdate(@RequestParam("ticket") int ticket) {
+		final DeferredResult<String> result = new DeferredResult<String>(LONG_POLLING_TIMEOUT);
+		updateService.getUpdate(ticket, result);
+		return result;
+	}
+
 	/**
 	 *
 	 * @param lastmod
@@ -70,54 +72,53 @@ public class ResultController {
 	 */
 	@RequestMapping(value = "result/update", method = RequestMethod.GET)
 	public String updateResult(@RequestParam("id") String id, @RequestParam("lastmod") long lastmod, Model m) {
-		int waitings = 0;
-		String content = "";
-		content = tryGetFinishedResult(id);
-		if (content != null) {
-			m.addAttribute("fincontent", content);
-		} else {
-			while (true) {
-				File working = new File(getFilePath(WORKING_PREFIX, id));
-				if (working.exists() && working.canRead()) {
-					if (lastmod != working.lastModified()) {
-						Scanner scan = null;
-						try {
-							scan = new Scanner(working).useDelimiter("\\Z"); //delimiter on end of input
-							if (scan.hasNext()) {
-								content = scan.next();
-								lastmod = working.lastModified();
-								break;
-							}
-						} catch (FileNotFoundException ex) {
-							log.log(Level.SEVERE, null, ex);
-							m.addAttribute("error", "Could not scan.");
-						} finally {
-							if (scan != null) {
-								scan.close();
-							}
-						}
-					}
-				} else {
-					m.addAttribute("error", "File was not found or is not readable.");
-					break;
-				}
-				//if nothing (no break), wait
-				if (waitings >= MAX_WAITINGS) {
-					break;
-				}
-				waitings++;
-				try {
-					Thread.sleep(LONG_POLLING_TIMEOUT);
-				} catch (InterruptedException ex) {
-					log.log(Level.SEVERE, null, ex);
-				}
-			}
-			content = modifyContent(content);
-			m.addAttribute("content", content);
-			m.addAttribute("lastmod", lastmod);
-		}
+//	int waitings = 0;
+//	String content = "";
+//	content = tryGetFinishedResult(id);
+//	if(content != null){
+//	    m.addAttribute("fincontent", content);
+//	}else{
+//	    while(true){
+//		File working = new File(getFilePath(WORKING_PREFIX, id));
+//		if(working.exists() && working.canRead()){
+//		    if(lastmod != working.lastModified()){
+//			Scanner scan = null;
+//			try {
+//			    scan = new Scanner(working).useDelimiter("\\Z"); //delimiter on end of input
+//			    if(scan.hasNext()){
+//				content = scan.next();
+//				lastmod = working.lastModified();
+//				break;
+//			    }
+//			} catch (FileNotFoundException ex) {
+//			    log.log(Level.SEVERE, null, ex);
+//			    m.addAttribute("error", "Could not scan.");
+//			}finally{
+//			    if(scan != null){
+//				scan.close();
+//			    }
+//			}
+//		    }
+//		}else{
+//		    m.addAttribute("error", "File was not found or is not readable.");
+//		    break;
+//		}
+//		//if nothing (no break), wait
+////		if(waitings >= MAX_WAITINGS){
+////		    break;
+////		}
+//		waitings++;
+//		try {
+//		    Thread.sleep(LONG_POLLING_TIMEOUT);
+//		} catch (InterruptedException ex) {
+//		    log.log(Level.SEVERE, null, ex);
+//		}
+//	    }
+//	    content = modifyContent(content);
+//	    m.addAttribute("content", content);
+//	    m.addAttribute("lastmod", lastmod);
+//	}
 		return "result/update";
-
 	}
 
 	/**
@@ -157,14 +158,15 @@ public class ResultController {
 		String content = tryGetFinishedResult(id);
 		if (content != null) {
 			m.addAttribute("fincontent", content);
-		}
-		/**
+
+		} /**
 		 * Functional example for using blocking queue for long polling part 3 /
 		 * 3 http://java.dzone.com/articles/long-polling-spring-32s
 		 */
-//		else{
-//		    updateService.subscribe();
-//		}
+		else {
+			int ticket = updateService.subscribe(new File(getFilePath(WORKING_PREFIX, id)));
+			m.addAttribute("ticket", ticket);
+		}
 
 		return "result/result";
 	}
