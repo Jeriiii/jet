@@ -24,10 +24,10 @@
     
     <jsp:attribute name="foot">
 	<script type="text/javascript">
-	    var refreshTime = 1000; //ms
-	    var errorRefreshTime = 10000;
+	    var refreshTime = 0; //ms
+	    var errorRefreshTime = 1000;
 	    var temp = $('#temp');//temp element
-	    var results = $('#results'); //element for data writing
+	    var results = $('#results table'); //element for data writing
 	    
 	    var lastmod = 0;
 	    
@@ -44,17 +44,20 @@
 	    }
 	    
 	    function refreshResults(){
-		temp.load("${pageContext.request.contextPath}/result/update?id=${fileid}&lastmod=" + lastmod , function( response, status, xhr ) {
+		temp.load("${pageContext.request.contextPath}/result/update?ticket=${ticket}" , function( response, status, xhr ) {
 		    if(status == 'error'){
 			setTimeout(function (){
 			    refreshResults();
 			}, errorRefreshTime);
-		    }
+		    }else{
+				updateContent();
+				isWorking();
+			}
 		});
 	    }
 	    //when ajax response arrives
 	    function updateContent(){
-		results.html($('#newcontent').html());
+			results.append(temp.html());
 	    }
 	    
 	</script>
@@ -70,46 +73,7 @@
 		isWorking();
 	    </script>
 	</c:if>
-<!--	    <script type="text/javascript">
-		var refreshTime = 1000; //ms
-		//var finishPath = "${pageContext.request.contextPath}${finishPath}";
-		//var workingPath = "${pageContext.request.contextPath}${workingPath}";
-		var finishPath = "/results/finish-${filename}";
-		var workingPath = "/results/working-${filename}";
-		$(function(){
-		    var results = $('#results');//element do ktereho se bude zapisovat
-		    function updateGraphics(){
-			$('#loading').css('display', 'none');
-			$('#done').css('display', 'block');
-		    }
-	
-		    function loadFinish(){
-			results.load(finishPath, function( response, status, xhr ) {
-			    if(status == 'error'){//file not found
-				setTimeout(function (){
-				    refreshResults();
-				}, refreshTime);
-			    }else{//nacteny kompletni vysledky
-				updateGraphics();//zobrazeni se aktualizuje
-			    }
-			});
-		    }
-	
-		    function refreshResults(){
-			results.load(workingPath, function( response, status, xhr ) {
-			    if(status == 'error'){//file not found
-				loadFinish();
-			    }else{
-				setTimeout(function (){
-				    refreshResults();
-				}, refreshTime);
-			    }
-			});
-		    }
-		    refreshResults();
-		    
-		});
-	    </script>-->
+
     </jsp:attribute>
     
     <jsp:attribute name="menu">
@@ -117,7 +81,7 @@
     </jsp:attribute>
     
     <jsp:body>
-	<h1>Results:${ticket}</h1>
+	<h1>Results</h1>
 	<div class="runinfo">
 	    <img id="loading" src="${pageContext.request.contextPath}/resources/img/ajax-loader.gif"/>
 	    <h4 id="done">Validation completed</h4>
@@ -134,6 +98,9 @@
 	    </c:when>
 	    <c:otherwise>
 		<section id="results" class="well">
+			<table class="table">
+				
+			</table>
 		</section>
 	    </c:otherwise>
 	</c:choose>
