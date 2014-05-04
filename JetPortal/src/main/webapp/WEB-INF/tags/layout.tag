@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<title>POM Validator</title>
+		<title>JaMP</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 		<!--[if lt IE 9]>
