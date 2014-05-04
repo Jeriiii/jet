@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidatorService {
     
-    private Logger log;
+    private static final Logger log = Logger.getLogger(ValidatorService.class.getName());
 	
     @Autowired
     private MailService mailer;
@@ -72,8 +72,8 @@ public class ValidatorService {
                 mailer.sendMail(email, fileName); 
             }
             
-        } catch (Error e) {
-            log.getLogger(ValidatorService.class.getName()).log(Level.SEVERE, null, e);
+        } catch (Error ex) {
+            log.log(Level.SEVERE, null, ex);
         } finally {
             file.renameTo(new File(path + "results/" + "finish-" + fileName + ".txt")); 
             resultFile.close();
