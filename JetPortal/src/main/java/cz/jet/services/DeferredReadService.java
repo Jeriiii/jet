@@ -1,0 +1,52 @@
+package cz.jet.services;
+
+import cz.jet.daos.impl.PomItemsDao;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.async.DeferredResult;
+
+@Service
+public class DeferredReadService {
+
+	private static final Logger logger = Logger.getLogger(DeferredReadService.class.getName());
+
+	public static final int TRY_READ_AGAIN_IN = 500;//how long service waits if has nothing to read and then try read again
+
+	/**
+	 * DAO for POM
+	 */
+	@Autowired
+	private PomItemsDao pomDao;
+
+	@Autowired
+	private OutputTagService tagService;
+
+	public int subscribe(String id) { //has to return ticket
+		return pomDao.startNewReading(id);
+	}
+
+	@Async
+	public void getUpdate(int ticket, DeferredResult<String> result) {
+		try {
+			while (!result.isSetOrExpired()) {
+				String line = pomDao.getNextLine(ticket);
+				if (line != null) {
+					line = tagService.addTagsToLine(line);
+					result.setResult(line);
+				} else {
+					Thread.sleep(TRY_READ_AGAIN_IN);
+				}
+			}
+		} catch (InterruptedException ex) {
+			logger.log(Level.SEVERE, null, ex);
+		}
+	}
+
+	public void endScan(int ticket) {
+		pomDao.endReading(ticket);
+	}
+
+}

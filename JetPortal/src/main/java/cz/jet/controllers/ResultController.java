@@ -5,7 +5,9 @@
  */
 package cz.jet.controllers;
 
-import cz.jet.services.DeferredFileReadService;
+import cz.jet.daos.impl.PomItemsDao;
+import cz.jet.services.DeferredReadService;
+import cz.jet.services.OutputTagService;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.Socket;
@@ -31,26 +33,26 @@ import org.springframework.web.context.request.async.DeferredResult;
 @Controller
 public class ResultController {
 
-	private static final String FINISH_PREFIX = "finish";
-	private static final String WORKING_PREFIX = "working";
 	private static final Logger log = Logger.getLogger(ResultController.class.getName());
 
 	// time to wait if result is not avalible
-	private static final long LONG_POLLING_TIMEOUT = 20000;//ms
+	private static final long LONG_POLLING_TIMEOUT = 5000;//ms
 
 	/**
 	 * Functional example for using blocking queue for long polling part 1 / 3
 	 * http://java.dzone.com/articles/long-polling-spring-32s
 	 */
 	@Autowired
-	private DeferredFileReadService updateService;
+	private DeferredReadService updateService;
 
-	@Value("${filesPath}")
-	private String path;
+	@Autowired
+	private OutputTagService tagService;
 
-	private synchronized String getFilePath(String prefix, String id) {
-		return path + "results/" + prefix + "-" + id + ".txt";
-	}
+	/**
+	 * DAO for POM
+	 */
+	@Autowired
+	private PomItemsDao pomDao;
 
 	/*
 	 * Functional example for using blocking queue for long polling part 2 / 3
@@ -70,7 +72,7 @@ public class ResultController {
 	public ResponseEntity<String> getFinishedContent(@RequestParam("ticket") int ticket, @RequestParam("id") String id) {
 		String content = tryGetFinishedResult(id);
 		if (content != null) {//file exists
-			updateService.closeScan(ticket);
+			updateService.endScan(ticket);
 			return new ResponseEntity<String>(content, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
@@ -78,90 +80,16 @@ public class ResultController {
 	}
 
 	/**
-	 *
-	 * @param lastmod
-	 * @param id
-	 * @param m
-	 * @return
-	 */
-//	@RequestMapping(value = "result/update", method = RequestMethod.GET)
-//	public String updateResult(@RequestParam("id") String id, @RequestParam("lastmod") long lastmod, Model m) {
-//	int waitings = 0;
-//	String content = "";
-//	content = tryGetFinishedResult(id);
-//	if(content != null){
-//	    m.addAttribute("fincontent", content);
-//	}else{
-//	    while(true){
-//		File working = new File(getFilePath(WORKING_PREFIX, id));
-//		if(working.exists() && working.canRead()){
-//		    if(lastmod != working.lastModified()){
-//			Scanner scan = null;
-//			try {
-//			    scan = new Scanner(working).useDelimiter("\\Z"); //delimiter on end of input
-//			    if(scan.hasNext()){
-//				content = scan.next();
-//				lastmod = working.lastModified();
-//				break;
-//			    }
-//			} catch (FileNotFoundException ex) {
-//			    log.log(Level.SEVERE, null, ex);
-//			    m.addAttribute("error", "Could not scan.");
-//			}finally{
-//			    if(scan != null){
-//				scan.close();
-//			    }
-//			}
-//		    }
-//		}else{
-//		    m.addAttribute("error", "File was not found or is not readable.");
-//		    break;
-//		}
-//		//if nothing (no break), wait
-////		if(waitings >= MAX_WAITINGS){
-////		    break;
-////		}
-//		waitings++;
-//		try {
-//		    Thread.sleep(LONG_POLLING_TIMEOUT);
-//		} catch (InterruptedException ex) {
-//		    log.log(Level.SEVERE, null, ex);
-//		}
-//	    }
-//	    content = modifyContent(content);
-//	    m.addAttribute("content", content);
-//	    m.addAttribute("lastmod", lastmod);
-//	}
-//		return "result/update";
-//	}
-	/**
 	 * Tries to get content of file with finished results
 	 *
 	 * @param id file id
 	 * @return content of file or null if file not exists
 	 */
 	private String tryGetFinishedResult(String id) {
-		File finish = new File(getFilePath(FINISH_PREFIX, id));
-		String content = "";
-		if (finish.exists()) {
-			Scanner scan = null;
-			try {
-				scan = new Scanner(finish).useDelimiter("\\Z"); //delimiter na konec souboru
-				if (scan.hasNext()) {
-					content = scan.next();
-				}
-			} catch (FileNotFoundException ex) {
-				log.log(Level.SEVERE, null, ex);
-				return null;
-			} finally {
-				if (scan != null) {
-					scan.close();
-				}
-			}
-		} else {
-			return null;
+		String content = pomDao.getFinishedResult(id);
+		if (content != null) {
+			content = modifyContent(content);
 		}
-		content = modifyContent(content);
 		return content;
 	}
 
@@ -172,14 +100,14 @@ public class ResultController {
 		if (content != null) {
 			m.addAttribute("fincontent", content);
 		} else {
-			int ticket = updateService.subscribe(new File(getFilePath(WORKING_PREFIX, id)));
+			int ticket = updateService.subscribe(id);
 			m.addAttribute("ticket", ticket);
 		}
 		return "result/result";
 	}
 
 	private String modifyContent(String content) {
-
+		content = tagService.addTagsToContent(content);
 		return content;
 	}
 
