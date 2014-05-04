@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.06"
-     inkscape:cx="556.0939"
-     inkscape:cy="281.76001"
+     inkscape:zoom="1.4990664"
+     inkscape:cx="577.51265"
+     inkscape:cy="211.17246"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -125,6 +125,7 @@
                style="font-size:80px;word-spacing:0"><tspan
    id="tspan10"
    style="fill:#ff6804">a</tspan>
+
 
 ven</text>
           </g>
@@ -293,6 +294,7 @@ ven</text>
    id="tspan5243"
    style="fill:#ff6804">a</tspan>
 
+
 ven</text>
     </g>
     <path
@@ -447,6 +449,7 @@ ven</text>
              id="text5458"><tspan
    style="fill:#ff6804"
    id="tspan5460">a</tspan>
+
 
 ven</text>
         </g>
@@ -640,6 +643,7 @@ ven</text>
            id="text3154"><tspan
    style="fill:#ff6804"
    id="tspan3156">a</tspan>
+
 ven</text>
       </g>
       <path
@@ -844,6 +848,7 @@ ven</text>
              id="text3275"><tspan
    style="fill:#ff6804"
    id="tspan3277">a</tspan>
+
 ven</text>
         </g>
         <path
@@ -883,5 +888,30 @@ ven</text>
            sodipodi:nodetypes="ccc" />
       </g>
     </g>
+    <text
+       xml:space="preserve"
+       style="font-size:26.2353878px;font-style:oblique;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#ff6804;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana Bold Oblique"
+       x="444.06601"
+       y="967.00568"
+       id="text3297-2"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="D:\Documents\Dropbox\NetBeansProjects\JET\JetPortal\src\main\webapp\resources\img\favicon.ico.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan3299-3"
+         x="444.06601"
+         y="967.00568">a</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:24.51806641px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+       x="379.43671"
+       y="965.14716"
+       id="text3386"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3388"
+         x="379.43671"
+         y="965.14716">favicon</tspan></text>
   </g>
 </svg>
