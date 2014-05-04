@@ -7,9 +7,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="newline" value="<%= \"\n\" %>" />
 
 
 <t:layout>
@@ -25,10 +23,8 @@
     <jsp:attribute name="foot">
 	<script type="text/javascript">
 	    var refreshTime = 0; //ms
-	    var errorRefreshTime = 1000;
 	    var temp = $('#temp');//temp element
 	    var results = $('#results table'); //element for data writing
-	    
 	    var lastmod = 0;
 	    
 	    //called when job is done
@@ -38,27 +34,40 @@
 	    }
 	    //called when results arrives and job is still not finished
 	    function isWorking(){
-		setTimeout(function (){
-		    refreshResults();
-		}, refreshTime);
+			tryToGetComplete();
 	    }
 	    
 	    function refreshResults(){
-		temp.load("${pageContext.request.contextPath}/result/update?ticket=${ticket}" , function( response, status, xhr ) {
-		    if(status == 'error'){
-			setTimeout(function (){
-			    refreshResults();
-			}, errorRefreshTime);
-		    }else{
-				updateContent();
-				isWorking();
-			}
-		});
+			temp.load("${pageContext.request.contextPath}/result/update?ticket=${ticket}" , function( response, status, xhr ) {
+				if(status == 'error'){
+					isWorking();
+				}else{
+						updateContent();
+						isWorking();
+				}
+			});
 	    }
+		function tryToGetComplete(){
+			temp.load("${pageContext.request.contextPath}/result/finished?id=${fileid}&ticket=${ticket}" , function( response, status, xhr ) {
+				if(status == 'error'){
+					setTimeout(function (){
+						refreshResults();
+					}, refreshTime);
+				}else{
+					updateFinishedContent();
+				}
+			});
+		}
 	    //when ajax response arrives
 	    function updateContent(){
 			results.append(temp.html());
 	    }
+		//when ajax response arrives
+	    function updateFinishedContent(){
+			results.html(temp.html());
+			isFinished();
+	    }
+		
 	    
 	</script>
 	
@@ -66,7 +75,6 @@
 	    <script>
 		isFinished();
 	    </script>
-	    
 	</c:if>
 	<c:if test="${empty fincontent}">
 	    <script>
@@ -93,7 +101,9 @@
 	<c:choose>
 	    <c:when test="${not empty fincontent}">
 		<section id="results" class="well">
-		    ${fn:replace(fincontent, newline, "<br />")}
+			<table class="table">
+				<c:out escapeXml="false" value="${fincontent}"/>
+			</table>
 		</section>
 	    </c:when>
 	    <c:otherwise>

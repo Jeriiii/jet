@@ -25,4 +25,13 @@ public interface IPomItemsDao {
 	 */
 	public String save(UploadedFile uploadedFile) throws IOException, NotCreatedDirException;
 
+	//null if nothing
+	public String getFinishedResult(String id);
+
+	public int startNewReading(String id);
+
+	public String getNextLine(int ticket);
+
+	public void endReading(int ticket);
+
 }
