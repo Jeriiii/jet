@@ -13,7 +13,10 @@ public class DeferredReadService {
 
 	private static final Logger logger = Logger.getLogger(DeferredReadService.class.getName());
 
-	public static final int TRY_READ_AGAIN_IN = 500;//how long service waits if has nothing to read and then try read again
+	/**
+	 * how long service waits if has nothing to read and then try read again
+	 */
+	public static final int TRY_READ_AGAIN_IN = 500;
 
 	/**
 	 * DAO for POM
@@ -21,13 +24,30 @@ public class DeferredReadService {
 	@Autowired
 	private PomItemsDao pomDao;
 
+	/**
+	 * Ouput modify service
+	 */
 	@Autowired
 	private OutputTagService tagService;
 
+	/**
+	 * Creating new reading instance
+	 *
+	 * @param id identifer of result
+	 * @return ticket for acessing created reading instance
+	 */
 	public int subscribe(String id) { //has to return ticket
 		return pomDao.startNewReading(id);
 	}
 
+	/**
+	 * This method will set result of Deferred result if there is a next line in
+	 * reading instance. Otherwise it keeps trying again after some time until
+	 * DeferredResult time out
+	 *
+	 * @param ticket identifer of reading instance
+	 * @param result
+	 */
 	@Async
 	public void getUpdate(int ticket, DeferredResult<String> result) {
 		try {
@@ -45,6 +65,11 @@ public class DeferredReadService {
 		}
 	}
 
+	/**
+	 * Destroys reading instance properly
+	 *
+	 * @param ticket identifer of instance
+	 */
 	public void endScan(int ticket) {
 		pomDao.endReading(ticket);
 	}

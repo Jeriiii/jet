@@ -1,7 +1,7 @@
 <%-- 
     Document   : result
     Created on : 28.3.2014, 18:29:46
-    Author     : josefhula
+    Author     : jan kotalik
 --%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -22,21 +22,21 @@
     
     <jsp:attribute name="foot">
 	<script type="text/javascript">
-	    var refreshTime = 0; //ms
-	    var temp = $('#temp');//temp element
+		//this script implements ajax request and response operations
+	    var refreshTime = 0; //ms - time to wait every refresh try (can be 0 with long polling)
+	    var temp = $('#temp');//temp element - for work with arriwing data
 	    var results = $('#results table'); //element for data writing
-	    var lastmod = 0;
 	    
 	    //called when job is done
 	    function isFinished(){
 		$('#loading').css('display', 'none');
 		$('#done').css('display', 'block');
 	    }
-	    //called when results arrives and job is still not finished
+	    //called when results arrives and job (validation) is still not finished
 	    function isWorking(){
 			tryToGetComplete();
 	    }
-	    
+	    //ajax request, response is more results
 	    function refreshResults(){
 			temp.load("${pageContext.request.contextPath}/result/update?ticket=${ticket}" , function( response, status, xhr ) {
 				if(status == 'error'){
@@ -47,6 +47,7 @@
 				}
 			});
 	    }
+		//ajax request - is validation completed? Entire content if so, error if not.
 		function tryToGetComplete(){
 			temp.load("${pageContext.request.contextPath}/result/finished?id=${fileid}&ticket=${ticket}" , function( response, status, xhr ) {
 				if(status == 'error'){
@@ -58,27 +59,25 @@
 				}
 			});
 		}
-	    //when ajax response arrives
+	    //updates content when response arrives
 	    function updateContent(){
 			results.append(temp.html());
 			scrollToBottomOfData();
 	    }
-		//when ajax response arrives
+		//updates content when entire finished document arrives
 	    function updateFinishedContent(){
 			results.html(temp.html());
 			isFinished();
 	    }
-		
+		//scrolls with window to the bottom
 		function scrollToBottomOfData(){
 			$("html, body").animate({ scrollTop: $(document).height() }, 0);
 		}
-		
-	    
 	</script>
 	
 	<c:if test="${not empty fincontent}">
 	    <script>
-		isFinished();
+			isFinished();
 	    </script>
 	</c:if>
 	<c:if test="${empty fincontent}">
