@@ -28,7 +28,10 @@
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="container">
 		    <div class="navbar-header">
-			    <a class="navbar-brand" href="/">POM Validator</a>
+			    <a class="navbar-brand" href="/">
+					<img src="${pageContext.request.contextPath}/resources/img/logo.png" width="305" height="82" alt="JaMP"/>
+				</a>
+				
 		    </div>
 		    <ul class="nav navbar-nav">
 <!--			<li>
