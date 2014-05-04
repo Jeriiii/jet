@@ -11,7 +11,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Petr Kukrál
+ * @author Petr Kukrál a Jan Kotalík
  */
 public interface IPomItemsDao {
 
@@ -25,13 +25,33 @@ public interface IPomItemsDao {
 	 */
 	public String save(UploadedFile uploadedFile) throws IOException, NotCreatedDirException;
 
-	//null if nothing
+	/**
+	 * Tries get finished result (if is validation finished)
+	 *
+	 * @param id identifer of result
+	 * @return content of result or null if finished result does not exist
+	 */
 	public String getFinishedResult(String id);
 
+	/**
+	 * Starts new reading instance
+	 *
+	 * @param id identifer of result
+	 * @return ticket (identifer) for this reading instance
+	 */
 	public int startNewReading(String id);
 
+	/**
+	 * @param ticket identifer of reading instance
+	 * @return next line of reading instance or null if there is no next line
+	 */
 	public String getNextLine(int ticket);
 
+	/**
+	 * Closes instance and ends reading properly
+	 *
+	 * @param ticket identifer of reading instance to close
+	 */
 	public void endReading(int ticket);
 
 }

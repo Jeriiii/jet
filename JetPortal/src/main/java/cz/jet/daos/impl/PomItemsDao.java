@@ -28,16 +28,26 @@ import org.springframework.stereotype.Repository;
 /**
  * Dao for POM file
  *
- * @author Petr Kukrál
+ * @author Petr Kukrál a Jan Kotalík
  */
 @Repository
 public class PomItemsDao implements IPomItemsDao {
 
+	/**
+	 * prefix for file with completed result
+	 */
 	private static final String FINISH_PREFIX = "finish";
+
+	/**
+	 * prefix for file which is still updated
+	 */
 	private static final String WORKING_PREFIX = "working";
 
 	private static final Logger log = Logger.getLogger(ResultController.class.getName());
 
+	/**
+	 * List of reading instances
+	 */
 	private final HashMap<Integer, RandomAccessFile> scanners = new HashMap<Integer, RandomAccessFile>();
 
 	/**
@@ -68,6 +78,12 @@ public class PomItemsDao implements IPomItemsDao {
 		return fileName;
 	}
 
+	/**
+	 * Tries get finished result (if is validation finished)
+	 *
+	 * @param id identifer of result
+	 * @return content of result or null if finished result does not exist
+	 */
 	@Override
 	public String getFinishedResult(String id) {
 		File finish = new File(getFilePath(FINISH_PREFIX, id));
@@ -93,6 +109,12 @@ public class PomItemsDao implements IPomItemsDao {
 		return content;
 	}
 
+	/**
+	 * Starts new reading instance
+	 *
+	 * @param id identifer of result
+	 * @return ticket (identifer) for this reading instance
+	 */
 	@Override
 	public int startNewReading(String id) {
 		try {
@@ -107,6 +129,10 @@ public class PomItemsDao implements IPomItemsDao {
 		}
 	}
 
+	/**
+	 * @param ticket identifer of reading instance
+	 * @return next line of reading instance or null if there is no next line
+	 */
 	@Override
 	public String getNextLine(int ticket) {
 		RandomAccessFile scan = scanners.get((Integer) ticket);
@@ -116,6 +142,22 @@ public class PomItemsDao implements IPomItemsDao {
 			Logger.getLogger(PomItemsDao.class.getName()).log(Level.SEVERE, null, ex);
 			return null;
 		}
+	}
+
+	/**
+	 * Closes instance and ends reading properly
+	 *
+	 * @param ticket identifer of reading instance to close
+	 */
+	@Override
+	public void endReading(int ticket) {
+		RandomAccessFile scan = scanners.get((Integer) ticket);
+		try {
+			scan.close();
+		} catch (IOException ex) {
+			Logger.getLogger(DeferredReadService.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		scanners.remove((Integer) ticket);
 	}
 
 	/**
@@ -137,10 +179,23 @@ public class PomItemsDao implements IPomItemsDao {
 		return fileName;
 	}
 
+	/**
+	 * Build entire filepath
+	 *
+	 * @param prefix prefix of file
+	 * @param id identifer of file
+	 * @return file path
+	 */
 	private synchronized String getFilePath(String prefix, String id) {
 		return path + "results/" + prefix + "-" + id + ".txt";
 	}
 
+	/**
+	 * Generates new ticket
+	 *
+	 * @param uniquefor ticket has to be unique for this list
+	 * @return unsigned number which can be used as key for list
+	 */
 	private int getNewTicket(HashMap uniquefor) {
 		Random rand = new Random();
 		int ticket = rand.nextInt(Integer.MAX_VALUE);
@@ -150,14 +205,4 @@ public class PomItemsDao implements IPomItemsDao {
 		return ticket;
 	}
 
-	@Override
-	public void endReading(int ticket) {
-		RandomAccessFile scan = scanners.get((Integer) ticket);
-		try {
-			scan.close();
-		} catch (IOException ex) {
-			Logger.getLogger(DeferredReadService.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		scanners.remove((Integer) ticket);
-	}
 }

@@ -3,9 +3,20 @@ package cz.jet.services;
 import java.util.Scanner;
 import org.springframework.stereotype.Service;
 
+/**
+ * Can be used for output string modify - adding HTML tags
+ *
+ * @author Petr Kukrál a Jan Kotalík
+ */
 @Service
 public class OutputTagService {
 
+	/**
+	 * Modify entire content
+	 *
+	 * @param content input string to modify
+	 * @return modifed string
+	 */
 	public String addTagsToContent(String content) {
 		Scanner scanner = new Scanner(content);
 		String result = "";
@@ -19,7 +30,7 @@ public class OutputTagService {
 	}
 
 	/**
-	 * Add HTML tag to string
+	 * Add HTML tags to single line
 	 *
 	 * @param line Line of result
 	 * @return Line of result with html tags
