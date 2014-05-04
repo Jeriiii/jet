@@ -42,8 +42,8 @@
 				if(status == 'error'){
 					isWorking();
 				}else{
-						updateContent();
-						isWorking();
+					updateContent();
+					isWorking();
 				}
 			});
 	    }
@@ -61,12 +61,17 @@
 	    //when ajax response arrives
 	    function updateContent(){
 			results.append(temp.html());
+			scrollToBottomOfData();
 	    }
 		//when ajax response arrives
 	    function updateFinishedContent(){
 			results.html(temp.html());
 			isFinished();
 	    }
+		
+		function scrollToBottomOfData(){
+			$("html, body").animate({ scrollTop: $(document).height() }, 0);
+		}
 		
 	    
 	</script>
