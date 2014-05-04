@@ -1,5 +1,5 @@
 *{ padding:0; margin: 0; border: 0; }/***/
-body{ font-family: Tahoma, Arial, sans-serif; background: #fdfdfd;}
+body{ font-family: Verdana, Arial, sans-serif !important; background: #fdfdfd;}
 .circle{ border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%; }
 .red{ background: #b22; color: white; text-shadow: -1px -2px #900; }
 .green{ background: #2b2; color: white; text-shadow: -1px -2px #090; }
