@@ -110,6 +110,18 @@ public class PomItemsDao implements IPomItemsDao {
 	}
 
 	/**
+	 * Test existence of finished result
+	 *
+	 * @param id identifer of result
+	 * @return if finished result does or does not exist
+	 */
+	@Override
+	public boolean isResultFinished(String id) {
+		File finish = new File(getFilePath(FINISH_PREFIX, id));
+		return finish.exists();
+	}
+
+	/**
 	 * Starts new reading instance
 	 *
 	 * @param id identifer of result

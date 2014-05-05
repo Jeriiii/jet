@@ -26,6 +26,7 @@
 	    var refreshTime = 0; //ms - time to wait every refresh try (can be 0 with long polling)
 	    var temp = $('#temp');//temp element - for work with arriwing data
 	    var results = $('#results table'); //element for data writing
+		var endsymbol = '${endsymbol}';
 	    
 	    //called when job is done
 	    function isFinished(){
@@ -34,21 +35,28 @@
 	    }
 	    //called when results arrives and job (validation) is still not finished
 	    function isWorking(){
-			tryToGetComplete();
+			setTimeout(function (){
+				refreshResults();
+			}, refreshTime);
 	    }
 	    //ajax request, response is more results
 	    function refreshResults(){
-			temp.load("${pageContext.request.contextPath}/result/update?ticket=${ticket}" , function( response, status, xhr ) {
+			temp.load("${pageContext.request.contextPath}/result/update?id=${fileid}&ticket=${ticket}" , function( response, status, xhr ) {
 				if(status == 'error'){
 					isWorking();
 				}else{
-					updateContent();
-					isWorking();
+					if(response == endsymbol){
+						isFinished();
+					}else{
+						updateContent();
+						isWorking();
+					}
 				}
 			});
 	    }
+		
 		//ajax request - is validation completed? Entire content if so, error if not.
-		function tryToGetComplete(){
+		function tryToGetComplete(){// !!! UNUSED IN THIS VERSION (uncomment when you use it for something...)
 			temp.load("${pageContext.request.contextPath}/result/finished?id=${fileid}&ticket=${ticket}" , function( response, status, xhr ) {
 				if(status == 'error'){
 					setTimeout(function (){
@@ -65,7 +73,7 @@
 			scrollToBottomOfData();
 	    }
 		//updates content when entire finished document arrives
-	    function updateFinishedContent(){
+	    function updateFinishedContent(){// !!! UNUSED IN THIS VERSION (uncomment when you use it for something...)
 			results.html(temp.html());
 			isFinished();
 	    }
