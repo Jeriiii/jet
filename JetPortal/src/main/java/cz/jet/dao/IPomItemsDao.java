@@ -34,6 +34,14 @@ public interface IPomItemsDao {
 	public String getFinishedResult(String id);
 
 	/**
+	 * Test existence of finished result
+	 *
+	 * @param id identifer of result
+	 * @return if finished result does or does not exist
+	 */
+	public boolean isResultFinished(String id);
+
+	/**
 	 * Starts new reading instance
 	 *
 	 * @param id identifer of result

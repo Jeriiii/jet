@@ -66,6 +66,7 @@ public class ResultController {
 	@RequestMapping(value = "result", method = RequestMethod.GET)
 	public String showResult(@RequestParam("id") String id, Model m) {
 		m.addAttribute("fileid", id);
+		m.addAttribute("endsymbol", DeferredReadService.END_SYMBOL);
 		String content = tryGetFinishedResult(id);
 		if (content != null) {
 			m.addAttribute("fincontent", content);
@@ -80,14 +81,18 @@ public class ResultController {
 	 * Called by AJAX Returns next line of ticketed result or waits until
 	 * timeout time out
 	 *
+	 * Returns special symbol DefferredReadService.END_SYMBOL when is validation
+	 * complete
+	 *
 	 * @param ticket read ticket for result identify and reading instance
+	 * @param id identifer of result (need it for testing finished)
 	 * @return next line of readed result
 	 */
 	@RequestMapping("/result/update")
 	@ResponseBody
-	public DeferredResult<String> getUpdate(@RequestParam("ticket") int ticket) {
+	public DeferredResult<String> getUpdate(@RequestParam("ticket") int ticket, @RequestParam("id") String id) {
 		final DeferredResult<String> result = new DeferredResult<String>(LONG_POLLING_TIMEOUT);
-		updateService.getUpdate(ticket, result);
+		updateService.getUpdate(ticket, id, result);
 		return result;
 	}
 
@@ -98,6 +103,7 @@ public class ResultController {
 	 * @param id identifer of result (need it for close)
 	 * @return OK status with entire content of result or NOT FOUND status
 	 */
+	// !!! UNUSED IN THIS VERSION (uncomment when you use it for something...)
 	@RequestMapping("/result/finished")
 	@ResponseBody
 	public ResponseEntity<String> getFinishedContent(@RequestParam("ticket") int ticket, @RequestParam("id") String id) {

@@ -19,6 +19,11 @@ public class DeferredReadService {
 	public static final int TRY_READ_AGAIN_IN = 500;
 
 	/**
+	 * Send this symbol to deffered result when finds out reading is complete
+	 */
+	public static final String END_SYMBOL = "@#$end%&";//please do not use quotation marks or apostrophes
+
+	/**
 	 * DAO for POM
 	 */
 	@Autowired
@@ -46,10 +51,11 @@ public class DeferredReadService {
 	 * DeferredResult time out
 	 *
 	 * @param ticket identifer of reading instance
+	 * @param id identifer of result
 	 * @param result
 	 */
 	@Async
-	public void getUpdate(int ticket, DeferredResult<String> result) {
+	public void getUpdate(int ticket, String id, DeferredResult<String> result) {
 		try {
 			while (!result.isSetOrExpired()) {
 				String content = pomDao.getAllNextLines(ticket);
@@ -57,6 +63,10 @@ public class DeferredReadService {
 					content = tagService.addTagsToContent(content);
 					result.setResult(content);
 				} else {
+					if (pomDao.isResultFinished(id)) {
+						endScan(ticket);
+						result.setResult(END_SYMBOL);
+					}
 					Thread.sleep(TRY_READ_AGAIN_IN);
 				}
 			}
