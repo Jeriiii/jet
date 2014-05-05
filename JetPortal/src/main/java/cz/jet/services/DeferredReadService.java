@@ -52,10 +52,10 @@ public class DeferredReadService {
 	public void getUpdate(int ticket, DeferredResult<String> result) {
 		try {
 			while (!result.isSetOrExpired()) {
-				String line = pomDao.getNextLine(ticket);
-				if (line != null) {
-					line = tagService.addTagsToLine(line);
-					result.setResult(line);
+				String content = pomDao.getAllNextLines(ticket);
+				if (content != null) {
+					content = tagService.addTagsToContent(content);
+					result.setResult(content);
 				} else {
 					Thread.sleep(TRY_READ_AGAIN_IN);
 				}
