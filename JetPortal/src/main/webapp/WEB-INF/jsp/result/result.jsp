@@ -71,7 +71,7 @@
 	    }
 		//scrolls with window to the bottom
 		function scrollToBottomOfData(){
-			$("html, body").animate({ scrollTop: $(document).height() }, 0);
+			$("html, body").scrollTop($(document).height());
 		}
 	</script>
 	
