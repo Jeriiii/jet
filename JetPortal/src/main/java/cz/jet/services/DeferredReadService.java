@@ -11,7 +11,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 @Service
 public class DeferredReadService {
 
-	private static final Logger logger = Logger.getLogger(DeferredReadService.class.getName());
+	private static final Logger log = Logger.getLogger(DeferredReadService.class.getName());
 
 	/**
 	 * how long service waits if has nothing to read and then try read again
@@ -71,7 +71,7 @@ public class DeferredReadService {
 				}
 			}
 		} catch (InterruptedException ex) {
-			logger.log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 		}
 	}
 

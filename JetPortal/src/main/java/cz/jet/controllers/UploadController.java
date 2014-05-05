@@ -89,23 +89,23 @@ public class UploadController {
 						os.write(buffer, 0, length);
 					}
 				} catch (FileNotFoundException ex) {
-					log.log(Level.SEVERE, null, ex);
+					log.log(Level.SEVERE, "an exception was thrown", ex);
 				} catch (IOException ex) {
-					log.log(Level.SEVERE, null, ex);
+					log.log(Level.SEVERE, "an exception was thrown", ex);
 				} finally {
 					try {
 						if (is != null) {
 							is.close();
 						}
 					} catch (IOException ex) {
-						log.log(Level.SEVERE, null, ex);
+						log.log(Level.SEVERE, "an exception was thrown", ex);
 					}
 					try {
 						if (os != null) {
 							os.close();
 						}
 					} catch (IOException ex) {
-						log.log(Level.SEVERE, null, ex);
+						log.log(Level.SEVERE, "an exception was thrown",  ex);
 					}
 				}
 			}
@@ -142,11 +142,11 @@ public class UploadController {
 			fileName = pomDao.save(uploadedFile);
 			m.addAttribute("successFormMessage", "File was successfully uploaded. After the validation you will receive email with link, where you can see the result of validation.");
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, "an exception was thrown",  ex);
 			m.addAttribute("errorFormMessage", "File upload failed: " + ex.getMessage());
 			return "upload/formUploadFile";
 		} catch (NotCreatedDirException ex) {
-			log.log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, "an exception was thrown",  ex);
 			m.addAttribute("errorFormMessage", "Server Error. File not be uploaded.");
 			return "upload/formUploadFile";
 		}
@@ -155,7 +155,7 @@ public class UploadController {
 		try {
 			validator.validatePom(fileName, email);
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, "an exception was thrown",  ex);
 		}
 
 		// redirect to validation site

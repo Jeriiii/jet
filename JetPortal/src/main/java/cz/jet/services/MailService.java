@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
     
-    private Logger log = Logger.getLogger(MailService.class.getName());
+    private static final Logger log = Logger.getLogger(MailService.class.getName());
 	
     @Value("${resultAddress}")
     private String resultAddress; // result address, set in config.properties
@@ -64,7 +64,7 @@ public class MailService {
 		try {
 			mailSender.send(preparator);
 		} catch (MailException ex) {
-			log.log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 		}
     }
 }

@@ -8,7 +8,6 @@ package cz.jet.controllers;
 import cz.jet.daos.impl.PomItemsDao;
 import cz.jet.services.DeferredReadService;
 import cz.jet.services.OutputTagService;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +25,6 @@ import org.springframework.web.context.request.async.DeferredResult;
  */
 @Controller
 public class ResultController {
-
-	/**
-	 * Logger instance
-	 */
-	private static final Logger log = Logger.getLogger(ResultController.class.getName());
 
 	/**
 	 * time to wait if result is not avalible

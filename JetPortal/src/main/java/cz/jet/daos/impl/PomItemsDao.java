@@ -96,7 +96,7 @@ public class PomItemsDao implements IPomItemsDao {
 					content = scan.next();
 				}
 			} catch (FileNotFoundException ex) {
-				log.log(Level.SEVERE, null, ex);
+				log.log(Level.SEVERE, "an exception was thrown", ex);
 				return null;
 			} finally {
 				if (scan != null) {
@@ -136,7 +136,7 @@ public class PomItemsDao implements IPomItemsDao {
 			this.scanners.put((Integer) ticket, scan);
 			return ticket;
 		} catch (FileNotFoundException ex) {
-			log.log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 			return -1;
 		}
 	}
@@ -159,7 +159,7 @@ public class PomItemsDao implements IPomItemsDao {
 			}
 
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 			return null;
 		}
 		if (!content.isEmpty()) {
@@ -179,7 +179,7 @@ public class PomItemsDao implements IPomItemsDao {
 		try {
 			return scan.readLine();
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 			return null;
 		}
 	}
@@ -195,7 +195,7 @@ public class PomItemsDao implements IPomItemsDao {
 		try {
 			scan.close();
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 		}
 		scanners.remove((Integer) ticket);
 	}

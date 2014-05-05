@@ -73,7 +73,7 @@ public class ValidatorService {
             }
             
         } catch (Error ex) {
-            log.log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, "an exception was thrown", ex);
         } finally {
             file.renameTo(new File(path + "results/" + "finish-" + fileName + ".txt")); 
             resultFile.close();
