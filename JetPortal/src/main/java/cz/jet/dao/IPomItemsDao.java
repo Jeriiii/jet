@@ -48,6 +48,12 @@ public interface IPomItemsDao {
 	public String getNextLine(int ticket);
 
 	/**
+	 * @param ticket identifer of reading instance
+	 * @return all avalible next lines in file
+	 */
+	public String getAllNextLines(int ticket);
+
+	/**
 	 * Closes instance and ends reading properly
 	 *
 	 * @param ticket identifer of reading instance to close

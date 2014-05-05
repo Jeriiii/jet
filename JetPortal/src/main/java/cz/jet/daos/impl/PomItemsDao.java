@@ -43,7 +43,7 @@ public class PomItemsDao implements IPomItemsDao {
 	 */
 	private static final String WORKING_PREFIX = "working";
 
-	private static final Logger log = Logger.getLogger(ResultController.class.getName());
+	private static final Logger log = Logger.getLogger(PomItemsDao.class.getName());
 
 	/**
 	 * List of reading instances
@@ -124,8 +124,36 @@ public class PomItemsDao implements IPomItemsDao {
 			this.scanners.put((Integer) ticket, scan);
 			return ticket;
 		} catch (FileNotFoundException ex) {
-			Logger.getLogger(PomItemsDao.class.getName()).log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, null, ex);
 			return -1;
+		}
+	}
+
+	/**
+	 * @param ticket identifer of reading instance
+	 * @return all avalible next lines in file
+	 */
+	@Override
+	public String getAllNextLines(int ticket) {
+		RandomAccessFile scan = scanners.get((Integer) ticket);
+		String newline = System.getProperty("line.separator");
+		String content = "";
+		String temp;
+		try {
+			temp = scan.readLine();
+			while (temp != null) {
+				content = content + temp + newline;
+				temp = scan.readLine();
+			}
+
+		} catch (IOException ex) {
+			log.log(Level.SEVERE, null, ex);
+			return null;
+		}
+		if (!content.isEmpty()) {
+			return content;
+		} else {
+			return null;
 		}
 	}
 
@@ -139,7 +167,7 @@ public class PomItemsDao implements IPomItemsDao {
 		try {
 			return scan.readLine();
 		} catch (IOException ex) {
-			Logger.getLogger(PomItemsDao.class.getName()).log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, null, ex);
 			return null;
 		}
 	}
@@ -155,7 +183,7 @@ public class PomItemsDao implements IPomItemsDao {
 		try {
 			scan.close();
 		} catch (IOException ex) {
-			Logger.getLogger(DeferredReadService.class.getName()).log(Level.SEVERE, null, ex);
+			log.log(Level.SEVERE, null, ex);
 		}
 		scanners.remove((Integer) ticket);
 	}
