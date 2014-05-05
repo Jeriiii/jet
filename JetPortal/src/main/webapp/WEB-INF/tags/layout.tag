@@ -29,7 +29,7 @@
 		<div class="container">
 		    <div class="navbar-header">
 			    <a class="navbar-brand" href="/">
-					<img src="${pageContext.request.contextPath}/resources/img/logo.png" width="305" height="82" alt="JaMP"/>
+					<img src="${pageContext.request.contextPath}/resources/img/logo.png" width="431" height="116" alt="JaMP"/>
 				</a>
 				
 		    </div>
