@@ -55,9 +55,8 @@ public class UploadPOMFileService {
 				this.checkedDirs = true;
 			}
 
-			MultipartFile file = uploadedFile.getFile();
 			// save file on disk
-			inputStream = file.getInputStream();
+			inputStream = uploadedFile.getInputStream();
 			File newFile = new File(path + "poms/" + fileName + ".xml");
 			if (!newFile.exists()) {
 				newFile.createNewFile();
