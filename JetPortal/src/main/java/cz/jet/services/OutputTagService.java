@@ -42,14 +42,14 @@ public class OutputTagService {
 		String warning = "[WARNING]";
 
 		if (line.contains(info)) {
-			line = line.replace(info, "<td><span class='info'>" + info + "</span></td><td>");
-			line = "<tr class='info'>" + line + "</td></tr>";
+			line = line.replace(info, "<span class='info'>" + info + "</span>");
+			line = "<tr class='info'><td>" + line + "</td></tr>";
 		} else if (line.contains(error)) {
-			line = line.replace(error, "<td><span class='error'>" + error + "</span></td><td>");
-			line = "<tr class='error'>" + line + "</td></tr>";
+			line = line.replace(error, "<span class='error'>" + error + "</span>");
+			line = "<tr class='danger'><td>" + line + "</td></tr>";
 		} else if (line.contains(warning)) {
-			line = line.replace(warning, "<td><span class='warning'>" + warning + "</span></td><td>");
-			line = "<tr class='warning'>" + line + "</td></tr>";
+			line = line.replace(warning, "<span class='warning'>" + warning + "</span>");
+			line = "<tr class='warning'><td>" + line + "</td></tr>";
 		}
 
 		//line
