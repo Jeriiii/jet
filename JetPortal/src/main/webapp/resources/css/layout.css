@@ -6,3 +6,5 @@ body{ font-family: Verdana, Arial, sans-serif !important; background: #fdfdfd;}
 .blue{ background: #22b; color: white; text-shadow: -1px -2px #009; }
 .alert{ margin: 5px; padding: 5px 10px; border-radius: 12px; -webkit-border-radius: 12px; -moz-border-radius: 12px; text-align: center;}
 .alert.red{ background: #d00;box-shadow: -1px -2px 0px #900; -webkit-box-shadow: -1px -2px 0px #900; -moz-box-shadow: -1px -2px 0px #900; }
+table.table td{ padding-bottom:0 !important; padding-top:0 !important; border: 0 !important}
+table.table tr{border: 0 !important}
