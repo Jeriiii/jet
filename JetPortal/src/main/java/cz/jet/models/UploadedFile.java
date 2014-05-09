@@ -10,6 +10,10 @@ package cz.jet.models;
  *
  * @author Petr Kukrál <p.kukral@kukral.eu>
  */
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import org.springframework.web.multipart.MultipartFile;
 
 public class UploadedFile {
@@ -17,7 +21,18 @@ public class UploadedFile {
 	/**
 	 * POM file for form
 	 */
-	private MultipartFile file;
+	private MultipartFile file = null;
+
+	/**
+	 * example POM file for form
+	 */
+	private File exampleFile = null;
+
+	/**
+	 * generated file name
+	 */
+	private String fileName;
+
 	/**
 	 * user e-mail
 	 */
@@ -31,11 +46,30 @@ public class UploadedFile {
 		this.email = email;
 	}
 
-	public MultipartFile getFile() {
-		return file;
+	public InputStream getInputStream() throws IOException {
+		if (this.exampleFile != null) {
+			return new FileInputStream(this.exampleFile);
+		}
+		return file.getInputStream();
+	}
+
+	public void setExampleFile(File file) {
+		this.exampleFile = file;
 	}
 
 	public void setFile(MultipartFile file) {
 		this.file = file;
+	}
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 }

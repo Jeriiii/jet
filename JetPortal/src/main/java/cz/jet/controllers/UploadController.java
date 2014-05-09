@@ -1,19 +1,14 @@
 package cz.jet.controllers;
 
+import cz.jet.controllers.exceptions.UploadFailedException;
 import cz.jet.daos.impl.PomItemsDao;
 import cz.jet.models.UploadedFile;
 import cz.jet.services.ValidatorService;
 import cz.jet.services.exceptions.NotCreatedDirException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,7 +18,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Controller for upload POM file
@@ -49,11 +43,6 @@ public class UploadController {
 	private PomItemsDao pomDao;
 
 	/**
-	 * check if example result file exist
-	 */
-	private boolean checkedExampleFile = false;
-
-	/**
 	 * path where to store file, set in config.properties
 	 */
 	@Value("${filesPath}")
@@ -73,47 +62,26 @@ public class UploadController {
 	 */
 	@RequestMapping(value = "example-file-upload", method = RequestMethod.GET)
 	public String exampleFileUpload(Model m) {
-		if (this.checkedExampleFile == false) {
-			File exampleFile = new File(path + "results/finish-example.txt");
-			if (!exampleFile.exists()) {
-				File sourceExampleFile = new File(path + "exampleresult.txt");
-				// copy example file to dir results
-				InputStream is = null;
-				OutputStream os = null;
-				try {
-					is = new FileInputStream(sourceExampleFile);
-					os = new FileOutputStream(exampleFile);
-					byte[] buffer = new byte[1024];
-					int length;
-					while ((length = is.read(buffer)) > 0) {
-						os.write(buffer, 0, length);
-					}
-				} catch (FileNotFoundException ex) {
-					log.log(Level.SEVERE, "an exception was thrown", ex);
-				} catch (IOException ex) {
-					log.log(Level.SEVERE, "an exception was thrown", ex);
-				} finally {
-					try {
-						if (is != null) {
-							is.close();
-						}
-					} catch (IOException ex) {
-						log.log(Level.SEVERE, "an exception was thrown", ex);
-					}
-					try {
-						if (os != null) {
-							os.close();
-						}
-					} catch (IOException ex) {
-						log.log(Level.SEVERE, "an exception was thrown",  ex);
-					}
-				}
-			}
-			this.checkedExampleFile = true;
+		//example file
+		UploadedFile uploadedFile = new UploadedFile();
+		uploadedFile.setExampleFile(new File(path + "poms/example-pom.xml"));
+
+		// upload
+		try {
+			uploadFile(m, uploadedFile);
+		} catch (UploadFailedException ex) { //is logged
+			return "upload/formUploadFile";
 		}
 
-		String fileName = "example";
-		m.addAttribute("id", fileName);
+		// validation
+		try {
+			validator.validatePom(uploadedFile.getFileName(), "");
+		} catch (IOException ex) {
+			log.log(Level.SEVERE, "an exception was thrown", ex);
+		}
+
+		m.addAttribute("successFormMessage", null);
+		m.addAttribute("id", uploadedFile.getFileName());
 		return "redirect:/result";
 	}
 
@@ -135,38 +103,54 @@ public class UploadController {
 			return "upload/formUploadFile";
 		}
 
-		String fileName;
-
-		// upload file
+		// upload
 		try {
-			fileName = pomDao.save(uploadedFile);
-			m.addAttribute("successFormMessage", "File was successfully uploaded. After the validation you will receive email with link, where you can see the result of validation.");
-		} catch (IOException ex) {
-			log.log(Level.SEVERE, "an exception was thrown",  ex);
-			m.addAttribute("errorFormMessage", "File upload failed: " + ex.getMessage());
-			return "upload/formUploadFile";
-		} catch (NotCreatedDirException ex) {
-			log.log(Level.SEVERE, "an exception was thrown",  ex);
-			m.addAttribute("errorFormMessage", "Server Error. File not be uploaded.");
+			uploadFile(m, uploadedFile);
+		} catch (UploadFailedException ex) { //is logged
 			return "upload/formUploadFile";
 		}
 
 		// validation
 		try {
-			validator.validatePom(fileName, email);
+			validator.validatePom(uploadedFile.getFileName(), email);
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, "an exception was thrown",  ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 		}
 
 		// redirect to validation site
 		/*if (email == null || email.isEmpty()) {
-			m.addAttribute("successFormMessage", null);
-			m.addAttribute("id", fileName);
-			return "redirect:/result";
-		}
-		return "upload/formUploadFile";*/
-                m.addAttribute("successFormMessage", null);
-		m.addAttribute("id", fileName);
+		 m.addAttribute("successFormMessage", null);
+		 m.addAttribute("id", fileName);
+		 return "redirect:/result";
+		 }
+		 return "upload/formUploadFile";*/
+		m.addAttribute("successFormMessage", null);
+		m.addAttribute("id", uploadedFile.getFileName());
 		return "redirect:/result";
+	}
+
+	/**
+	 * Upload POM file on disk
+	 *
+	 * @param uploadedFile POM file
+	 * @throws UploadFailedException If file is not uploaded
+	 */
+	private void uploadFile(Model m, UploadedFile uploadedFile) throws UploadFailedException {
+		try {
+			String fileName = pomDao.save(uploadedFile);
+			uploadedFile.setFileName(fileName);
+			m.addAttribute("successFormMessage", "File was successfully uploaded. After the validation you will receive email with link, where you can see the result of validation.");
+		} catch (IOException ex) {
+			log.log(Level.SEVERE, "an exception was thrown", ex);
+			String errmsg = "File upload failed: " + ex.getMessage();
+			m.addAttribute("errorFormMessage", errmsg);
+			throw new UploadFailedException(errmsg);
+
+		} catch (NotCreatedDirException ex) {
+			log.log(Level.SEVERE, "an exception was thrown", ex);
+			String errmsg = "Server Error. File not be uploaded.";
+			m.addAttribute("errorFormMessage", errmsg);
+			throw new UploadFailedException(errmsg);
+		}
 	}
 }
