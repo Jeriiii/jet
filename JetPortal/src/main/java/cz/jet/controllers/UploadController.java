@@ -54,12 +54,6 @@ public class UploadController {
 	private boolean checkedExampleFile = false;
 
 	/**
-	 * path where to store file, set in config.properties
-	 */
-	@Value("${filesPath}")
-	private String path;
-
-	/**
 	 * Render for jsp with for
 	 */
 	@RequestMapping(value = "form-upload-file", method = RequestMethod.GET)
@@ -74,42 +68,7 @@ public class UploadController {
 	@RequestMapping(value = "example-file-upload", method = RequestMethod.GET)
 	public String exampleFileUpload(Model m) {
 		if (this.checkedExampleFile == false) {
-			File exampleFile = new File(path + "results/finish-example.txt");
-			if (!exampleFile.exists()) {
-				File sourceExampleFile = new File(path + "exampleresult.txt");
-				// copy example file to dir results
-				InputStream is = null;
-				OutputStream os = null;
-				try {
-					is = new FileInputStream(sourceExampleFile);
-					os = new FileOutputStream(exampleFile);
-					byte[] buffer = new byte[1024];
-					int length;
-					while ((length = is.read(buffer)) > 0) {
-						os.write(buffer, 0, length);
-					}
-				} catch (FileNotFoundException ex) {
-					log.log(Level.SEVERE, "an exception was thrown", ex);
-				} catch (IOException ex) {
-					log.log(Level.SEVERE, "an exception was thrown", ex);
-				} finally {
-					try {
-						if (is != null) {
-							is.close();
-						}
-					} catch (IOException ex) {
-						log.log(Level.SEVERE, "an exception was thrown", ex);
-					}
-					try {
-						if (os != null) {
-							os.close();
-						}
-					} catch (IOException ex) {
-						log.log(Level.SEVERE, "an exception was thrown",  ex);
-					}
-				}
-			}
-			this.checkedExampleFile = true;
+
 		}
 
 		String fileName = "example";
@@ -142,11 +101,11 @@ public class UploadController {
 			fileName = pomDao.save(uploadedFile);
 			m.addAttribute("successFormMessage", "File was successfully uploaded. After the validation you will receive email with link, where you can see the result of validation.");
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, "an exception was thrown",  ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 			m.addAttribute("errorFormMessage", "File upload failed: " + ex.getMessage());
 			return "upload/formUploadFile";
 		} catch (NotCreatedDirException ex) {
-			log.log(Level.SEVERE, "an exception was thrown",  ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 			m.addAttribute("errorFormMessage", "Server Error. File not be uploaded.");
 			return "upload/formUploadFile";
 		}
@@ -155,17 +114,17 @@ public class UploadController {
 		try {
 			validator.validatePom(fileName, email);
 		} catch (IOException ex) {
-			log.log(Level.SEVERE, "an exception was thrown",  ex);
+			log.log(Level.SEVERE, "an exception was thrown", ex);
 		}
 
 		// redirect to validation site
 		/*if (email == null || email.isEmpty()) {
-			m.addAttribute("successFormMessage", null);
-			m.addAttribute("id", fileName);
-			return "redirect:/result";
-		}
-		return "upload/formUploadFile";*/
-                m.addAttribute("successFormMessage", null);
+		 m.addAttribute("successFormMessage", null);
+		 m.addAttribute("id", fileName);
+		 return "redirect:/result";
+		 }
+		 return "upload/formUploadFile";*/
+		m.addAttribute("successFormMessage", null);
 		m.addAttribute("id", fileName);
 		return "redirect:/result";
 	}
