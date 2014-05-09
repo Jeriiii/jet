@@ -63,8 +63,9 @@ public class UploadController {
 	@RequestMapping(value = "example-file-upload", method = RequestMethod.GET)
 	public String exampleFileUpload(Model m) {
 		//example file
+		String filePath = this.getClass().getResource("/example-pom.xml").getPath();
 		UploadedFile uploadedFile = new UploadedFile();
-		uploadedFile.setExampleFile(new File(path + "poms/example-pom.xml"));
+		uploadedFile.setExampleFile(new File(filePath));//path + "poms/example-pom.xml"));
 
 		// upload
 		try {
