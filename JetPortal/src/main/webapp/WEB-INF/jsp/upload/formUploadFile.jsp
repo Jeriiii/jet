@@ -54,7 +54,7 @@
 				<div class="form-group" id="showEmail" style=" display: none">
 						<input type="email" name="email" class="form-control" size="30" maxlength="50" placeholder="Email address"/>   
 				</div> 
-				<input type="submit" value="VALIDATE" class="btn btn-primary btn-lg" /> <a class="btn btn-warning btn-lg" href="/example-file-upload">TRY IT ON EXAMPLE POM</a>
+				<input type="submit" value="VALIDATE" class="btn btn-primary btn-lg" /> <a class="btn btn-warning btn-lg" href="${pageContext.request.contextPath}/example-file-upload">TRY IT ON EXAMPLE POM</a>
 			</form:form> 
 		</section>
     </jsp:body>
