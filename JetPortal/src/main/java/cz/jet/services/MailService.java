@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service responsible for sending the result to email.
+ * 
  * @author Josef Hula
  */
 
@@ -27,24 +28,36 @@ import org.springframework.stereotype.Service;
 public class MailService {
     
     private static final Logger log = Logger.getLogger(MailService.class.getName());
-	
+    
+    /**
+     * result address, set in config.properties
+     */
     @Value("${resultAddress}")
-    private String resultAddress; // result address, set in config.properties
+    private String resultAddress;
     
+    /**
+     * email subject, set in config.properties
+     */
     @Value("${emailSubject}")
-    private String emailSubject; // email subject, set in config.properties
+    private String emailSubject;
     
+    /**
+     * email address of sender, set in config.properties
+     */
     @Value("${emailFrom}")
-    private String emailFrom; // email address of sender, set in config.properties
+    private String emailFrom;
     
+    /**
+     * Bean for mail sender
+     */
     @Autowired
     private JavaMailSender mailSender;
 	
     /**
      * Send mail with result
-     * @param email recipient adress
-     * @param result result of validation
-     * @param id identification number of result
+     * 
+     * @param email recipient address
+     * @param fileName name of file with result of validation
      */
     public void sendMail(final String email, final String fileName) {
         

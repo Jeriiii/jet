@@ -23,36 +23,36 @@
     </head>
 
     <body>
-	<header>
-	    <nav class="navbar navbar-default" role="navigation">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="container">
-		    <div class="navbar-header">
-			    <a class="navbar-brand" href="/">
-					<img src="${pageContext.request.contextPath}/resources/img/logo.png" width="431" height="116" alt="JaMP"/>
-				</a>
-				
-		    </div>
-		    <ul class="nav navbar-nav">
-<!--			<li>
-			  <a href="${contextPath}/upload/form-upload-file">Testovat POM</a>
-			</li>-->
-<!--			<li>
-			  <a href="${pageContext.request.contextPath}/form-upload-file">Výsledky</a>
-			</li>-->
-		    </ul>
+		<header>
+			<nav class="navbar navbar-default" role="navigation">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="container">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="${pageContext.request.contextPath}/">
+							<img src="${pageContext.request.contextPath}/resources/img/logo.png" width="431" height="116" alt="JaMP"/>
+						</a>
+
+					</div>
+					<ul class="nav navbar-nav">
+						<!--			<li>
+									  <a href="${contextPath}/upload/form-upload-file">Testovat POM</a>
+									</li>-->
+						<!--			<li>
+									  <a href="${pageContext.request.contextPath}/form-upload-file">Výsledky</a>
+									</li>-->
+					</ul>
+				</div>
+			</nav>
+			<jsp:invoke fragment="header"/>
+			<div class="clear"></div>
+		</header>
+		<div id="page" class="container">
+			<c:if test="${not empty message}"><div class="alert alert-info">${message}</div></c:if>
+			<jsp:doBody/>
+			<div class="clear"></div>
 		</div>
-	    </nav>
-	    <jsp:invoke fragment="header"/>
-	    <div class="clear"></div>
-	</header>
-	<div id="page" class="container">
-		<c:if test="${not empty message}"><div class="alert alert-info">${message}</div></c:if>
-		<jsp:doBody/>
-	    <div class="clear"></div>
-	</div>
-	<script src="${pageContext.request.contextPath}/resources/js/jquery-2.1.0.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
-	<jsp:invoke fragment="foot"/>
+		<script src="${pageContext.request.contextPath}/resources/js/jquery-2.1.0.min.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+		<jsp:invoke fragment="foot"/>
     </body>
 </html>
