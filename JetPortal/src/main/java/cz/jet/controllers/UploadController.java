@@ -118,13 +118,6 @@ public class UploadController {
 			log.log(Level.SEVERE, "an exception was thrown", ex);
 		}
 
-		// redirect to validation site
-		/*if (email == null || email.isEmpty()) {
-		 m.addAttribute("successFormMessage", null);
-		 m.addAttribute("id", fileName);
-		 return "redirect:/result";
-		 }
-		 return "upload/formUploadFile";*/
 		m.addAttribute("successFormMessage", null);
 		m.addAttribute("id", uploadedFile.getFileName());
 		return "redirect:/result";

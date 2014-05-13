@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cz.jet.services;
 
 import java.io.BufferedReader;
@@ -23,32 +17,46 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service responsible for validating the POM file
+ * 
  * @author Josef Hula
  */
-
 @Service
 public class ValidatorService {
     
     private static final Logger log = Logger.getLogger(ValidatorService.class.getName());
-	
+    
+    /**
+     * Service for sending mail
+     */
     @Autowired
     private MailService mailer;
     
+    /**
+     * path, where is the file stored, set in config.properties
+     */
     @Value("${filesPath}")
     private String path; 
     
+    /**
+     * path to validator plugin, set in config.properties
+     */
     @Value("${pluginParam}")
-    private String pluginParam; // path to validator plugin, set in config.properties
+    private String pluginParam; 
     
+    /**
+     * Validation of POM file. Validate POM file and after validation send email, if email address was entered.
+     * 
+     * @param fileName name of pom file
+     * @param email email address for sending result of validation
+     * @throws IOException 
+     */
     @Async
     public void validatePom(String fileName, String email) throws IOException{
 	PrintWriter resultFile = new PrintWriter(path + "results/" + "working-" + fileName + ".txt", "UTF-8");
-	//String mavenPath = "/Users/josefhula/apache-maven-3.2.1/bin/mvn";
-        String mavenPath = "mvn.bat";
-	//String mavenPath = "C:\\apache-maven-3.2.1\\bin\\mvn.bat";
+        String mavenPath = "mvn";
         List<String> params = new ArrayList<String>();
         File file = new File(path + "results/" + "working-" + fileName + ".txt");
-        params.add(mavenPath);
+        params.add(mavenPath); // set params for process builder
         params.add(pluginParam);
         params.add("-f");
         params.add(path + "poms/" + fileName + ".xml");
