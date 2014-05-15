@@ -30,11 +30,6 @@ public class UploadPOMFileService {
 	private String path;
 
 	/**
-	 * check if dirs POMS and RESULTS exist
-	 */
-	private boolean checkedDirs = false;
-
-	/**
 	 * Upload POM file
 	 *
 	 * @param uploadedFile POM file
@@ -47,13 +42,6 @@ public class UploadPOMFileService {
 		OutputStream outputStream = null;
 
 		try {
-			// check if POMS and RESULTS exist
-			if (!this.checkedDirs) {
-				this.createDirIfNotExist(path, "poms/");
-				this.createDirIfNotExist(path, "results/");
-				this.checkedDirs = true;
-			}
-
 			// save file on disk
 			inputStream = uploadedFile.getInputStream();
 			File newFile = new File(path + "poms/" + fileName + ".xml");
@@ -74,25 +62,6 @@ public class UploadPOMFileService {
 			}
 			if (outputStream != null) {
 				outputStream.close();
-			}
-		}
-	}
-
-	/**
-	 * If the directory does not exist, create it
-	 *
-	 * @param path Path to directory
-	 * @param dirName Name of folder
-	 * @throws NotCreatedDirException Directory wasn't created
-	 */
-	private void createDirIfNotExist(String path, String dirName) throws NotCreatedDirException {
-		File dir = new File(path + dirName);
-
-		if (!dir.exists()) {
-			boolean result = dir.mkdir();
-
-			if (!result) {
-				throw new NotCreatedDirException(dirName);
 			}
 		}
 	}
