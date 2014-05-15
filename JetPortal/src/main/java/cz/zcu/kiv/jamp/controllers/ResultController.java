@@ -24,6 +24,7 @@ import org.springframework.web.context.request.async.DeferredResult;
  * @author Jan Kotalík
  */
 @Controller
+@RequestMapping("result")
 public class ResultController {
 
 	/**
@@ -82,7 +83,7 @@ public class ResultController {
 	 * @param id identifer of result (need it for testing finished)
 	 * @return next line of readed result
 	 */
-	@RequestMapping("/result/update")
+	@RequestMapping("update")
 	@ResponseBody
 	public DeferredResult<String> getUpdate(@RequestParam("ticket") int ticket, @RequestParam("id") String id) {
 		final DeferredResult<String> result = new DeferredResult<String>(LONG_POLLING_TIMEOUT);
@@ -98,7 +99,7 @@ public class ResultController {
 	 * @return OK status with entire content of result or NOT FOUND status
 	 */
 	// !!! UNUSED IN THIS VERSION (uncomment when you use it for something...)
-	@RequestMapping("/result/finished")
+	@RequestMapping("finished")
 	@ResponseBody
 	public ResponseEntity<String> getFinishedContent(@RequestParam("ticket") int ticket, @RequestParam("id") String id) {
 		String content = tryGetFinishedResult(id);

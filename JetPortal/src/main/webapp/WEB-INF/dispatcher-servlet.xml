@@ -3,28 +3,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-       http://www.springframework.org/schema/context
-   http://www.springframework.org/schema/context/spring-context-3.1.xsd">
-
-    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
-
-    <!--
-    Most controllers will use the ControllerClassNameHandlerMapping above, but
-    for the index controller we are using ParameterizableViewController, so we must
-    define an explicit mapping for it.
-    -->
-    <context:component-scan base-package="cz.zcu.kiv.jamp.controllers" />
-    
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-	<property name="mappings">
-	    <props>
-		<prop key="index.htm">indexController</prop>
-	    </props>
-	</property>
-    </bean>
-    
-    
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
     <bean id="viewResolver"
 	  class="org.springframework.web.servlet.view.InternalResourceViewResolver"
@@ -33,14 +12,6 @@
 	  p:suffix=".jsp" />
 
     
-    
-    <!--
-    The index controller.
-    -->
-    <bean name="indexController"
-	  class="org.springframework.web.servlet.mvc.ParameterizableViewController"
-	  p:viewName="index" />
-	
 	<!-- Lib for file upload -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

@@ -27,6 +27,7 @@ import java.util.logging.Logger;
  */
 // example http://www.javacodegeeks.com/2013/04/spring-mvc-form-tutorial.html
 @Controller
+@RequestMapping("upload")
 public class UploadController {
 
 	private static final Logger log = Logger.getLogger(UploadController.class.getName());
@@ -84,7 +85,7 @@ public class UploadController {
 
 		m.addAttribute("successFormMessage", null);
 		m.addAttribute("id", uploadedFile.getFileName());
-		return "redirect:/result";
+		return "redirect:/result/result";
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class UploadController {
 
 		m.addAttribute("successFormMessage", null);
 		m.addAttribute("id", uploadedFile.getFileName());
-		return "redirect:/result";
+		return "redirect:/result/result";
 	}
 
 	/**
