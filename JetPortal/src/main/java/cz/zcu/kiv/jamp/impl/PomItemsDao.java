@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.jet.daos.impl;
+package cz.zcu.kiv.jamp.impl;
 
-import cz.jet.controllers.ResultController;
-import cz.jet.dao.IPomItemsDao;
-import cz.jet.models.UploadedFile;
-import cz.jet.services.DeferredReadService;
-import cz.jet.services.UploadPOMFileService;
-import cz.jet.services.exceptions.NotCreatedDirException;
+import cz.zcu.kiv.jamp.dao.IPomItemsDao;
+import cz.zcu.kiv.jamp.models.UploadedFile;
+import cz.zcu.kiv.jamp.services.UploadPOMFileService;
+import cz.zcu.kiv.jamp.services.exceptions.NotCreatedDirException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -133,7 +131,7 @@ public class PomItemsDao implements IPomItemsDao {
 			File file = new File(getFilePath(WORKING_PREFIX, id));
 			int ticket = getNewTicket(this.scanners);
 			RandomAccessFile scan = new RandomAccessFile(file, "r");
-			this.scanners.put((Integer) ticket, scan);
+			this.scanners.put(ticket, scan);
 			return ticket;
 		} catch (FileNotFoundException ex) {
 			log.log(Level.SEVERE, "an exception was thrown", ex);
@@ -147,7 +145,7 @@ public class PomItemsDao implements IPomItemsDao {
 	 */
 	@Override
 	public String getAllNextLines(int ticket) {
-		RandomAccessFile scan = scanners.get((Integer) ticket);
+		RandomAccessFile scan = scanners.get(ticket);
 		String newline = System.getProperty("line.separator");
 		String content = "";
 		String temp;
@@ -169,20 +167,6 @@ public class PomItemsDao implements IPomItemsDao {
 		}
 	}
 
-	/**
-	 * @param ticket identifer of reading instance
-	 * @return next line of reading instance or null if there is no next line
-	 */
-	@Override
-	public String getNextLine(int ticket) {
-		RandomAccessFile scan = scanners.get((Integer) ticket);
-		try {
-			return scan.readLine();
-		} catch (IOException ex) {
-			log.log(Level.SEVERE, "an exception was thrown", ex);
-			return null;
-		}
-	}
 
 	/**
 	 * Closes instance and ends reading properly
@@ -191,13 +175,13 @@ public class PomItemsDao implements IPomItemsDao {
 	 */
 	@Override
 	public void endReading(int ticket) {
-		RandomAccessFile scan = scanners.get((Integer) ticket);
+		RandomAccessFile scan = scanners.get(ticket);
 		try {
 			scan.close();
 		} catch (IOException ex) {
 			log.log(Level.SEVERE, "an exception was thrown", ex);
 		}
-		scanners.remove((Integer) ticket);
+		scanners.remove(ticket);
 	}
 
 	/**
@@ -239,7 +223,7 @@ public class PomItemsDao implements IPomItemsDao {
 	private int getNewTicket(HashMap uniquefor) {
 		Random rand = new Random();
 		int ticket = rand.nextInt(Integer.MAX_VALUE);
-		while (uniquefor.containsKey((Integer) ticket)) {
+		while (uniquefor.containsKey(ticket)) {
 			ticket = rand.nextInt(Integer.MAX_VALUE);
 		}
 		return ticket;

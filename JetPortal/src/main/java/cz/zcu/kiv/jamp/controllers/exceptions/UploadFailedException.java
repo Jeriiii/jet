@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.jet.services.exceptions;
+package cz.zcu.kiv.jamp.controllers.exceptions;
 
 /**
- * Exception for not created directory
  *
  * @author Petr Kukrál <p.kukral@kukral.eu>
  */
-public class NotCreatedDirException extends Exception {
+public class UploadFailedException extends Exception {
 
-	public NotCreatedDirException(String dirName) {
-		super("Directory " + dirName + " wasn't created");
+	public UploadFailedException(String msg) {
+		super("Upload filed: " + msg);
 	}
+
 }

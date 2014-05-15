@@ -1,12 +1,13 @@
-package cz.jet.services;
+package cz.zcu.kiv.jamp.services;
 
-import cz.jet.daos.impl.PomItemsDao;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import cz.zcu.kiv.jamp.dao.IPomItemsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class DeferredReadService {
@@ -27,7 +28,7 @@ public class DeferredReadService {
 	 * DAO for POM
 	 */
 	@Autowired
-	private PomItemsDao pomDao;
+	private IPomItemsDao pomDao;
 
 	/**
 	 * Ouput modify service
@@ -52,7 +53,6 @@ public class DeferredReadService {
 	 *
 	 * @param ticket identifer of reading instance
 	 * @param id identifer of result
-	 * @param result
 	 */
 	@Async
 	public void getUpdate(int ticket, String id, DeferredResult<String> result) {

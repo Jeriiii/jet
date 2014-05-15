@@ -1,4 +1,4 @@
-package cz.jet.services;
+package cz.zcu.kiv.jamp.services;
 
 import java.util.Scanner;
 import org.springframework.stereotype.Service;

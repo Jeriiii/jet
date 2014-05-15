@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.jet.dao;
+package cz.zcu.kiv.jamp.dao;
 
-import cz.jet.models.UploadedFile;
-import cz.jet.services.exceptions.NotCreatedDirException;
+import cz.zcu.kiv.jamp.models.UploadedFile;
+import cz.zcu.kiv.jamp.services.exceptions.NotCreatedDirException;
 import java.io.IOException;
 
 /**
@@ -49,11 +49,6 @@ public interface IPomItemsDao {
 	 */
 	public int startNewReading(String id);
 
-	/**
-	 * @param ticket identifer of reading instance
-	 * @return next line of reading instance or null if there is no next line
-	 */
-	public String getNextLine(int ticket);
 
 	/**
 	 * @param ticket identifer of reading instance

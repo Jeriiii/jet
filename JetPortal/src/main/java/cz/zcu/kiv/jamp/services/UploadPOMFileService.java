@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.jet.services;
+package cz.zcu.kiv.jamp.services;
 
-import cz.jet.services.exceptions.NotCreatedDirException;
-import cz.jet.models.UploadedFile;
+import cz.zcu.kiv.jamp.services.exceptions.NotCreatedDirException;
+import cz.zcu.kiv.jamp.models.UploadedFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Upload POM file on server
@@ -49,7 +48,7 @@ public class UploadPOMFileService {
 
 		try {
 			// check if POMS and RESULTS exist
-			if (this.checkedDirs == false) {
+			if (!this.checkedDirs) {
 				this.createDirIfNotExist(path, "poms/");
 				this.createDirIfNotExist(path, "results/");
 				this.checkedDirs = true;
@@ -62,7 +61,7 @@ public class UploadPOMFileService {
 				newFile.createNewFile();
 			}
 			outputStream = new FileOutputStream(newFile);
-			int read = 0;
+			int read;
 			byte[] bytes = new byte[1024];
 
 			while ((read = inputStream.read(bytes)) != -1) {

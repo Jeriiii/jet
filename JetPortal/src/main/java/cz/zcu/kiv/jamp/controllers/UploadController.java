@@ -1,14 +1,10 @@
-package cz.jet.controllers;
+package cz.zcu.kiv.jamp.controllers;
 
-import cz.jet.controllers.exceptions.UploadFailedException;
-import cz.jet.daos.impl.PomItemsDao;
-import cz.jet.models.UploadedFile;
-import cz.jet.services.ValidatorService;
-import cz.jet.services.exceptions.NotCreatedDirException;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import cz.zcu.kiv.jamp.controllers.exceptions.UploadFailedException;
+import cz.zcu.kiv.jamp.dao.IPomItemsDao;
+import cz.zcu.kiv.jamp.models.UploadedFile;
+import cz.zcu.kiv.jamp.services.ValidatorService;
+import cz.zcu.kiv.jamp.services.exceptions.NotCreatedDirException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,6 +14,11 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for upload POM file
@@ -40,7 +41,7 @@ public class UploadController {
 	 * DAO for POM
 	 */
 	@Autowired
-	private PomItemsDao pomDao;
+	private IPomItemsDao pomDao;
 
 	/**
 	 * path where to store file, set in config.properties

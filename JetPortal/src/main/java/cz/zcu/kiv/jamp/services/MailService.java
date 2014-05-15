@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package cz.jet.services;
+package cz.zcu.kiv.jamp.services;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

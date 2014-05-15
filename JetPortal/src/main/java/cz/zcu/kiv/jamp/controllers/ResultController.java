@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.jet.controllers;
+package cz.zcu.kiv.jamp.controllers;
 
-import cz.jet.daos.impl.PomItemsDao;
-import cz.jet.services.DeferredReadService;
-import cz.jet.services.OutputTagService;
+import cz.zcu.kiv.jamp.dao.IPomItemsDao;
+import cz.zcu.kiv.jamp.services.DeferredReadService;
+import cz.zcu.kiv.jamp.services.OutputTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +47,7 @@ public class ResultController {
 	 * DAO for POM
 	 */
 	@Autowired
-	private PomItemsDao pomDao;
+	private IPomItemsDao pomDao;
 
 	/**
 	 * Initial call Returns finished results or subscribes new reading in

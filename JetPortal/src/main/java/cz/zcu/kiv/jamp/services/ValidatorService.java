@@ -1,4 +1,4 @@
-package cz.jet.services;
+package cz.zcu.kiv.jamp.services;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -60,8 +60,8 @@ public class ValidatorService {
         params.add(pluginParam);
         params.add("-f");
         params.add(path + "poms/" + fileName + ".xml");
-        InputStream is = null;
-        InputStreamReader isr = null;
+        InputStream is;
+        InputStreamReader isr;
         BufferedReader br = null;
         
         try {

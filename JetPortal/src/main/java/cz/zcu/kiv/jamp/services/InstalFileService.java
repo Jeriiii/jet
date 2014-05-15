@@ -1,8 +1,7 @@
-package cz.jet.services;
+package cz.zcu.kiv.jamp.services;
 
-import cz.jet.controllers.UploadController;
+import cz.zcu.kiv.jamp.controllers.UploadController;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,8 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 /**

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.jet.models;
+package cz.zcu.kiv.jamp.models;
 
 /**
  * POM file entite for form
@@ -32,19 +32,6 @@ public class UploadedFile {
 	 * generated file name
 	 */
 	private String fileName;
-
-	/**
-	 * user e-mail
-	 */
-	private String email;
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
 	public InputStream getInputStream() throws IOException {
 		if (this.exampleFile != null) {
