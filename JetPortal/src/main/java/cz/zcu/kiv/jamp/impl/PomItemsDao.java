@@ -7,6 +7,7 @@ package cz.zcu.kiv.jamp.impl;
 
 import cz.zcu.kiv.jamp.dao.IPomItemsDao;
 import cz.zcu.kiv.jamp.models.UploadedFile;
+import cz.zcu.kiv.jamp.services.DeferredReadService;
 import cz.zcu.kiv.jamp.services.UploadPOMFileService;
 import cz.zcu.kiv.jamp.services.exceptions.NotCreatedDirException;
 import java.io.File;
@@ -30,16 +31,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class PomItemsDao implements IPomItemsDao {
-
-	/**
-	 * prefix for file with completed result
-	 */
-	private static final String FINISH_PREFIX = "finish";
-
-	/**
-	 * prefix for file which is still updated
-	 */
-	private static final String WORKING_PREFIX = "working";
 
 	private static final Logger log = Logger.getLogger(PomItemsDao.class.getName());
 
@@ -84,7 +75,7 @@ public class PomItemsDao implements IPomItemsDao {
 	 */
 	@Override
 	public String getFinishedResult(String id) {
-		File finish = new File(getFilePath(FINISH_PREFIX, id));
+		File finish = new File(getFilePath("", id));
 		String content = "";
 		if (finish.exists()) {
 			Scanner scan = null;
@@ -92,6 +83,11 @@ public class PomItemsDao implements IPomItemsDao {
 				scan = new Scanner(finish).useDelimiter("\\Z"); //delimiter na konec souboru
 				if (scan.hasNext()) {
 					content = scan.next();
+					if (!content.contains(DeferredReadService.END_SYMBOL)) {
+						return null;
+					}
+				} else {
+					return null;
 				}
 			} catch (FileNotFoundException ex) {
 				log.log(Level.SEVERE, "an exception was thrown", ex);
@@ -108,18 +104,6 @@ public class PomItemsDao implements IPomItemsDao {
 	}
 
 	/**
-	 * Test existence of finished result
-	 *
-	 * @param id identifer of result
-	 * @return if finished result does or does not exist
-	 */
-	@Override
-	public boolean isResultFinished(String id) {
-		File finish = new File(getFilePath(FINISH_PREFIX, id));
-		return finish.exists();
-	}
-
-	/**
 	 * Starts new reading instance
 	 *
 	 * @param id identifer of result
@@ -128,7 +112,7 @@ public class PomItemsDao implements IPomItemsDao {
 	@Override
 	public int startNewReading(String id) {
 		try {
-			File file = new File(getFilePath(WORKING_PREFIX, id));
+			File file = new File(getFilePath("", id));
 			int ticket = getNewTicket(this.scanners);
 			RandomAccessFile scan = new RandomAccessFile(file, "r");
 			this.scanners.put(ticket, scan);
@@ -167,7 +151,6 @@ public class PomItemsDao implements IPomItemsDao {
 		}
 	}
 
-
 	/**
 	 * Closes instance and ends reading properly
 	 *
@@ -194,7 +177,7 @@ public class PomItemsDao implements IPomItemsDao {
 		String fileName;
 		for (int i = 0;; i++) {
 			fileName = "pom" + uuid + i;
-			File f = new File(path + "poms/" + WORKING_PREFIX + "-" + fileName + ".xml");
+			File f = new File(path + "poms/" + fileName + ".xml");
 			if (!f.exists()) {
 				break;
 			}
@@ -211,7 +194,7 @@ public class PomItemsDao implements IPomItemsDao {
 	 * @return file path
 	 */
 	private synchronized String getFilePath(String prefix, String id) {
-		return path + "results/" + prefix + "-" + id + ".txt";
+		return path + "results/" + prefix + id + ".txt";
 	}
 
 	/**

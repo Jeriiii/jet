@@ -64,6 +64,7 @@ public class ResultController {
 		m.addAttribute("endsymbol", DeferredReadService.END_SYMBOL);
 		String content = tryGetFinishedResult(id);
 		if (content != null) {
+			content = content.replace(DeferredReadService.END_SYMBOL, "");
 			m.addAttribute("fincontent", content);
 		} else {
 			int ticket = updateService.subscribe(id);

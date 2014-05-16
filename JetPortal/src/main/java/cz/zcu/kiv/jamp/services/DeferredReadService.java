@@ -22,7 +22,7 @@ public class DeferredReadService {
 	/**
 	 * Send this symbol to deffered result when finds out reading is complete
 	 */
-	public static final String END_SYMBOL = "@#$end%&";//please do not use quotation marks or apostrophes
+	public static final String END_SYMBOL = "123end987";//please do not use javascript syntax symbols
 
 	/**
 	 * DAO for POM
@@ -60,13 +60,13 @@ public class DeferredReadService {
 			while (!result.isSetOrExpired()) {
 				String content = pomDao.getAllNextLines(ticket);
 				if (content != null) {
+					if (content.contains(END_SYMBOL)) {
+						endScan(ticket);
+						System.out.println("endingggggggggggggggggg");
+					}
 					content = tagService.addTagsToContent(content);
 					result.setResult(content);
 				} else {
-					if (pomDao.isResultFinished(id)) {
-						endScan(ticket);
-						result.setResult(END_SYMBOL);
-					}
 					Thread.sleep(TRY_READ_AGAIN_IN);
 				}
 			}

@@ -50,6 +50,8 @@ public class OutputTagService {
 		} else if (line.contains(warning)) {
 			line = line.replace(warning, "<span class='warning'>" + warning + "</span>");
 			line = "<tr class='warning'><td>" + line + "</td></tr>";
+		} else {
+			line = "<tr><td>" + line + "</td></tr>";
 		}
 
 		//line
