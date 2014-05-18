@@ -54,7 +54,7 @@ public class ValidatorService {
 	@Async
 	public void validatePom(String fileName, String email) throws IOException {
 		PrintWriter resultFile = new PrintWriter(path + "results/" + fileName + ".txt", "UTF-8");
-		String mavenPath = "mvn.bat";
+		String mavenPath = "mvn";
 		List<String> params = new ArrayList<String>();
 //		File file = new File(path + "results/" + fileName + ".txt");
 		params.add(mavenPath); // set params for process builder
