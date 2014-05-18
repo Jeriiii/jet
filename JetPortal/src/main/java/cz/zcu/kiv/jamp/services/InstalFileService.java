@@ -46,7 +46,7 @@ public class InstalFileService {
 	 * @throws NotCreatedDirException Directory wasn't created
 	 */
 	private void createDirIfNotExist(String path, String dirName) throws NotCreatedDirException {
-		File dir = new File(path + dirName);
+		File dir = new File(path, dirName);
 
 		if (!dir.exists()) {
 			boolean result = dir.mkdir();
