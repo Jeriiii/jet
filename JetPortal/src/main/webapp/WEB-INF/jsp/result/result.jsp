@@ -27,6 +27,7 @@
 			var temp = $('#temp');//temp element - for work with arriwing data
 			var results = $('#results table'); //element for data writing
 			var endsymbol = '${endsymbol}';
+			var nodata = '${timeoutsymbol}';
 
 			//called when job is done
 			function isFinished() {
@@ -41,8 +42,12 @@
 			}
 			//ajax request, response is more results
 			function refreshResults() {
-				temp.load("${pageContext.request.contextPath}/update?id=${fileid}&ticket=${ticket}", function(response, status, xhr) {
+				temp.load("${pageContext.request.contextPath}/result/update?id=${fileid}&ticket=${ticket}", function(response, status, xhr) {
 							if (status == 'error') {
+								console.log('Ajax error');
+								return;
+							}
+							if (response == nodata) {
 								isWorking();
 							} else {
 								if (response.indexOf(endsymbol) != -1) {
@@ -58,7 +63,7 @@
 
 					//ajax request - is validation completed? Entire content if so, error if not.
 					function tryToGetComplete() {// !!! UNUSED IN THIS VERSION (uncomment when you use it for something...)
-						temp.load("${pageContext.request.contextPath}/finished?id=${fileid}&ticket=${ticket}", function(response, status, xhr) {
+						temp.load("${pageContext.request.contextPath}/result/finished?id=${fileid}&ticket=${ticket}", function(response, status, xhr) {
 									if (status == 'error') {
 										setTimeout(function() {
 											refreshResults();

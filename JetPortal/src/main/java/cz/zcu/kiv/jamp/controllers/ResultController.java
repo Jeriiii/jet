@@ -33,6 +33,11 @@ public class ResultController {
 	private static final long LONG_POLLING_TIMEOUT = 5000;//ms
 
 	/**
+	 * result which is send when timeout times out
+	 */
+	private static final String TIMEOUT_RESULT = "123nodata456";
+
+	/**
 	 * Service for long polling
 	 */
 	@Autowired
@@ -62,6 +67,7 @@ public class ResultController {
 	public String showResult(@RequestParam("id") String id, Model m) {
 		m.addAttribute("fileid", id);
 		m.addAttribute("endsymbol", DeferredReadService.END_SYMBOL);
+		m.addAttribute("timeoutsymbol", TIMEOUT_RESULT);
 		String content = tryGetFinishedResult(id);
 		if (content != null) {
 			content = content.replace(DeferredReadService.END_SYMBOL, "");
@@ -84,10 +90,10 @@ public class ResultController {
 	 * @param id identifer of result (need it for testing finished)
 	 * @return next line of readed result
 	 */
-	@RequestMapping("update")
+	@RequestMapping("/update")
 	@ResponseBody
 	public DeferredResult<String> getUpdate(@RequestParam("ticket") int ticket, @RequestParam("id") String id) {
-		final DeferredResult<String> result = new DeferredResult<String>(LONG_POLLING_TIMEOUT);
+		final DeferredResult<String> result = new DeferredResult<String>(LONG_POLLING_TIMEOUT, TIMEOUT_RESULT);
 		updateService.getUpdate(ticket, id, result);
 		return result;
 	}
