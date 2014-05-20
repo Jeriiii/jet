@@ -114,16 +114,16 @@
 		<c:choose>
 			<c:when test="${not empty fincontent}">
 				<section id="results" class="well">
-					<table class="table">
+					<pre>
 						<c:out escapeXml="false" value="${fincontent}"/>
-					</table>
+					</pre>
 				</section>
 			</c:when>
 			<c:otherwise>
 				<section id="results" class="well">
-					<table class="table">
+					<pre>
 
-					</table>
+					</pre>
 				</section>
 			</c:otherwise>
 		</c:choose>

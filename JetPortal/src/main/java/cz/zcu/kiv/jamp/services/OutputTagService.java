@@ -43,15 +43,15 @@ public class OutputTagService {
 
 		if (line.contains(info)) {
 			line = line.replace(info, "<span class='info'>" + info + "</span>");
-			line = "<tr class='info'><td>" + line + "</td></tr>";
+			//line = "<tr class='info'><td>" + line + "</td></tr>";
 		} else if (line.contains(error)) {
 			line = line.replace(error, "<span class='error'>" + error + "</span>");
-			line = "<tr class='danger'><td>" + line + "</td></tr>";
+			//line = "<tr class='danger'><td>" + line + "</td></tr>";
 		} else if (line.contains(warning)) {
 			line = line.replace(warning, "<span class='warning'>" + warning + "</span>");
-			line = "<tr class='warning'><td>" + line + "</td></tr>";
+			//line = "<tr class='warning'><td>" + line + "</td></tr>";
 		} else {
-			line = "<tr><td>" + line + "</td></tr>";
+			//line = "<tr><td>" + line + "</td></tr>";
 		}
 
 		//line
