@@ -80,11 +80,13 @@ public class ValidatorService {
 			if (!email.equals("")) {
 				mailer.sendMail(email, fileName);
 			}
-
+			process.waitFor();
+			resultFile.println(DeferredReadService.END_SYMBOL);
 		} catch (Error ex) {
 			log.log(Level.SEVERE, "an exception was thrown", ex);
+		} catch (InterruptedException ex) {
+			log.log(Level.SEVERE, null, ex);
 		} finally {
-			resultFile.println(DeferredReadService.END_SYMBOL);
 			resultFile.close();
 			br.close();
 		}
