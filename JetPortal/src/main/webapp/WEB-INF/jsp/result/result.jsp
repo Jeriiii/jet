@@ -41,7 +41,7 @@
 			}
 			//ajax request, response is more results
 			function refreshResults() {
-				temp.load("${pageContext.request.contextPath}/result/update?id=${fileid}&ticket=${ticket}", function(response, status, xhr) {
+				temp.load("${pageContext.request.contextPath}/update?id=${fileid}&ticket=${ticket}", function(response, status, xhr) {
 							if (status == 'error') {
 								isWorking();
 							} else {
@@ -58,7 +58,7 @@
 
 					//ajax request - is validation completed? Entire content if so, error if not.
 					function tryToGetComplete() {// !!! UNUSED IN THIS VERSION (uncomment when you use it for something...)
-						temp.load("${pageContext.request.contextPath}/result/finished?id=${fileid}&ticket=${ticket}", function(response, status, xhr) {
+						temp.load("${pageContext.request.contextPath}/finished?id=${fileid}&ticket=${ticket}", function(response, status, xhr) {
 									if (status == 'error') {
 										setTimeout(function() {
 											refreshResults();
