@@ -75,7 +75,7 @@ public class PomItemsDao implements IPomItemsDao {
 	 */
 	@Override
 	public String getFinishedResult(String id) {
-		File finish = new File(getFilePath("", id));
+		File finish = new File(getFilePath(id));
 		String content = "";
 		if (finish.exists()) {
 			Scanner scan = null;
@@ -112,7 +112,7 @@ public class PomItemsDao implements IPomItemsDao {
 	@Override
 	public int startNewReading(String id) {
 		try {
-			File file = new File(getFilePath("", id));
+			File file = new File(getFilePath(id));
 			int ticket = getNewTicket(this.scanners);
 			RandomAccessFile scan = new RandomAccessFile(file, "r");
 			this.scanners.put(ticket, scan);
@@ -193,8 +193,8 @@ public class PomItemsDao implements IPomItemsDao {
 	 * @param id identifer of file
 	 * @return file path
 	 */
-	private synchronized String getFilePath(String prefix, String id) {
-		return path + "results/" + prefix + id + ".txt";
+	private synchronized String getFilePath(String id) {
+		return path + "results/" + id + ".txt";
 	}
 
 	/**

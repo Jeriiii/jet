@@ -40,11 +40,16 @@
 					refreshResults();
 				}, refreshTime);
 			}
+			//called when error occures
+			function afterError() {
+				alert('Line transfer failed. Please refresh your browser after a while.');
+			}
 			//ajax request, response is more results
 			function refreshResults() {
 				temp.load("${pageContext.request.contextPath}/result/update?id=${fileid}&ticket=${ticket}", function(response, status, xhr) {
 							if (status == 'error') {
 								console.log('Ajax error');
+								afterError();
 								return;
 							}
 							if (response == nodata) {
