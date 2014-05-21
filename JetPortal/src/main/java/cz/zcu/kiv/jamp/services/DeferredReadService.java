@@ -85,37 +85,6 @@ public class DeferredReadService {
 	}
 
 	/**
-	 * This runs synchronous so no data can be lost
-	 *
-	 * @param ticket identifer of reading instance
-	 * @param id identifer of reading instance
-	 * @param timeout approximate maximum time (inaccurate)
-	 * @return readed lines or no data symbol
-	 */
-	public String getSynchronousUpdate(int ticket, String id, long timeout) {
-		long time = 0;
-		while (time < timeout) {
-			try {
-				String content = pomDao.getAllNextLines(ticket);
-				if (content != null) {
-					if (content.contains(END_SYMBOL)) {
-						endScan(ticket);
-					}
-					content = tagService.addTagsToContent(content);
-					return content;
-				}
-				time += TRY_READ_AGAIN_IN;
-				Thread.sleep(TRY_READ_AGAIN_IN);
-			} catch (InterruptedException ex) {
-				log.log(Level.SEVERE, null, ex);
-				return TIMEOUT_RESULT;
-			}
-		}
-		return TIMEOUT_RESULT;
-
-	}
-
-	/**
 	 * Destroys reading instance properly
 	 *
 	 * @param ticket identifer of instance

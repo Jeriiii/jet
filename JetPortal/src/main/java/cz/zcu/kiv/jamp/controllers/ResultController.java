@@ -30,7 +30,7 @@ public class ResultController {
 	/**
 	 * time to wait if result is not avalible
 	 */
-	private static final long LONG_POLLING_TIMEOUT = 5000;//ms
+	private static final long LONG_POLLING_TIMEOUT = Long.MAX_VALUE;//ms
 
 	/**
 	 * Service for long polling
@@ -81,34 +81,18 @@ public class ResultController {
 	 * Returns special symbol DefferredReadService.END_SYMBOL when is validation
 	 * complete
 	 *
-	 * WARNING: WHEN RESULT EXPIRES BEFORE SET, IT WILL STUCK. BUXFIX NECESSARY
+	 *
 	 *
 	 * @param ticket read ticket for result identify and reading instance
 	 * @param id identifer of result (need it for testing finished)
 	 * @return next line of readed result
 	 */
-	@RequestMapping("/deferred")
+	@RequestMapping("/update")
 	@ResponseBody
 	public DeferredResult<String> getUpdate(@RequestParam("ticket") int ticket, @RequestParam("id") String id) {
 		final DeferredResult<String> result = new DeferredResult<String>(LONG_POLLING_TIMEOUT, DeferredReadService.TIMEOUT_RESULT);
 		updateService.getUpdate(ticket, id, result);
 		return result;
-	}
-
-	/**
-	 * Called by AJAX Returns next line of ticketed result or waits until
-	 * timeout time out
-	 *
-	 * Return string. Runs synchronous.
-	 *
-	 * @param ticket read ticket for result identify and reading instance
-	 * @param id identifer of result (need it for testing finished)
-	 * @return next lines of result
-	 */
-	@RequestMapping("/update")
-	@ResponseBody
-	public String getSyncUpdate(@RequestParam("ticket") int ticket, @RequestParam("id") String id) {
-		return updateService.getSynchronousUpdate(ticket, id, LONG_POLLING_TIMEOUT);
 	}
 
 	/**
