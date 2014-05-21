@@ -25,6 +25,11 @@ public class DeferredReadService {
 	public static final String END_SYMBOL = "123end987";//please do not use javascript syntax symbols
 
 	/**
+	 * result which is send when timeout times out
+	 */
+	public static final String TIMEOUT_RESULT = "123nodata456";
+
+	/**
 	 * DAO for POM
 	 */
 	@Autowired
@@ -51,28 +56,63 @@ public class DeferredReadService {
 	 * reading instance. Otherwise it keeps trying again after some time until
 	 * DeferredResult time out
 	 *
+	 *
+	 * WARNING: WHEN RESULT EXPIRES BEFORE SET, IT WILL STUCK. BUXFIX NECESSARY
+	 *
 	 * @param ticket identifer of reading instance
-	 * @param id identifer of result
+	 * @param id identifer of reading instance
 	 */
 	@Async
 	public void getUpdate(int ticket, String id, DeferredResult<String> result) {
 		try {
 			while (!result.isSetOrExpired()) {
-				String content = pomDao.getAllNextLines(ticket);
-				if (content != null) {
-					if (content.contains(END_SYMBOL)) {
-						endScan(ticket);
-						System.out.println("endingggggggggggggggggg");
+				synchronized (result) {
+					String content = pomDao.getAllNextLines(ticket);
+					if (content != null) {
+						if (content.contains(END_SYMBOL)) {
+							endScan(ticket);
+						}
+						content = tagService.addTagsToContent(content);
+						result.setResult(content);
+						return;
 					}
-					content = tagService.addTagsToContent(content);
-					result.setResult(content);
-				} else {
-					Thread.sleep(TRY_READ_AGAIN_IN);
 				}
+				Thread.sleep(TRY_READ_AGAIN_IN);
 			}
 		} catch (InterruptedException ex) {
 			log.log(Level.SEVERE, "an exception was thrown", ex);
 		}
+	}
+
+	/**
+	 * This runs synchronous so no data can be lost
+	 *
+	 * @param ticket identifer of reading instance
+	 * @param id identifer of reading instance
+	 * @param timeout approximate maximum time (inaccurate)
+	 * @return readed lines or no data symbol
+	 */
+	public String getSynchronousUpdate(int ticket, String id, long timeout) {
+		long time = 0;
+		while (time < timeout) {
+			try {
+				String content = pomDao.getAllNextLines(ticket);
+				if (content != null) {
+					if (content.contains(END_SYMBOL)) {
+						endScan(ticket);
+					}
+					content = tagService.addTagsToContent(content);
+					return content;
+				}
+				time += TRY_READ_AGAIN_IN;
+				Thread.sleep(TRY_READ_AGAIN_IN);
+			} catch (InterruptedException ex) {
+				log.log(Level.SEVERE, null, ex);
+				return TIMEOUT_RESULT;
+			}
+		}
+		return TIMEOUT_RESULT;
+
 	}
 
 	/**
