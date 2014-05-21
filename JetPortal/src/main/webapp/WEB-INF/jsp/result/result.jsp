@@ -17,6 +17,9 @@
 			.runinfo{ height: 40px; }
 			#done{ display: none; }
 			#temp{ display: none; }
+			.label {line-height: 1.8;font-size: 90%;}
+/*			.label {line-height: 1.9; font-size: 100%;}
+			pre {font-size: 11px;}*/
 		</style>
     </jsp:attribute>
 
@@ -25,7 +28,7 @@
 			//this script implements ajax request and response operations
 			var refreshTime = 100; //ms - time to wait every refresh try (can be 0 with long polling)
 			var temp = $('#temp');//temp element - for work with arriwing data
-			var results = $('#results table'); //element for data writing
+			var results = $('#results pre'); //element for data writing
 			var endsymbol = '${endsymbol}';
 			var nodata = '${timeoutsymbol}';
 
@@ -119,16 +122,12 @@
 		<c:choose>
 			<c:when test="${not empty fincontent}">
 				<section id="results" class="well">
-					<table class="table">
-						<c:out escapeXml="false" value="${fincontent}"/>
-					</table>
+					<pre><c:out escapeXml="false" value="${fincontent}"/></pre>
 				</section>
 			</c:when>
 			<c:otherwise>
 				<section id="results" class="well">
-					<table class="table">
-
-					</table>
+					<pre></pre>
 				</section>
 			</c:otherwise>
 		</c:choose>
