@@ -43,22 +43,14 @@ public class OutputTagService {
 
 		if (line.contains(info)) {
 			line = line.replace(info, "<span class='label label-info'>" + info + "</span>");
-			//line = "<tr class='info'><td>" + line + "</td></tr>";
 		} else if (line.contains(error)) {
 			line = line.replace(error, "<span class='label label-danger'>" + error + "</span>");
-			//line = "<tr class='danger'><td>" + line + "</td></tr>";
 		} else if (line.contains(warning)) {
 			line = line.replace(warning, "<span class='label label-warning'>" + warning + "</span>");
-			//line = "<tr class='warning'><td>" + line + "</td></tr>";
-		} else {
-			//line = "<tr><td>" + line + "</td></tr>";
 		}
 
-		//line
-		String strLine = "----*";//Str.matches
-		if (line.matches(strLine)) {
-			line = line.replaceAll(strLine, "<hr />");
-		}
+		line = line + "<br/>";
+
 		return line;
 	}
 }
