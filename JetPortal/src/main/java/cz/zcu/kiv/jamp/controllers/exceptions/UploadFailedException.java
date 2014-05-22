@@ -12,7 +12,7 @@ package cz.zcu.kiv.jamp.controllers.exceptions;
 public class UploadFailedException extends Exception {
 
 	public UploadFailedException(String msg) {
-		super("Upload filed: " + msg);
+		super("File upload failed: " + msg);
 	}
 
 }

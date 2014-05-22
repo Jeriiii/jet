@@ -110,6 +110,7 @@ public class UploadController {
 		try {
 			uploadFile(m, uploadedFile);
 		} catch (UploadFailedException ex) { //is logged
+			m.addAttribute("errorFormMessage", ex.getMessage());
 			return "upload/formUploadFile";
 		}
 
@@ -138,15 +139,11 @@ public class UploadController {
 			m.addAttribute("successFormMessage", "File was successfully uploaded. After the validation you will receive email with link, where you can see the result of validation.");
 		} catch (IOException ex) {
 			log.log(Level.SEVERE, "an exception was thrown", ex);
-			String errmsg = "File upload failed: " + ex.getMessage();
-			m.addAttribute("errorFormMessage", errmsg);
-			throw new UploadFailedException(errmsg);
+			throw new UploadFailedException("Server Error. File not be uploaded.");
 
 		} catch (NotCreatedDirException ex) {
 			log.log(Level.SEVERE, "an exception was thrown", ex);
-			String errmsg = "Server Error. File not be uploaded.";
-			m.addAttribute("errorFormMessage", errmsg);
-			throw new UploadFailedException(errmsg);
+			throw new UploadFailedException("Server Error. File not be uploaded.");
 		}
 	}
 }

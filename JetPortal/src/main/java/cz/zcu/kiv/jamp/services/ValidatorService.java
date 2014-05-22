@@ -56,7 +56,6 @@ public class ValidatorService {
 		PrintWriter resultFile = new PrintWriter(path + "results/" + fileName + ".txt", "UTF-8");
 		String mavenPath = "mvn";
 		List<String> params = new ArrayList<String>();
-//		File file = new File(path + "results/" + fileName + ".txt");
 		params.add(mavenPath); // set params for process builder
 		params.add(pluginParam);
 		params.add("-f");
@@ -82,8 +81,6 @@ public class ValidatorService {
 			}
 			process.waitFor();
 			resultFile.println(DeferredReadService.END_SYMBOL);
-		} catch (Error ex) {
-			log.log(Level.SEVERE, "an exception was thrown", ex);
 		} catch (InterruptedException ex) {
 			log.log(Level.SEVERE, null, ex);
 		} finally {
