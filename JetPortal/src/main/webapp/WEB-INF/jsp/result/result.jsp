@@ -17,9 +17,8 @@
 			.runinfo{ height: 40px; }
 			#done{ display: none; }
 			#temp{ display: none; }
-			.label {line-height: 1.8;font-size: 90%;}
-/*			.label {line-height: 1.9; font-size: 100%;}
-			pre {font-size: 11px;}*/
+			.label {line-height: 1.8;font-size: 60%;}
+			pre {font-size: 12px;}
 		</style>
     </jsp:attribute>
 
